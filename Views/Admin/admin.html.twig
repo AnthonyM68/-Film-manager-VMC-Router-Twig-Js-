@@ -1,0 +1,237 @@
+{% extends "template.html.twig" %}
+
+{% block body %}
+<main>
+   <h2>Bienvenue sur la page Admin !</h2>
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-sm">
+            <!-- Menu Admin -->
+            <h3>Menu</h3>
+            <nav>
+               <ul>
+                  <li>Listing :</li>
+                  <ul>
+                     <li><a href="{{baseUrl}}/Admin/Liste_Utilisateurs">Utilisateurs</a></li>
+                     <li><a href="{{baseUrl}}/Admin/Liste_Films">Films</a></li>
+                     <li><a href="{{baseUrl}}/Admin/Liste_Artistes">Artistes</a></li>
+                  </ul>
+               </ul>
+
+               <ul>
+                  <li>Ajouter :</li>
+                  <ul>
+                     <li><a href="{{baseUrl}}/Admin/Ajout_Film">Film</a></li>
+                     <li><a href="{{baseUrl}}/Admin/Ajout_Artiste">Artiste</a></li>
+                  </ul>
+               </ul>
+            </nav>
+         </div>
+
+
+
+         <div class="col-sm">
+
+            <!-- Listing des Utilisateurs -->
+            {% if (slug == 'Liste_Utilisateurs') %}
+            <h3>Utilisateurs</h3>
+            <div id="utilisateurs">
+               <table class="table table-bordered table-hover">
+                  <thead class="thead-dark">
+                     <tr>
+                        <th scope="col"># ID</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Pseudo</th>
+                        <th scope="col">Mot de passe</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Avatar</th>
+                     </tr>
+                  </thead>
+
+                  <tbody>
+                     <tr>
+                        {% for users in users %}
+                        <th scope="row">{{users.id_user}}</th>
+                        <td scope="row">{{users.admin}}</td>
+                        <td scope="row">{{users.pseudo}}</td>
+                        <td scope="row">{{users.mdp}}</td>
+                        <td scope="row">{{users.mail}}</td>
+                        <td scope="row">{{users.avatar}}</td>
+                        {% endfor %}
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            {% endif %}
+
+
+            <!-- Listing des Films -->
+            {% if (slug == 'Liste_Films') %}
+            <h3>Films</h3>
+            <div id="films">
+               <table class="table table-bordered table-hover">
+                  <thead class="thead-dark">
+                     <tr>
+                        <th scope="col"># ID</th>
+                        <th scope="col">Titre</th>
+                        <th scope="col">Date de sortie</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Résumé</th>
+                        <th scope="col">Durée</th>
+                        <th scope="col">Affiche</th>
+                     </tr>
+                  </thead>
+
+                  <tbody>
+                     <tr>
+                        <th scope="row"></th>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            {% endif %}
+
+
+            <!-- Listing Artistes -->
+            {% if (slug == 'Liste_Artistes') %}
+            <h3>Artistes</h3>
+            <div id="artistes">
+               <table class="table table-bordered table-hover">
+                  <thead class="thead-dark">
+                     <tr>
+                        <th scope="col"># ID</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Date de naissance</th>
+                        <th scope="col">Biographie</th>
+                        <th scope="col">Rôle</th>
+                        <th scope="col">Photo</th>
+                     </tr>
+                  </thead>
+
+                  <tbody>
+                     <tr>
+                        <th scope="row"></th>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            {% endif %}
+
+
+            <!-- Edition Films -->
+            {% if (slug == 'Ajout_Film') %}
+            <h3>Ajoutez un Film</h3>
+            <div id="ajout-film">
+               <form>
+                  <div class="form-row">
+                     <div class="col-md-4 mb-3">
+                        <input type="text" class="form-control" placeholder="Titre">
+                     </div>
+
+                     <div class="col-md-4 mb-3">
+                        <input type="text" class="form-control" placeholder="Date de sortie (JJ/MM/AAAA)">
+                     </div>
+
+                     <div class="col-md-4 mb-3">
+                        <input type="text" class="form-control" placeholder="Durée (HH/MM/SS)">
+                     </div>
+                  </div>
+
+                  <div class="form-row">
+                     <div class="col-md-6 mb-3">
+                        <input type="text" class="form-control" placeholder="Affiche (URL)">
+                     </div>
+
+                     <div class="col-md-6 mb-3">
+                        <select class="custom-select">
+                           <option selected disabled value="">Genre</option>
+                           <option>Action</option>
+                           <option>Annimation</option>
+                           <option>Catasrophe</option>
+                           <option>Comédie</option>
+                           <option>Dramatique</option>
+                           <option>Documentaire</option>
+                           <option>Historique</option>
+                           <option>Horreur</option>
+                           <option>Romantique</option>
+                           <option>Sience-Fiction</option>
+
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="form-row">
+                     <div class="col-md-12 mb-3">
+                        <textarea class="form-control" placeholder="Résumé" rows="3"></textarea>
+                     </div>
+                  </div>
+
+                  <button class="btn btn-primary" type="submit">Editer</button>
+               </form>
+            </div>
+            {% endif %}
+
+
+            <!-- Edition Artistes -->
+            {% if (slug == 'Ajout_Artiste') %}
+            <h3>Ajoutez un Artiste</h3>
+            <div id="ajout-artiste">
+               <form>
+                  <div class="form-row">
+                     <div class="col-md-4 mb-3">
+                        <input type="text" class="form-control" placeholder="Nom">
+                     </div>
+
+                     <div class="col-md-4 mb-3">
+                        <input type="text" class="form-control" placeholder="Prénom">
+                     </div>
+
+                     <div class="col-md-4 mb-3">
+                        <input type="text" class="form-control" placeholder="Date de naissance (JJ/MM/AAAA)">
+                     </div>
+                  </div>
+
+                  <div class="form-row">
+                     <div class="col-md-6 mb-3">
+                        <input type="text" class="form-control" placeholder="Photo (URL)">
+                     </div>
+
+                     <div class="col-md-6 mb-3">
+                        <select class="custom-select">
+                           <option selected disabled value="">Rôle</option>
+                           <option>Réalisateur & Acteur</option>
+                           <option>Réalisateur</option>
+                           <option>Acteur</option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="form-row">
+                     <div class="col-md-12 mb-3">
+                        <textarea class="form-control" placeholder="Biographie" rows="3"></textarea>
+                     </div>
+                  </div>
+
+                  <button class="btn btn-primary" type="submit">Editer</button>
+               </form>
+            </div>
+            {% endif %}
+
+         </div>
+      </div>
+   </div>
+</main>
+{% endblock %}

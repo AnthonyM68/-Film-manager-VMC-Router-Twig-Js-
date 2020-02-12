@@ -1,0 +1,26 @@
+{% extends "template.html.twig" %}
+
+{% block title %}Films{% endblock %}
+
+{% block body %}
+   <div class="d-flex justify-content-center" >
+      <h2 class="text-primary pb-5">Films</h2>
+   </div>
+
+   <form method="get" action="{{baseUrl}}/Films/{{query}}" class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" name="query" placeholder="Rechercher..." aria-label="Search">
+      <button class="btn btn-dark my-2 my-sm-0" type="submit">Go</button>
+   </form>
+
+
+   <div class="d-flex justify-content-center flex-wrap">
+      {% for movies in movies %}
+         <div class="d-flex flex-column m-5 container-image-showallmovie shadow-drop-2-center position-relative">          
+            <a href="{{baseUrl}}/Films/Film_{{movies.id_movie}}" class="shadow-drop-2-center">        
+            <img src="{{movies.picture}}" style="width:300px;height:400px;"></img>
+            </a>
+            <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{movies.title}}</p>
+         </div>
+      {% endfor %}
+   </div>
+{% endblock %}
