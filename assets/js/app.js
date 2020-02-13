@@ -1,8 +1,7 @@
 //Déclaration des constantes
 const CheminComplet = document.location.href;
 const CheminRepertoire = CheminComplet.substring(0, CheminComplet.lastIndexOf("/"));
-//const textArea = document.getElementById("controlText");
-//const btnmodify = document.getElementById("btnmodify");
+
 
 let tabButton = [];
 let btn = []
@@ -11,8 +10,6 @@ let tabcontent = document.getElementsByClassName("name");
 for (i = 0; i < tabcontent.length; i++) {
    tabButton[i] = tabcontent[i].getElementsByTagName("button");
 }
-console.log(tabButton);
-
 
 for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
    for (j = 0; j < tabButton[i].length; j++) {
@@ -28,17 +25,15 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
          switch (btn_name[0]) {
             case "btnmodify":
                i++;
-
-
-
+               console.log(i);
+               //récupère le commentaire auquel appartient l'action sur le bouton modifier
                let controlText = document.getElementById("controlComment" + i);
+               console.log(controlText);
+               //On enregistre le commentaire dans une variable temporaire
                let tmp = controlText.innerText;
                controlText.innerHTML = ' ';
                let p = controlText.getElementsByTagName("p");
 
-               console.log(p);
-               
-               
 
                let dataBase = controlText.dataset.base;
                let dataIdMovie = controlText.dataset.idmovie;
@@ -48,14 +43,15 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
                controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Comments/modifyComment/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</p></textarea>';
 
                let controlBtn = document.getElementById("contenaireBtn" + i);
-               controlBtn.innerHTML = " ";
-               console.log(controlBtn);
+               //controlBtn.innerHTML = " ";
+               /*console.log(controlBtn);
 
                controlBtn.innerHTML += '<button type="submit" id="btnmodify' + i  + '" class="btn btn-success btn-sm mb-2">Publier</button>',
                controlBtn.innerHTML += '<button type="submit" id="btndelete' + i  + '" class="btn btn-success btn-sm mb-2">Supprimer</button>', 
-               controlBtn.innerHTML += '<button type="submit" id="btncontact' + i + '" class="btn btn-success btn-sm mb-2">Contacter</button></form>',
+               controlBtn.innerHTML += '<button type="submit" id="btncontact' + i + '" class="btn btn-success btn-sm mb-2">Contacter</button></form>';
+               */
 
-               console.log(dataIdComment);
+               //console.log(dataIdComment);
 
 
                break;

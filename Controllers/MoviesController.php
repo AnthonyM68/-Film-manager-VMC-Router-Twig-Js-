@@ -8,7 +8,7 @@ class MoviesController extends ArtsController
 
    public function __construct()
    {
-      $this->twig = parent::getTwig();
+      //$this->twig = parent::getTwig();
       parent::__construct();
       $this->model = new Movies();
    }
@@ -24,6 +24,10 @@ class MoviesController extends ArtsController
 
    // Affiche un Film avec son Id
    public function showMovie($id_movie) {
+      //
+      
+      
+
 
       // Affiche les Artistes liés a Id Film
       $instanceArtists = new Artists();
@@ -34,25 +38,8 @@ class MoviesController extends ArtsController
       //Recherche les commentaire appartenant au film
       $comments = $instanceComments->linkCommentByMovie($id_movie);
 
-
-
-
-
-
-      /*Pour une raison inconue cette vus est apparu apres le pull et fais beuger la suite
-
-      $movie = $this->model->getMovie($id_movie);
-      $pageTwig = 'Movies/showMovie.html.twig';
-      $template = $this->twig->load($pageTwig);
-      echo $template->render(["movie" => $movie, "artists" => $artists, "comments" => $comments]);*/
-
-
-
-
-
-
       $instanceUser = new User();
-      session_start();
+      //session_start();
       //On affiche une alerte si un commentaire vide a été publié
       if(isset($_SESSION['alert'])) {
          echo $_SESSION['alert'];
@@ -87,6 +74,9 @@ class MoviesController extends ArtsController
       $movie = $this->model->getMovie($id_movie);
       $pageTwig = 'Movies/showMovie.html.twig';
       $template = $this->twig->load($pageTwig);
+
+  
+
       //Si l'utilisateur non identifié avait déjà déposer un commentaire...
       if(isset($_SESSION['tmpComment'])) {
          echo $template->render(["movie" => $movie, "artists" => $artists, "comments" => $comments, "user" => $user, "datedujour" => strftime("%A %d %B %Y"), "status" => $_SESSION['status'], "tmpTitle" => $_SESSION['tmpTitle'], "tmpComment" => $_SESSION['tmpComment'], "tmpNote" => $_SESSION['tmpNote'], "status" => $_SESSION['status'], "userLogin" => $_SESSION['utilisateur']]);

@@ -12,15 +12,6 @@ class HomeController extends Controller
    {
       $pageTwig = 'index.html.twig';
       $template = $this->twig->load($pageTwig);
-
-
-
-      session_start();
-      //session_destroy();
-      $test = $_SESSION;
-
-      //parent::test();
-
-      echo $template->render(['test' => $test]);
+      echo $template->render();
    }
 }

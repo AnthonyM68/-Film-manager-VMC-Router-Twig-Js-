@@ -37,7 +37,10 @@
                   <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/Connexion">CONNEXION</a>
                </li>
                <li class="nav-item shadow-drop-2-bottom active">
-                  <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/##############################">.........</a>
+                  <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/Deconnexion">DECONNEXION</a>
+               </li>
+               <li class="nav-item shadow-drop-2-bottom active">
+                  <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/Admin">ADMIN</a>
                </li>
             </ul>
          </div>
@@ -59,6 +62,7 @@
    {% endblock %}
 
    {% block javascripts %}
+   <script src="{{baseUrl}}/assets/js/app.js"></script>
    {# Here you can add only the JS that you need #}
    {% endblock %}
 </body>
