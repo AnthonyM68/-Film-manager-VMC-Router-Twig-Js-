@@ -18,6 +18,7 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
       document.getElementById(id).addEventListener("click", function () {
          let id_elem = id;
          let btn_name = id_elem.split(i + 1);
+
          switch (btn_name[0]) {
             case "btnmodify":
                i++;
@@ -31,11 +32,11 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
                let dataIdMovie = controlText.dataset.idmovie;
                let dataIdComment = controlText.dataset.idcomment;
                //On ré-injecte le formulaire de soumission 
-               controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Comments/modifyComment/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</textarea><div id="contenaireBtn' + i + '" class="col-12 d-flex justify-content-between name" style="border:1px solid red"><button type="submit" id="btnmodify' + i  + '" class="btn btn-success btn-sm mb-2">Publier</button><button type="submit" id="btndelete' + i  + '" class="btn btn-success btn-sm mb-2">Supprimer</button><button type="submit" id="btncontact' + i + '" class="btn btn-success btn-sm mb-2">Contacter</button></form>';
-               //console.log(dataIdComment);
+               controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Comments/modifyComment_' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</textarea><div id="contenaireBtn' + i + '" class="col-12 d-flex justify-content-between name" style="border:1px solid red"><button type="submit" id="btnmodify' + i  + '" class="btn btn-success btn-sm mb-2">Publier</button><button type="submit" id="btndelete' + i  + '" class="btn btn-success btn-sm mb-2">Supprimer</button><button type="submit" id="btncontact' + i + '" class="btn btn-success btn-sm mb-2">Contacter</button></form>';
                break;
             case "btndelete":
-               var_dump("btndelete");
+               console.log("delete");
+   
 
                break;
             case "btncontact":

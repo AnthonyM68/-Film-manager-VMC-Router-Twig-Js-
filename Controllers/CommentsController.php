@@ -7,11 +7,7 @@ class CommentsController extends Controller
       parent::__construct();
       $this->model = new Comments();
    }
-   //delete comment
-   public function deleteComment($id_movie)
-   {
-      $this->model->delComment($id_movie);
-   }
+   
 
    //render index
    public function index()
@@ -23,6 +19,11 @@ class CommentsController extends Controller
       $pageTwig = 'Comments/index.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render(["comments" => $comments, "OneComment" => $OneComment/*, "liaison" => $liaisonCom, "del" => $delete*/]);
+   }
+   //delete comment
+   public function deleteComment($id_comment)
+   {
+      $this->model->delComment($id_comment);
    }
    //Supprime tous les commentaire liés à id_movie
    public function delAllComByMovie($id)

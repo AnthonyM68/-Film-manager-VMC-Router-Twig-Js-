@@ -137,9 +137,9 @@
 
                <div id="contenaireBtn{{ loop.index }}" class="col-12 d-flex justify-content-between name" style="border:1px solid red">
                   <button type="submit" id="btnmodify{{ loop.index }}"
-                     class="btn btn-success btn-sm mb-2">Modifier</button>
+                     class="btn btn-success btn-sm mb-2">Editer</button>
                   <button type="submit" id="btndelete{{ loop.index }}"
-                     class="btn btn-success btn-sm mb-2">Supprimer</button>
+                     class="btn btn-success btn-sm mb-2" onclick="location.href='{{baseUrl}}/Comments/deleteComment_{{ comment.id_comment }}'">Supprimer</button>
                   <button type="submit" id="btncontact{{ loop.index }}"
                      class="btn btn-success btn-sm mb-2">Contacter</button>
                </div>

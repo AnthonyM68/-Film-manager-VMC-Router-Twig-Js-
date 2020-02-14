@@ -24,11 +24,11 @@ class Comments extends Model
       return $req->fetchAll();
    }
    //suppression commentaire par id_comment
-   public function delComment($id)
+   public function delComment($id_comment)
    {
       $req = $this->pdo->prepare('DELETE FROM comments 
       WHERE id_comment = ?');
-      return $req->execute([$id]);
+      return $req->execute([$id_comment]);
    }
    //insert dans la table comments la publication 
    public function addComment($id_user, $title, $content, $note){
