@@ -4,19 +4,30 @@
 
 {% block body %}
    <div class="d-flex justify-content-center" >
-      <h2 class="text-primary pb-5">Films</h2>
+      <h2 class="pb-5">Films</h2>
    </div>
 
-   <form method="get" action="{{baseUrl}}/Films/{{query}}" class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" name="query" placeholder="Rechercher..." aria-label="Search">
+   <form method="GET" action="{{baseUrl}}/Films/{{query}}" class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Rechercher..." aria-label="Search">
       <button class="btn btn-dark my-2 my-sm-0" type="submit">Go</button>
    </form>
 
+   <div class="search-result">
+      {% for search in search %}
+      <div class="serch-result">
+         <ul class="list-group">
+            <li class="col-3 list-group-item list-group-item-warning">
+               <a href="{{baseUrl}}/Films/Film_{{search.id_movie}}">{{search.title}}</a>
+            </li>
+         </ul>
+      </div>
+      {% endfor %}
+   </div>
 
    <div class="d-flex justify-content-center flex-wrap">
       {% for movies in movies %}
-         <div class="d-flex flex-column m-5 container-image-showallmovie shadow-drop-2-center position-relative">          
-            <a href="{{baseUrl}}/Films/Film_{{movies.id_movie}}" class="shadow-drop-2-center">        
+         <div class="d-flex flex-column m-5 container-image-showallmovie shadow-drop-2-center position-relative">
+            <a href="{{baseUrl}}/Films/Film_{{movies.id_movie}}" class="shadow-drop-2-center">
             <img src="{{movies.picture}}" style="width:300px;height:400px;"></img>
             </a>
             <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{movies.title}}</p>

@@ -13,22 +13,30 @@ class MoviesController extends ArtsController
       $this->model = new Movies();
    }
 
-   // Affiche tout les Films
-   public function showAllMovies()
+   /**
+   *  Affiche tout les Films
+   */
+   public function showAllMovies($search = null)
    {
+      session_start();
       $movies   = $this->model->getAllMovies();
       $pageTwig = 'Movies/showAllMovies.html.twig';
       $template = $this->twig->load($pageTwig);
-      echo $template->render(["movies" => $movies]);
+      echo $template->render([
+         'movies' => $movies,
+         'search' => $search
+      ]);
    }
 
-   // Affiche un Film avec son Id
+   /**
+   *  Affiche un Film avec son Id
+   */
    public function showMovie($id_movie) {
+      session_start();
       // Affiche les Artistes liés a Id Film
       $instanceArtists = new Artists();
       $artists = $instanceArtists->getByMovie($id_movie);
 /**************************************************************ANTHONY********************************************************************************** */
-      session_start();
       //Instancie la class comments
       $instanceComments = new Comments();
       //Recherche les commentaire appartenant au film
@@ -41,7 +49,8 @@ class MoviesController extends ArtsController
          echo $_SESSION['alert'];
          unset($_SESSION['alert']);
       }
-      //On récupère l'id_user des commentaire et l'on recherche le pseudo leur appartenant
+
+      // On récupère l'id_user des commentaire et l'on recherche le pseudo leur appartenant
       for($i = 0; $i < count($comments) ; $i++){
          //On récupère l'id_user de tous les commentaire
          $id_user = $comments[$i]['id_user'];

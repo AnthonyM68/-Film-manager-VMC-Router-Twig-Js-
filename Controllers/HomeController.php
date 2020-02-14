@@ -8,7 +8,7 @@ class HomeController extends Controller
     private $sessionState = false;
     private static $instance;
 
-    
+
     public function __construct()
     {
         $this->twig = parent::getTwig();
@@ -16,8 +16,7 @@ class HomeController extends Controller
 
     public static function getInstance()
     {
-        if (!isset(self::$instance)) 
-        {
+        if (!isset(self::$instance)) {
             self::$instance = new self;
         }
         self::$instance->startSession();
@@ -28,9 +27,11 @@ class HomeController extends Controller
 
     public function startSession()
     {
-        if (false == $this->SESSION_NOT_STARTED) {
+        if (false == $this->sessionState) {
+
             $_SESSION['status'] = null;
             $_SESSION['utilisateur'] = "Visiteur";
+            $this->sessionState = true;
         }
         return $this->sessionState;
     }
@@ -62,20 +63,18 @@ class HomeController extends Controller
 
     public function destroy()
     {
-        if (true == $this->SESSION_STARTED) {
-            session_start();
-            session_destroy();
-            unset($_SESSION);
-            $this->sessionState = false;
-            $_SESSION['status'] = null;
-            $_SESSION['utilisateur'] = "Visiteur";
-            return !$this->sessionState;
-        }
+        session_start();
 
-        return FALSE;
+        session_destroy();
+        unset($_SESSION);
+
+        session_start();
+        $_SESSION['status'] = null;
+        $_SESSION['utilisateur'] = "Visiteur";
     }
     public function index()
     {
+
         $pageTwig = 'index.html.twig';
         $template = $this->twig->load($pageTwig);
         echo $template->render();

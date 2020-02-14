@@ -7,7 +7,9 @@ class Movies extends Model
       $this->pdo = parent::getPdo();
    }
 
-   // Recupère tout les Films
+   /**
+   *  Recupère tout les Films
+   */
    public function getAllMovies()
    {
       $req = $this->pdo->prepare('SELECT * FROM movies');
@@ -15,7 +17,9 @@ class Movies extends Model
       return $req->fetchAll();
    }
 
-   // Recupère un Film avec ID
+   /**
+   *  Recupère un Film avec ID
+   */
    public function getMovie($id_movie) {
       $req = $this->pdo->prepare(
         'SELECT *
@@ -26,15 +30,17 @@ class Movies extends Model
       return $req->fetch();
    }
 
-   // Recherche un Film
-   public function getBySearch($query)
+   /**
+   *  Recherche un Film
+   */
+   public function getBySearch($search)
    {
       $req = $this->pdo->prepare(
         'SELECT title
          FROM movies
          WHERE title
          LIKE "%?%"');
-      $req->execute([$query]);
+      $req->execute([$search]);
       return $req->fetch();
    }
 }

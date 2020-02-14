@@ -2,7 +2,7 @@
 
 {% block body %}
 <main>
-   <h2>Bienvenue sur la page Admin !</h2>
+   <h2>Admin</h2>
    <div class="container-fluid">
       <div class="row">
          <div class="col-sm">
@@ -49,16 +49,16 @@
                   </thead>
 
                   <tbody>
+                     {% for users in users %}
                      <tr>
-                        {% for users in users %}
                         <th scope="row">{{users.id_user}}</th>
-                        <td scope="row">{{users.admin}}</td>
-                        <td scope="row">{{users.pseudo}}</td>
-                        <td scope="row">{{users.mdp}}</td>
-                        <td scope="row">{{users.mail}}</td>
-                        <td scope="row">{{users.avatar}}</td>
-                        {% endfor %}
+                        <td>{{users.admin}}</td>
+                        <td>{{users.pseudo}}</td>
+                        <td>{{users.mdp}}</td>
+                        <td>{{users.mail}}</td>
+                        <td>{{users.avatar}}</td>
                      </tr>
+                     {% endfor %}
                   </tbody>
                </table>
             </div>
@@ -83,15 +83,17 @@
                   </thead>
 
                   <tbody>
+                     {% for movies in movies %}
                      <tr>
-                        <th scope="row"></th>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
+                        <th scope="row">{{movies.id_movie}}</th>
+                        <td>{{movies.title}}</td>
+                        <td>{{movies.year}}</td>
+                        <td>{{movies.style}}</td>
+                        <td>{{movies.resume}}</td>
+                        <td>{{movies.time}}</td>
+                        <td>{{movies.picture}}</td>
                      </tr>
+                  {% endfor %}
                   </tbody>
                </table>
             </div>
@@ -116,15 +118,17 @@
                   </thead>
 
                   <tbody>
+                     {% for artists in artists %}
                      <tr>
-                        <th scope="row"></th>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
-                        <td scope="row"></td>
+                        <th scope="row">{{artists.id_artist}}</th>
+                        <td>{{artists.first_name}}</td>
+                        <td>{{artists.last_name}}</td>
+                        <td>{{artists.birth_day | date("d/m/Y") }}</td>
+                        <td>{{artists.bio}}</td>
+                        <td>{{artists.role}}</td>
+                        <td>{{artists.picture}}</td>
                      </tr>
+                     {% endfor %}
                   </tbody>
                </table>
             </div>

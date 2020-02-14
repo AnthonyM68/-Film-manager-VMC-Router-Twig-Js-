@@ -1,86 +1,174 @@
 {% extends "template.html.twig" %}
 
-{% block title %} {{title}} {% endblock %}
+{% block title %}
+	{{title}}
+{% endblock %}
 
 {% block body %}
 
-{% for login in utilisateur %}
-<p>{{pseudo.pseudo}}</p>
-{% endfor %}
-{% if slug is null %}
+	{% for login in utilisateur %}
+		<p>{{pseudo.pseudo}}</p>
+	{% endfor %}
 
-<h2>Connectez-vous :</h2>
 
-<div class="container">
-   <div class="row">
-      <div class="wrapper">
-         <form name="login" method="POST" action="{{baseUrl}}/Connexion/post">
-            <div class="form-group">
-               <label for="pseudo">
-                  <h4>Pseudo</h4>
-               </label>
-               <input type="text" name="pseudo" class="form-control" id="pseudo">
-               <p><a href="#">J'ai oublié mon pseudo :'(</a></p>
-            </div>
-            <div class="form-group">
-               <label for="mdp">
-                  <h4>Mot de passe</h4>
-               </label>
-               <input type="password" class="form-control" name="mdp">
-            </div>
-            <div class="form-group">
-               <a href="{{baseUrl}}/Inscription" class="badge badge-light col">Pas encore inscrit ?! :o</a>
-               <button type="submit" class="btn btn-outline-info col">Se connecter</button>
-               <p class="text-danger text-center col">{{error}}</p>
-            </div>
-         </form>
-      </div>
-   </div>
-</div>
-{% endif %}
+	<div
+		class="container">
 
-{% if (slug == 'Inscription') %}
+		{# FORMULAIRE DE CONNEXION #}
+		{% if slug is null %}
 
-   {{ dump("test")}}
+			<div class="row justify-content-md-center">
+				<form name="login" class="col-4 users-form" method="POST" action="{{baseUrl}}/Connexion/post">
 
-   <h2>Créez un compte :</h2>
+					<h2>Connectez-vous :</h2>
 
-   <div class="container">
-      <div class="row">
-         <form name="register" method="POST" action="{{ baseUrl }}/Inscription">
+					{# PSEUDO #}
+					<div class="form-group users">
+						<label for="pseudo">
+							<h4>Pseudo</h4>
+						</label>
+						<input type="text" name="pseudo" class="form-control" id="pseudo">
+					</div>
+					{# MOT DE PASSE #}
+					<div class="form-group users">
+						<label for="mdp">
+							<h4>Mot de passe</h4>
+						</label>
+						<input type="password" class="form-control" name="mdp">
+						<p>
+							<a href="{{baseUrl}}/MotDePasseOublie" id="lien-vers-mdp-oublie">J'ai oublié mon mot de passe :'(</a>
+						</p>
+					</div>
+					<div
+						class="form-group users">
+						{# LIEN VERS FORMULAIRE INSCRIPTION #}
+						<a href="{{ baseUrl }}/Inscription" class="badge badge-light col">Pas encore inscrit ?! :o</a>
 
-            <div class="form-group">
-               <label for="regMail">Adresse mail *</label>
-               <input type="email" class="form-control" name="mail" value=" {{ inputMail }}">
-               <small id="requiredField" class="form-text text-muted"> {{ mailError }}</small>
-            </div>
+						{# SUBMIT #}
+						<button type="submit" class="btn btn-outline jati-colors-btn col">Se connecter</button>
+						<p class="text-danger text-center col">{{error}}</p>
+					</div>
+				</form>
+			</div>
 
-            <div class="form-group">
-               <label for="regPseudo">Pseudo *</label>
-               <input type="text" class="form-control" name="pseudo" value="{{ inputPseudo }}">
-               <small id="requiredField" class="form-text text-muted"> {{ pseudoError }}</small>
-            </div>
 
-            <div class="form-group">
-               <label for="regPassword">Mot de passe *</label>
-               <input type="password" class="form-control" name="mdp">
-               <small id="requiredField" class="form-text text-muted"> {{ mdpError }}</small>
-            </div>
+			{# FORMULAIRE DE MOT DE PASSE OUBLIÉ #}
+		{% elseif (slug == 'MotDePasseOublie') %}
 
-            <div class="form-group">
-               <label for="photo">Photo de profil</label>
-               <input type="file" class="form-control-file" name="photo">
-            </div>
 
-            <div class="form-group">
-               <button type="submit" class="btn btn-outline-info col">S'inscrire</button>
-               <p class="text-danger text-center col">{{ generalError }}</p>
-            </div>
+			<div class="row justify-content-md-center">
+				<form name="forgetPassword" class="col-4 users-form" method="POST" action="{{ baseUrl }}/MotDePasseOublie/post">
 
-            <small id="requiredField" class="form-text text-muted">Champs obligatoires *</small>
-         </form>
-      </div>
-   </div>
-</div>
-{% endif %}
+					<h2>Mot de passe oublié</h2>
+
+					<p>Changez de mot de passe grâce a votre adresse mail !</p>
+
+					{# MAIL #}
+					<div class="form-group users">
+						<label for="regMail">
+							<h4>Adresse mail</h4>
+						</label>
+						<input type="email" class="form-control" name="mail" value=" {{ inputMail }}">
+						<small class="form-text text-danger">
+							{{ mailError }}</small>
+					</div>
+
+					{# SUBMIT #}
+					<div class="form-group users">
+						<button type="submit" class="btn btn-outline jati-colors-btn col">Envoyer</button>
+						<p class="text-danger text-center col">{{ generalError}}</p>
+					</div>
+
+				</form>
+			</div>
+
+
+			{# FORMULAIRE POUR CHANGER MOT DE PASSE #}
+		{% elseif (slug == slugurl) %}
+
+
+			<div class="row justify-content-md-center">
+				<form name="changePassword" class="col-4 users-form" method="POST" action="{{ baseUrl }}/ChangerMotDePasse/post">
+
+					<h2>Nouveau mot de passe :</h2>
+
+					<p>{{ userPseudo }}, veuillez entrer un nouveau mot de passe ici :</p>
+
+					{# MOT DE PASSE #}
+					<div class="form-group users">
+						<input type="password" class="form-control" name="mdp">
+						<small class="form-text text-danger">
+							{{ mdpError }}</small>
+					</div>
+
+					{# SUBMIT #}
+					<div class="form-group users">
+						<button type="submit" class="btn btn-outline jati-colors-btn col">Envoyer</button>
+						<p class="text-danger text-center col">{{ generalError }}</p>
+					</div>
+
+				</form>
+			</div>
+
+
+			{# FORMULAIRE D'INSCRIPTION #}
+		{% elseif (slug == 'Inscription') %}
+
+			<div class="row justify-content-md-center">
+				<form name="register" class="col-4 users-form" method="POST" action="{{ baseUrl }}/Inscription/post">
+
+					<h2>Créez un compte :</h2>
+
+					{# MAIL #}
+					<div class="form-group users">
+						<label for="regMail">
+							<h4>Adresse mail *</h4>
+						</label>
+						<input type="email" class="form-control" name="mail" value=" {{ inputMail }}">
+						<small id="requiredField" class="form-text text-danger">
+							{{ mailError }}</small>
+					</div>
+
+					{# PSEUDO #}
+					<div class="form-group users">
+						<label for="regPseudo">
+							<h4>Pseudo *</h4>
+						</label>
+						<input type="text" class="form-control" name="pseudo" value="{{ inputPseudo }}">
+						<small id="requiredField" class="form-text text-danger">
+							{{ pseudoError }}</small>
+					</div>
+
+					{# MOT DE PASSE #}
+					<div class="form-group users">
+						<label for="regPassword">
+							<h4>Mot de passe *</h4>
+						</label>
+						<input type="password" class="form-control" name="mdp">
+						<small id="requiredField" class="form-text text-danger">
+							{{ mdpError }}</small>
+					</div>
+
+					{# Photo de profile #}
+					<div class="form-group users">
+
+						<input type="file" name="file" id="file" class="inputfile"/>
+						<label for="file">Photo de profile</label>
+
+						<small id="requiredField" class="form-text text-danger">
+							{{ avatarError }}</small>
+					</div>
+
+					{# SUBMIT #}
+					<div class="form-group users">
+						<button type="submit" class="btn btn-outline jati-colors-btn col">S'inscrire</button>
+						<p class="text-danger text-center col">{{ generalError }}</p>
+					</div>
+
+					<small id="requiredField" class="form-text text-muted">Champs obligatoires *</small>
+				</form>
+			</div>
+		{% endif %}
+
+	</div>
 {% endblock %}

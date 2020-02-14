@@ -35,7 +35,6 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
                controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Comments/modifyComment_' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</textarea><div id="contenaireBtn' + i + '" class="col-12 d-flex justify-content-between name"><button type="submit" id="btnmodify' + i  + '" class="btn btn-success btn-sm mb-2">Publier</button><button type="submit" id="btndelete' + i  + '" class="btn btn-success btn-sm mb-2">Supprimer</button><button type="submit" id="btncontact' + i + '" class="btn btn-success btn-sm mb-2">Contacter</button></form>';
                break;
 
-          
             case "btncontact":
                let btncontact = document.getElementById("btncontact" + i);
                let user = btncontact.dataset.user;

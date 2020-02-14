@@ -3,42 +3,43 @@
 {% block title %}Film{% endblock %}
 
 {% block body %}
-<div class="container">
-   <div class="flex-column align-items-start bd-highlight">
-      <div class="d-flex pt-5">
-         <div class="d-flex flex-column">
-            <img class="rounded mb-5" src="{{movie.picture}}" style="width:300px;height:400px;">
-            <p><span class="font-weight-bold">Année : </span>{{movie.year}}</p>
-            <p><span class="font-weight-bold">Genre : </span>{{movie.style}}</p>
-            <p><span class="font-weight-bold">Durée : </span>{{movie.time | date('H:i:s')}}</p>
-            <!-- Défini le role de l'artiste -->
-            {% for artists in artists %}
-            {% if artists.role == 1 %}
-            {% set role = 'Acteur' %}
-            {% elseif artists.role == 2 %}
-            {% set role = 'Réalisateur' %}
-            {% elseif artists.role == 3 %}
-            {% set role = 'Réalisateur & Acteur' %}
-            {% endif %}
-            <p><br><span class="font-weight-bold">{{role}}</span></h6>
-               <a href="{{baseUrl}}/Films/Artiste_{{artists.id_artist}}">{{artists.first_name}}
-                  {{artists.last_name}}</a>
-         </div>
-         <div class="d-flex flex-column ml-5">
-            <h2 class="pb-5 text-center">{{movie.title}}</h2>
-            <p class=" text-break"> {{movie.resume}}</p>
+   <div class="container">
+      <div class="flex-column align-items-start bd-highlight">
+         <h2>{{movie.title}}</h2>
+         <div class="d-flex pt-5">
+            <div class="d-flex flex-column">
+               <img class="rounded mb-5" src="{{movie.picture}}" style="width:300px;height:400px;">
+               <p><span class="font-weight-bold">Année : </span>{{movie.year}}</p>
+               <p><span class="font-weight-bold">Genre : </span>{{movie.style}}</p>
+               <p><span class="font-weight-bold">Durée : </span>{{movie.time | date('H:i:s')}}</p>
 
+               <!-- Défini le role de l'artiste -->
+               {% for artists in artists %}
+                  {% if artists.role == 1 %}
+                     {% set role = 'Acteur' %}
+
+                     {% elseif artists.role == 2 %}
+                        {% set role = 'Réalisateur' %}
+                     {% elseif artists.role == 3 %}
+                        {% set role = 'Réalisateur & Acteur' %}
+                  {% endif %}
+                  <br>
+                  <span class="font-weight-bold">
+                     {{role}}
+                     <a href="{{baseUrl}}/Films/Artiste_{{artists.id_artist}}">{{artists.first_name}}{{artists.last_name}}</a>
+                  </span>
+               {% endfor %}
+            </div>
+
+            <div class="d-flex flex-column ml-5">
+               <p class=" text-break"> {{movie.resume}}</p>
+               <!-- Trailer -->
+            </div>
          </div>
-      </div>
-      <div class="mx-auto text-center bd-highlight mt-5">
-         <a class="text-decoration-none text-reset " href="{{baseUrl}}/Films">
-            <input class="btn btn-primary mb-5 btn-lg " type="submit" value="Retour">
-         </a>
       </div>
    </div>
-</div>
-{% endfor %}
 
+<hr>
 
 {#*****************************************************************************ANTHONY****************************************************#}
 {% block comment %}

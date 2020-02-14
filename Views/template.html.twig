@@ -18,34 +18,31 @@
 <body>
    {% block header %}
    <header>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light shadow border-bottom border-secondary mb-5 p-0">
-         <a class="navbar-brand ml-5" href="#">
-            <img src="https://i.ibb.co/RSYk2Kw/jatilogo.png" width="60" height="60" class="d-inline-block align-top" alt="">
+      <nav class="header-nav navbar navbar-expand-lg mb-5 p-0">
+         <a class="navbar-brand ml-5" href="{{baseUrl}}">
+            <img src="https://i.ibb.co/RSYk2Kw/jatilogo.png" width="100" height="100" class="d-inline-block align-top" alt="">
          </a>
          <div class="collapse navbar-collapse " id="navbarText">
             <ul class="navbar-nav mx-auto font-weight-bold p-0">
-               <li class="nav-item shadow-drop-2-bottom active">
-                  <a class="nav-link px-4 m-0 py-4 " href="{{baseUrl}}">HOME</a>
+               <li class="nav-item active">
+                  <a class="nav-link hover-menu" href="{{baseUrl}}/Artistes">ARTISTES</a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link hover-menu" href="{{baseUrl}}/Films">FILMS</a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link hover-menu" href="{{baseUrl}}/Connexion">CONNEXION</a>
                </li>
                <li class="nav-item shadow-drop-2-bottom active">
-                  <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/Artistes">ARTISTES</a>
+                  <a class="nav-link hover-menu" href="{{baseUrl}}/Deconnexion">DECONNEXION</a>
                </li>
-               <li class="nav-item shadow-drop-2-bottom active">
-                  <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/Films">FILMS</a>
-               </li>
-               <li class="nav-item shadow-drop-2-bottom active">
-                  <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/Connexion">CONNEXION</a>
-               </li>
-               <li class="nav-item shadow-drop-2-bottom active">
-                  <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/Deconnexion">DECONNEXION</a>
-               </li>
-               <li class="nav-item shadow-drop-2-bottom active">
-                  <a class="nav-link px-4 py-0 m-0 py-4" href="{{baseUrl}}/Admin">ADMIN</a>
+               <li class="nav-item active">
+                  <a class="nav-link hover-menu" href="{{baseUrl}}/Admin">ADMIN</a>
                </li>
             </ul>
          </div>
       </nav>
-   </header> 
+   </header>
    {% endblock %}
 
    {% block body %}

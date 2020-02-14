@@ -6,7 +6,10 @@ class Comments extends Model
    {
       $this->pdo = parent::getPdo();
    }
-   //recherche tous les commentaires de la BDD
+
+   /**
+   *  recherche tous les commentaires de la BDD
+   */
    public function getAllComments()
    {
       $req = $this->pdo->prepare('SELECT * FROM comments');
@@ -15,7 +18,9 @@ class Comments extends Model
       return $req->fetchAll();
    }
 
-   //recherche un commentaire par id_user
+   /**
+   *  recherche un commentaire par id_user
+   */
    public function getOneComment($id)
    {
       $req = $this->pdo->prepare('SELECT * FROM comments WHERE id_user= ?');
@@ -55,10 +60,10 @@ class Comments extends Model
    public function linkCommentByMovie($id)
    {
       $req = $this->pdo->prepare(
-         'SELECT comments.* 
-         FROM movies, movie_comments, comments 
-         WHERE movies.id_movie = ? 
-         AND movies.id_movie = movie_comments.id_movie 
+         'SELECT comments.*
+         FROM movies, movie_comments, comments
+         WHERE movies.id_movie = ?
+         AND movies.id_movie = movie_comments.id_movie
          AND comments.id_comment = movie_comments.id_comment');
       $req->execute([$id]);
 
