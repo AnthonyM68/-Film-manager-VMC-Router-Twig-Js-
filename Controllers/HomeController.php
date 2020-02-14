@@ -25,23 +25,22 @@ class HomeController extends Controller
 
         return self::$instance;
     }
-    //On démarre unsession 
+
     public function startSession()
     {
-        if ($this->sessionState== $this->SESSION_NOT_STARTED) {
-            $this->sessionState = session_start();
+        if (false == $this->SESSION_NOT_STARTED) {
             $_SESSION['status'] = null;
             $_SESSION['utilisateur'] = "Visiteur";
         }
         return $this->sessionState;
     }
-    //On crée une super global
+
     public function __set($name, $value)
     {
         $_SESSION[$name] = $value;
     }
 
-    //::On recherche la valeur d'une super-global
+
     public function __get($name)
     {
         if (isset($_SESSION[$name])) {
@@ -49,26 +48,25 @@ class HomeController extends Controller
         }
     }
 
-    //on vérifie qu'une super-global nomé existe
+
     public function __isset($name)
     {
         return isset($_SESSION[$name]);
     }
 
-    //On détruit une super-global $_
+
     public function __unset($name)
     {
         unset($_SESSION[$name]);
     }
-    //On arrête la session
+
     public function destroy()
     {
-
-        if ($this->sessionState == $this->SESSION_STARTED) {
+        if (true == $this->SESSION_STARTED) {
             session_start();
             session_destroy();
             unset($_SESSION);
-            $this->sessionState = $this->SESSION_NOT_STARTED;
+            $this->sessionState = false;
             $_SESSION['status'] = null;
             $_SESSION['utilisateur'] = "Visiteur";
             return !$this->sessionState;

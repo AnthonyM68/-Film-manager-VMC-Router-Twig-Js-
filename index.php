@@ -33,6 +33,7 @@ $router->get('/Inscription', 'Users.register');
 $router->post('/Inscription/post', 'Users.register');
 
 // Route Commentaires
+$router->post('/Comments/modifyComment/:id_movie/:id_comment', 'Comments.modifyComment');
 $router->post('/Comments/addComment/:id_movie', 'Comments.addComment');
 $router->get('/Comments/Delete_:id_movie', 'Comments.delAllComByMovie');
 $router->get('/Comments/GetAll', 'Comments.getAllCom');

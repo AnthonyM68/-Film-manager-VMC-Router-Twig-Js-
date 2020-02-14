@@ -118,7 +118,15 @@ class CommentsController extends Controller
          echo $template->render();
       } 
    }
+
    public function modifyComment($id_movie, $id_comment){
+      
+      $content = $_POST['controlText'];
+      $result = $this->model->modifyComment($content, $id_comment);
+      if($result == true) {
+         echo "<script>alert(\"Votre commentaire a bien été modifier\")</script>";
+      }
+      header("Location: $this->baseUrl/Films/Film_$id_movie");
    }
    public function postAfterLogin(){
       //Si les 3 champs sont bien remplis on peut publier le commentaire

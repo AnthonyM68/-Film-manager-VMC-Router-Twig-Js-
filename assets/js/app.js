@@ -16,46 +16,27 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
       //Récupère l'ID de tous les élèments dans un tableau
       let id = tabButton[i][j].id;
       document.getElementById(id).addEventListener("click", function () {
-         
-
          let id_elem = id;
-
          let btn_name = id_elem.split(i + 1);
-
          switch (btn_name[0]) {
             case "btnmodify":
                i++;
-               console.log(i);
                //récupère le commentaire auquel appartient l'action sur le bouton modifier
+               let pComment = document.getElementById("pComment" +i);
+               let tmp = pComment.innerText;
+               //On récupère le container du commentaire lié
                let controlText = document.getElementById("controlComment" + i);
-               console.log(controlText);
-               //On enregistre le commentaire dans une variable temporaire
-               let tmp = controlText.innerText;
-               controlText.innerHTML = ' ';
-               let p = controlText.getElementsByTagName("p");
-
-
+               //On récupère les datas liés au commentaire
                let dataBase = controlText.dataset.base;
                let dataIdMovie = controlText.dataset.idmovie;
                let dataIdComment = controlText.dataset.idcomment;
-               
-
-               controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Comments/modifyComment/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</p></textarea>';
-
-               let controlBtn = document.getElementById("contenaireBtn" + i);
-               //controlBtn.innerHTML = " ";
-               /*console.log(controlBtn);
-
-               controlBtn.innerHTML += '<button type="submit" id="btnmodify' + i  + '" class="btn btn-success btn-sm mb-2">Publier</button>',
-               controlBtn.innerHTML += '<button type="submit" id="btndelete' + i  + '" class="btn btn-success btn-sm mb-2">Supprimer</button>', 
-               controlBtn.innerHTML += '<button type="submit" id="btncontact' + i + '" class="btn btn-success btn-sm mb-2">Contacter</button></form>';
-               */
-
+               //On ré-injecte le formulaire de soumission 
+               controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Comments/modifyComment/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</textarea><div id="contenaireBtn' + i + '" class="col-12 d-flex justify-content-between name" style="border:1px solid red"><button type="submit" id="btnmodify' + i  + '" class="btn btn-success btn-sm mb-2">Publier</button><button type="submit" id="btndelete' + i  + '" class="btn btn-success btn-sm mb-2">Supprimer</button><button type="submit" id="btncontact' + i + '" class="btn btn-success btn-sm mb-2">Contacter</button></form>';
                //console.log(dataIdComment);
-
-
                break;
             case "btndelete":
+               var_dump("btndelete");
+
                break;
             case "btncontact":
                break;

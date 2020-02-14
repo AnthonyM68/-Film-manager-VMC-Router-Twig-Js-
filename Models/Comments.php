@@ -35,12 +35,16 @@ class Comments extends Model
       $req = $this->pdo->prepare('INSERT INTO comments (id_user, title, content, note)
       VALUE (?, ?, ?, ?)');
       $req->execute([$id_user, $title, $content, $note]);
+      //Récupère l'id de l'insertion dans la table
       return $this->pdo->lastInsertId();
    }
 
-   public function modifyComment(){
-      
+   public function modifyComment($content, $id_comment){
+      $req = $this->pdo->prepare('UPDATE comments SET content=? WHERE id_comment=?');
+      return $req->execute([$content, $id_comment]);
    }
+
+
    //insert dans la table users_comments le dernier commentaire publier
    public function addUsersComments($id_user, $id_comment){
       $req = $this->pdo->prepare('INSERT INTO users_comments (id_user, id_comment)

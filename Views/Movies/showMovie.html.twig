@@ -43,6 +43,7 @@
 {#*****************************************************************************ANTHONY****************************************************#}
 {% block comment %}
 {#***********************************************************************Ajout d'un Comment***********************************************#}
+
 <div class="container2">
    <form method="POST" id="comment" action="{{baseUrl}}/Comments/addComment/{{movie.id_movie}}">
       {% if status == 1 %}
@@ -92,9 +93,9 @@
                {% if status == 1 or status == 2 %}
                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="d-flex justify-content-center">
-                     {% for inf in user %}
-                     <span>{{ inf.pseudo }}</span>
-                     {% endfor %}
+                    
+                     <span>{{ user.pseudo }}</span> 
+                    
                   </div>
                </div>
                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
@@ -109,28 +110,32 @@
 </div>
 
 {% endblock %}
-{# ******************************************************fin du block comment début de la liste des comments**********************************************#}
+{# *****************fin du block comment début de la liste des comments***************************#}
 {% if comments %}
 <div class="container2">
+
    {% for comment in comments %}
    <h2>{{ comment.title }}</h2>
    <div class="row">
-      <div class="col-2">
-         <div class="col-12">
+      <div class="col-2" style="border:1px solid red">
+         <div class="col-12" >
             <img src="{{comment.avatar }}" class="img-thumbnail">
             <p class="text-center">{{ comment.id_user }}</p>
          </div>
       </div>
+
       <div class="col-10">
          <div class="col-12">
-            <div data-idcomment="{{ comment.id_comment }}" data-base="{{baseUrl}}" data-idmovie="{{movie.id_movie}}"
-               id="controlComment{{ loop.index }}">
-               <p>{{ comment.content }}</p>
 
-               {# ******************************************************si l'on est admin cette partie nous est réserver**********************************************#}
+
+            <div id="controlComment{{ loop.index }}" data-idcomment="{{ comment.id_comment }}" data-base="{{baseUrl}}" data-idmovie="{{movie.id_movie}}" style="border:1px solid red">
+               <p id="pComment{{ loop.index }}">{{ comment.content }}</p>
+           
+
+               {# *******************si l'on est admin cette partie nous est réserver*****************#}
                {% if status == 1 %}
 
-               <div id="contenaireBtn{{ loop.index }}" class="col-6 d-flex justify-content-between name">
+               <div id="contenaireBtn{{ loop.index }}" class="col-12 d-flex justify-content-between name" style="border:1px solid red">
                   <button type="submit" id="btnmodify{{ loop.index }}"
                      class="btn btn-success btn-sm mb-2">Modifier</button>
                   <button type="submit" id="btndelete{{ loop.index }}"
@@ -141,10 +146,12 @@
 
                {% endif %}
             </div>
+
+
          </div>
       </div>
    </div>
-   {# ****************************************************************fin de la partie admin****************************************************************#}
+   {# *******************fin de la partie admin***********************************#}
 
    {% if status == 2 and comment.id_user == userLogin %}
    <div class="row">

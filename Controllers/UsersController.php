@@ -83,7 +83,7 @@ class UsersController extends Controller
                   //Sinon on redirige l'utilisateur sur la page d'accueil
                   if (!empty($_SESSION["utilisateur"])) {
 
-                     header("Location: $this->baseUrl");
+                     //header("Location: $this->baseUrl");
                   }       
                }
             } else {
@@ -96,12 +96,12 @@ class UsersController extends Controller
          $error = "Vous n'avez pas rempli tous les champs !";
       }
       //affichage
-      $pageTwig = 'Users/login.html.twig';
+      /*$pageTwig = 'Users/login.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render([
          'slug' => $slug,
          'error' => $error,
-      ]);
+      ]);*/
    }
 
    //gestion de l'envoi du formulaire d'inscription
@@ -178,12 +178,14 @@ class UsersController extends Controller
       $admin = $this->model->checkAdmin($id_user['id_user']);
       if ($admin['admin'] == 1) {
          $_SESSION['status'] = 1;
+         
          //Redirection sur page Admin
-         header("Location: $this->baseUrl/Admin");
+         //header("Location: $this->baseUrl/Admin");
       } else {
          $_SESSION['status'] = 2;
          //Redirection sur page Home
-         header("Location: $this->baseUrl");
+         //header("Location: $this->baseUrl");
       }
+      var_dump($_SESSION['utilisateur']);
    }
 }

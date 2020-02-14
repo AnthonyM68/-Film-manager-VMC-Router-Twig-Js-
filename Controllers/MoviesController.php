@@ -28,10 +28,7 @@ class MoviesController extends ArtsController
       $instanceArtists = new Artists();
       $artists = $instanceArtists->getByMovie($id_movie);
 /**************************************************************ANTHONY********************************************************************************** */
-
-      $instance = new HomeController();
-      $instance->getInstance();
-
+      session_start();
       //Instancie la class comments
       $instanceComments = new Comments();
       //Recherche les commentaire appartenant au film
