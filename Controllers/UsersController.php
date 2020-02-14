@@ -14,8 +14,6 @@ class UsersController extends Controller
    public function connexion($slug = null)
    {
       var_dump("connexion");
-     
-
       //$slug est null
       $title = "Connexion";
 
@@ -36,24 +34,20 @@ class UsersController extends Controller
       $pageTwig = 'Users/login.html.twig';
       $template = $this->twig->load($pageTwig);
 
-
-
       echo $template->render([
          'slug' => $slug,
-         "title" => $title,]);
+         "title" => $title,
+      ]);
    }
 
    //gestion de l'envoi du formulaire de connexion
    public function login($slug = null)
    {
-      
-/*
-      if(){
-         echo "<script>alert(\"super global existe\")</script>";
-      } else {
-         echo "<script>alert(\"existe pas\")</script>";
-      }
-*/
+      var_dump("login");
+
+
+
+
       $error = "";
       // si l'input pseudo et mdp n'est pas vide
       if (!empty($_POST['pseudo']) && !empty($_POST['mdp'])) {
@@ -68,26 +62,29 @@ class UsersController extends Controller
 
             //si le mot de passe est bon
             if (password_verify($_POST['mdp'], $hashMdp)) {
-
-
+               /*********************ANTHONY************************ */
+               //On démarre une session 
+               $instance = new HomeController();
+               $instance->getInstance();
 
                //On défini l'utilisateur a l'état de connecter
                $_SESSION["status"] = 2;
                $_SESSION["utilisateur"] = $_POST['pseudo'];
-
-
-
+               //on recherche si l'utilisateur conncté est administrateur
                $this->checkAdministrator($_SESSION["utilisateur"]);
 
-               //Si location existe on redirige vers postAfterLogin()
+               //Si location existe on redirige vers postAfterLogin() pour publier le commentaire
                if (isset($_SESSION['location'])) {
                   $instanceComments = new CommentsController();
                   $instanceComments->postAfterLogin();
+               /****************************************************/
                } else {
+               
                   //Sinon on redirige l'utilisateur sur la page d'accueil
                   if (!empty($_SESSION["utilisateur"])) {
-                     //header("Location: $this->baseUrl");
-                  }
+
+                     header("Location: $this->baseUrl");
+                  }       
                }
             } else {
                $error = "Mot de passe incorrect";
@@ -98,16 +95,13 @@ class UsersController extends Controller
       } else {
          $error = "Vous n'avez pas rempli tous les champs !";
       }
-
-       
-
       //affichage
-      /*$pageTwig = 'Users/login.html.twig';
+      $pageTwig = 'Users/login.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render([
          'slug' => $slug,
          'error' => $error,
-      ]);*/
+      ]);
    }
 
    //gestion de l'envoi du formulaire d'inscription
@@ -168,28 +162,21 @@ class UsersController extends Controller
          'inputPseudo' => $pseudo,*/]);
    }
    /********************************ANTHONY************************************/
+   //On déconnecte la SESSION
    public function logout()
    {
-
-      var_dump("logout");
-      self::startSession();
-      self::destroy();
-
-      /*$session = $_SESSION;
-      if ($session['status'] == 1 || $session['status'] == 2) {
-         session_destroy();
-         $_SESSION['status'] = null;
-         $_SESSION['utilisateur'] = "inconnu";
-      }*/
+      $instance = new HomeController();
+      $instance->destroy();
       header("Location: $this->baseUrl");
    }
+
    public function checkAdministrator($pseudo)
    {
-      /*//On récupère l'id utilisateur par le pseudo
+      //On récupère l'id utilisateur par le pseudo
       $id_user = $this->model->getOneIdUser($pseudo);
       //On vérifie si l'id utilisateur est Admin
       $admin = $this->model->checkAdmin($id_user['id_user']);
-      if($admin['admin'] == 1){
+      if ($admin['admin'] == 1) {
          $_SESSION['status'] = 1;
          //Redirection sur page Admin
          header("Location: $this->baseUrl/Admin");
@@ -197,6 +184,6 @@ class UsersController extends Controller
          $_SESSION['status'] = 2;
          //Redirection sur page Home
          header("Location: $this->baseUrl");
-      }*/
+      }
    }
 }

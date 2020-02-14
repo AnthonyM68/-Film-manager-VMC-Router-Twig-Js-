@@ -24,15 +24,14 @@ class MoviesController extends ArtsController
 
    // Affiche un Film avec son Id
    public function showMovie($id_movie) {
-      //
-      
-      
-
-
       // Affiche les Artistes liés a Id Film
       $instanceArtists = new Artists();
       $artists = $instanceArtists->getByMovie($id_movie);
 /**************************************************************ANTHONY********************************************************************************** */
+
+      $instance = new HomeController();
+      $instance->getInstance();
+
       //Instancie la class comments
       $instanceComments = new Comments();
       //Recherche les commentaire appartenant au film
