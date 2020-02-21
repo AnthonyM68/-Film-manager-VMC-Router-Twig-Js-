@@ -1,10 +1,11 @@
- <?php
+<?php
 
 class Movies extends Model
 {
    public function __construct()
    {
       $this->pdo = parent::getPdo();
+
    }
 
    /**
@@ -20,9 +21,10 @@ class Movies extends Model
    /**
    *  Recupère un Film avec ID
    */
-   public function getMovie($id_movie) {
+   public function getMovie($id_movie)
+   {
       $req = $this->pdo->prepare(
-        'SELECT *
+         'SELECT *
          FROM movies
          WHERE movies.id_movie = ?
          AND movies.id_movie = movies.id_movie');
@@ -31,16 +33,30 @@ class Movies extends Model
    }
 
    /**
-   *  Recherche un Film
+   *  Recherche un Film par nom
    */
    public function getBySearch($search)
    {
       $req = $this->pdo->prepare(
-        'SELECT title
+        'SELECT *
          FROM movies
          WHERE title
-         LIKE "%?%"');
-      $req->execute([$search]);
-      return $req->fetch();
+         LIKE "%'.$search.'%"');
+      $req->execute();
+      return $req->fetchAll();
+   }
+
+   /**
+   *  Recherche un Film par genre
+   */
+   public function getByStyle($style)
+   {
+      $req = $this->pdo->prepare(
+        'SELECT *
+         FROM movies
+         WHERE style
+         LIKE "%'.$style.'%"');
+      $req->execute();
+      return $req->fetchAll();
    }
 }

@@ -22,11 +22,8 @@ class ArtistsController extends Controller
    */
    public function showArtist(int $id_artist)
    {
-      // Affiche les Films de Artiste par Id
-      $instanceMovies = new Movies();
-      $movies = $instanceMovies->getAllMovies($id_artist);
 
-      $artist   = $this->model->getArtist($id_artist);
+      $artist = $this->model->getArtist($id_artist);
 
       // Défini le role de l'artiste
       if($artist['role'] == 1){
@@ -42,19 +39,24 @@ class ArtistsController extends Controller
       echo $template->render([
          'artist' => $artist,
          'movies' => $movies,
-         'role' => $role
+         'role' => $role,
+         'status' => $_SESSION['status'],
+         'alertMessage' => $_SESSION['receiveMessage']
       ]);
    }
-
    /**
-   *  Affiche la fiche Artiste
+   *  Affiche les artistes
    */
    public function showAllArtists()
    {
       $artists  = $this->model->getAllArtists();
       $pageTwig = 'Artists/showAllArtists.html.twig';
       $template = $this->twig->load($pageTwig);
-      echo $template->render(['artists' => $artists]);
+      echo $template->render([
+         'artists' => $artists,
+         'status' => $_SESSION['status'],
+         'alertMessage' => $_SESSION['receiveMessage']
+         ]);
    }
 
    /**
@@ -65,6 +67,40 @@ class ArtistsController extends Controller
       $artists  = $this->model->getByFilm();
       $pageTwig = 'Artists/showByMovie.html.twig';
       $template = $this->twig->load($pageTwig);
-      echo $template->render(["artists" => $artists]);
+      echo $template->render([
+         "artists" => $artists,
+         'status' => $_SESSION['status'],
+         'alertMessage' => $_SESSION['receiveMessage']
+      ]);
+   }
+
+   /**
+   *  Affiche les films en fonction de la recherhce
+   */
+   public function search($search = null)
+   {
+      $slug = "Recherche";
+      $notFound = null;
+
+      if (isset($_POST['search']) && !empty($_POST['search'])) {
+
+         // Affiche la recherche Film
+         $search = $_POST['search'];
+         $search = $this->model->getBySearch($search);
+
+      }else{
+         $notFound = "L'artiste recherché n'est pas répertorié, mais vous pouvez nous envoyer des suggestion via le formulaire !";
+      }
+
+      $pageTwig = 'Artists/showAllArtists.html.twig';
+      $template = $this->twig->load($pageTwig);
+      $artists  = $this->model->getAllArtists();
+      echo $template->render([
+         'slug' => $slug,
+         'artists' => $artists,
+         'search' => $search,
+         'notFound' => $notFound,
+         'alertMessage' => $_SESSION['receiveMessage']
+      ]);
    }
 }

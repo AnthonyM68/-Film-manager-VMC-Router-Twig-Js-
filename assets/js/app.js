@@ -17,7 +17,9 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
       let id = tabButton[i][j].id;
       document.getElementById(id).addEventListener("click", function () {
          let id_elem = id;
+         console.log(id_elem);
          let btn_name = id_elem.split(i + 1);
+         console.log(btn_name[0]);
 
          switch (btn_name[0]) {
             case "btnmodify":
@@ -30,24 +32,30 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
                //On récupère les datas liés au commentaire
                let dataBase = controlText.dataset.base;
                let dataIdMovie = controlText.dataset.idmovie;
+               
                let dataIdComment = controlText.dataset.idcomment;
+               
                //On ré-injecte le formulaire de soumission 
-               controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Comments/modifyComment_' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</textarea><div id="contenaireBtn' + i + '" class="col-12 d-flex justify-content-between name"><button type="submit" id="btnmodify' + i  + '" class="btn btn-success btn-sm mb-2">Publier</button><button type="submit" id="btndelete' + i  + '" class="btn btn-success btn-sm mb-2">Supprimer</button><button type="submit" id="btncontact' + i + '" class="btn btn-success btn-sm mb-2">Contacter</button></form>';
+               controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Commentaires/Modifier/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</textarea><div id="contenaireBtn' + i + '" class="col-12 d-flex justify-content-between name"><button type="submit" id="btnmodify' + i  + '" class="btn btn-secondary btn-sm mb-2">Publier</button><button type="submit" id="btndelete' + i  + '" class="btn btn-secondary btn-sm mb-2">Supprimer</button><button type="submit" id="btncontact' + i + '" class="btn btn-secondary btn-sm mb-2">Contacter</button></form>';
                break;
 
             case "btncontact":
+               i++
                let btncontact = document.getElementById("btncontact" + i);
                let user = btncontact.dataset.user;
-               redirectMail(user);
+               let mail = btncontact.dataset.mail;
+               console.log(user);
+               console.log(mail);
+               redirectMail(user, mail);
                break;
          }
       });
    }
 }
 //Ouvre le gestionnaire de l'email
-function redirectMail(user)
+function redirectMail(user, mail)
 {
-    window.location.href = "mailto:test@example.com?subject=Notre site Allo_jati souhaite correspondre avec vous&body=Bonjour, " + user;
+    window.location.href = "mailto:"+mail+"?subject=Notre site Allo_jati souhaite correspondre avec vous&body=Bonjour, " + user;
 }
 //Si nous somme bien sur la page Films
 if (CheminRepertoire === "http://localhost/allo_jati/Films") {
@@ -93,11 +101,10 @@ if (CheminRepertoire === "http://localhost/allo_jati/Films") {
       });
    }
 }
-/*
-btnmodify.addEventListener("click", function () {
-   textArea
-});*/
+function myAlertBottom(){
+   $(".myAlert-bottom").show();
+   setTimeout(function(){
+     $(".myAlert-bottom").hide(); 
+   }, 2000);
+ }
 
-/*
-let NomDuFichier     = CheminComplet.substring(CheminComplet.lastIndexOf( "/" )+1 );
-alert ('NomDuFichier : \n'+NomDuFichier+ ' \n\n CheminRepertoire : \n' +CheminRepertoire+ ' \n\n CheminComplet :\n ' +CheminComplet);*/

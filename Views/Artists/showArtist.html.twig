@@ -11,29 +11,24 @@
             <img class="rounded" src="{{artist.picture}}" style="width:300px;height:400px;">
 
             <div class="mt-4">
-               <span class="font-weight-bold">Date de naissance :</span> {{artist.birth_day | date("d/m/Y")}} <br>
-               <span class="font-weight-bold">{{role}}</span> <br> <br>
+               <span class="font-weight-bold">Date de naissance :</span> <span>{{artist.birth_day | date("d/m/Y")}} </span> <br>
+               <span class="font-weight-bold">Rôle :</span> <span>{{role}}</span>
             </div>
 
-            <h3 class="mb-4">A voir aussi dans :</h3>
+            <h3 class="mb-4 mt-4">A voir aussi dans :</h3>
 
             <!-- Affiche les films ou l'acteur est présent -->
-            {% for movies in movies %}
-               <a href="{{baseUrl}}/Film_{{movies.id_movie}}">
-                  <li>{{movies.title}}</li>
-               </a>
-            {% endfor %}
+
          </div>
 
          <div class="d-flex flex-column ml-5">
             <h2 class="text-center mx-auto mb-5">
                {{artist.first_name}} {{artist.last_name}}
             </h2>
-            <p>
-               <span class="font-weight-bold mt-5">Biographie :
-               </span><br>
+            <div>
+               <p class="font-weight-bold">Biographie :</p>
                {{artist.bio}}
-            </p>
+            </div>
          </div>
       </div>
    </div>

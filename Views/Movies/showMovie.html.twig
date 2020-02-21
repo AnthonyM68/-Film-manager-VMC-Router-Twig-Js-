@@ -1,11 +1,15 @@
 {% extends "template.html.twig" %}
 
-{% block title %}Film{% endblock %}
+{% block title %}{{movie.title}}{% endblock %}
 
 {% block body %}
    <div class="container">
       <div class="flex-column align-items-start bd-highlight">
-         <h2>{{movie.title}}</h2>
+         <div class="d-flex justify-content-center pt-5">
+            <h2>{{movie.title}}</h2>
+         </div>
+
+
          <div class="d-flex pt-5">
             <div class="d-flex flex-column">
                <img class="rounded mb-5" src="{{movie.picture}}" style="width:300px;height:400px;">
@@ -14,45 +18,50 @@
                <p><span class="font-weight-bold">Durée : </span>{{movie.time | date('H:i:s')}}</p>
 
                <!-- Défini le role de l'artiste -->
-               {% for artists in artists %}
-                  {% if artists.role == 1 %}
+               {% for infos in infos %}
+                  {% if infos.role == 1 %}
                      {% set role = 'Acteur' %}
-
-                     {% elseif artists.role == 2 %}
-                        {% set role = 'Réalisateur' %}
-                     {% elseif artists.role == 3 %}
-                        {% set role = 'Réalisateur & Acteur' %}
+                  {% elseif infos.role == 2 %}
+                     {% set role = 'Réalisateur' %}
                   {% endif %}
-                  <br>
+
                   <span class="font-weight-bold">
-                     {{role}}
-                     <a href="{{baseUrl}}/Films/Artiste_{{artists.id_artist}}">{{artists.first_name}}{{artists.last_name}}</a>
+                     {{role}} : <a class="font-weight-normal text-transform-capitalize" href="{{baseUrl}}/Artistes/Artiste_{{infos.id_artist}}">{{infos.first_name}} {{infos.last_name}}</a>
                   </span>
                {% endfor %}
             </div>
 
             <div class="d-flex flex-column ml-5">
-               <p class=" text-break"> {{movie.resume}}</p>
-               <!-- Trailer -->
+               <div class=" text-break mb-5">
+                  <p class="font-weight-bold">Resumé :</p>
+                  {{movie.resume}}
+               </div>
+
+               <div class="mb-5">
+                  <iframe width="600" height="400" src="{{movie.trailer}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+               </div>
             </div>
          </div>
       </div>
    </div>
 
-<hr>
+   <hr>
 
-{#*****************************************************************************ANTHONY****************************************************#}
+{#**********************************ANTHONY**********************************#}
 {% block comment %}
-{#***********************************************************************Ajout d'un Comment***********************************************#}
-
+{#*****************************Ajout d'un Comment****************************#}
 <div class="container2">
-   <form method="POST" id="comment" action="{{baseUrl}}/Comments/addComment/{{movie.id_movie}}">
-      {% if status == 1 %}
+   <form method="POST" id="comment" action="{{baseUrl}}/Commentaires/Ajouter_{{movie.id_movie}}">
+
+      {#*****************************Si nous sommes administrateur ou logger ****************************#}
+      {% if status == 1 or status == 2 %}
+      {#*****Si un titre a été placés en temporaire avant login*****#}
       {% if tmpTitle  %}
-      <input class="form-control" type="text" name="title" placeholder="{{ tmpTitle }}" value="{{ tmpTitle }}">
+      <input class="form-control" type="text" name="title" value="{{ tmpTitle }}">
       {% else %}
       <input class="form-control" type="text" name="title" placeholder="Titre">
       {% endif %}
+      {#*****Si un commentaire a été placés en temporaire avant login*****#}
       {% if tmpComment %}
       <textarea class="form-control" name="controlText" id="ControlText{{ loop.index }}" rows="3"
          placeholder="{{ tmpComment }}" value="{{ tmpComment }}"></textarea>
@@ -60,21 +69,26 @@
       <textarea class="form-control" name="controlText" id="ControlText{{ loop.index }}" rows="3"
          placeholder="Votre commentaire"></textarea>
       {% endif %}
+      {#*****************************Si l'utilisateur n'est que visiteur ****************************#}
       {% else %}
       <input class="form-control" type="text" name="title" placeholder="Titre">
-      <textarea class="form-control" name="controlText" id="ControlText{{ loop.index }}" rows="3" placeholder="
-               {{ user}}"></textarea>
+      <textarea class="form-control" name="controlText" id="ControlText{{ loop.index }}" rows="3"
+         placeholder="{{ user }}"></textarea>
       {% endif %}
+
       <div class="row">
          <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <div class="form-group">
+               {#*****************************Si nous sommes administrateur ou logger ****************************#}
                {% if status == 1 or status == 2 %}
+               {#*****Si une note a été placés en temporaire avant login*****#}
                {% if tmpNote %}
                <div id="containerstar" class="star-complet{{tmpNote}}">
                   {% else %}
                   <div id="containerstar" class="star">
                      {% endif %}
-                     {% elseif status == null %}
+
+                     {% else %}
                      <div id="containerstar" class="star">
                         {% endif %}
                         <!--System de notation par étoile-->
@@ -91,78 +105,87 @@
                      </div>
                   </div>
                </div>
+               {#*****************************Si nous sommes administrateur ou logger on affiche le pseudo****************************#}
                {% if status == 1 or status == 2 %}
                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="d-flex justify-content-center">
-                    
-                     <span>{{ user.pseudo }}</span> 
-                    
+                     <span>{{ user.pseudo }}</span>
                   </div>
                </div>
+               {% else %}
+               {#*****************************Sinon nous sommes visiteur****************************#}
+               <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                  <div class="d-flex justify-content-center">
+                     <span>{{ 'Visiteur' }}</span>
+                  </div>
+               </div>
+               {% endif %}
+
                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="d-flex justify-content-end">
                      <span>{{ datedujour }}</span>
                   </div>
                </div>
-               {% endif %}
             </div>
-            <button type="submit" id="btnpost" class="btn btn-success btn-sm mb-2">Poster</button>
+            <button type="submit" id="btnpost" class="btn btn-secondary btn-sm mb-2">Poster</button>
    </form>
 </div>
-
 {% endblock %}
-{# *****************fin du block comment début de la liste des comments***************************#}
-{% if comments %}
-<div class="container2">
 
+{# *************************début de la liste des comments***************************#}
+
+{% block listComment %}
+
+{% if comments %}
+<div class="container">
+   {# *************************on affiche l'avatar du propriétaire du commentaire***************************#}
    {% for comment in comments %}
    <h2>{{ comment.title }}</h2>
-   <div class="row">
+   <div class="row border">
       <div class="col-2">
-         <div class="col-12" >
+         <div class="col-12">
             <img src="{{comment.avatar }}" class="img-thumbnail">
             <p class="text-center">{{ comment.id_user }}</p>
          </div>
       </div>
+      {# *************************on affiche son commentaire***************************#}
 
+ 
       <div class="col-10">
          <div class="col-12">
-
-
-            <div id="controlComment{{ loop.index }}" data-idcomment="{{ comment.id_comment }}" data-base="{{baseUrl}}" data-idmovie="{{movie.id_movie}}">
+            <div id="controlComment{{ loop.index }}" data-idcomment="{{ comment.id_comment }}" data-base="{{baseUrl}}"
+               data-idmovie="{{movie.id_movie}}">
                <p id="pComment{{ loop.index }}">{{ comment.content }}</p>
-           
 
-               {# *******************si l'on est admin cette partie nous est réserver*****************#}
+
+               {# *******************si l'on est admin on peux modifier/supprimer le commentaire *****************#}
                {% if status == 1 %}
-
                <div id="contenaireBtn{{ loop.index }}" class="col-12 d-flex justify-content-between name">
                   <button type="submit" id="btnmodify{{ loop.index }}"
-                     class="btn btn-success btn-sm mb-2">Editer</button>
-                  <button type="submit" id="btndelete{{ loop.index }}"
-                     class="btn btn-success btn-sm mb-2" onclick="location.href='{{baseUrl}}/Comments/deleteComment_{{ comment.id_comment }}'">Supprimer</button>
-                  <button type="submit" id="btncontact{{ loop.index }}"
-                     class="btn btn-success btn-sm mb-2" data-user="{{ comment.id_user }}" data>Contacter</button>
+                     class="btn btn-secondary btn-sm mb-2">Editer</button>
+                  <button type="submit" id="btndelete{{ loop.index }}" class="btn btn-secondary btn-sm mb-2"
+                     onclick="location.href='{{baseUrl}}/Commentaires/Effacer/{{ comment.id_comment }}/{{movie.id_movie}}/{{comment.id_user}}'">Supprimer</button>
+                  {# *******************On peux envoyer un email a l'utilisateur *****************#}
+                  <button type="submit" id="btncontact{{ loop.index }}" class="btn btn-secondary btn-sm mb-2"
+                     data-user="{{ comment.id_user }}" data-mail="{{ comment.mail }}">Contacter</button>
                </div>
-
+               {% endif %}
+               {% if status == 2 and comment.id_user == userLogin %}
+               <button type="submit" id="btnmodify{{ loop.index }}"
+                  class="btn btn-secondary btn-sm mb-2">Modifier</button>
+               {# *******************On affiche la note du film, l'id du commentaire et sa date de publication*****************#}
+               {% endif %}
+               {% if status == 2 %}
+               {% if comment.id_user != userLogin %}
+               <button type="submit" id="contact{{ loop.index }}"
+                  class="btn btn-secondary btn-sm mb-2" onclick="location.href='{{baseUrl}}/Profile/Envoyer_{{comment.id_user}}'">Contacter</button>
+               {% endif %}
                {% endif %}
             </div>
-
-
          </div>
       </div>
    </div>
-   {# *******************fin de la partie admin***********************************#}
 
-   {% if status == 2 and comment.id_user == userLogin %}
-   <div class="row">
-      <div class="col-3"> </div>
-      <div id="contenaireBtn{{ loop.index }}" class="col-6 d-flex justify-content-between name">
-         <button type="submit" id="btnmodify{{ loop.index }}" class="btn btn-success btn-sm mb-2">Modifier</button>
-      </div>
-      <div class="col-3"></div>
-   </div>
-   {% endif %}
    <div class="row">
       <div class="col-2 d-flex justify-content-start">
          <div class="star-note">
@@ -175,13 +198,11 @@
          <p>Commentaire: N°{{ comment.id_comment }}</p>
       </div>
       <div class="col-6 d-flex justify-content-around">
-         <p>Date de publication: {{ comment.date }}</p>
+         <p>Date de publication: {{ comment.date | date("m/d/Y/ H:i:s", "Europe/Paris") }}</p>
       </div>
    </div>
    {% endfor %}
 </div>
 {% endif %}
-{#*********************************************************************ANTHONY*******************************************************#}
-
-
+{% endblock %}
 {% endblock %}

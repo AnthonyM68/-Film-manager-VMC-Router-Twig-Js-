@@ -1,0 +1,49 @@
+{% extends "template.html.twig" %}
+
+{% block title %}Suggestion{% endblock %}
+
+{% block body %}
+
+<div class="container">
+   <div class="row justify-content-md-center">
+   <form class="col-4 users-form" method="POST" action="{{baseUrl}}/Suggestion" enctype="multipart/form-data">
+
+   <div class="d-flex justify-content-center">
+      <h2>Suggestion</h1>
+   </div>
+      <div class="form-group my-4">
+         <input type="text" class="form-control d-inline" name="pseudo" id="validationDefault01" placeholder="Pseudo or Nom">
+      </div>
+
+      <div class="form-group my-4">
+         <input type="file" class="form-control-file input-file" name="zip_file[]" id="exampleFormControlFile1" multiple="multiple">
+      </div>
+
+      <div class="form-group my-4">
+         <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="nom@example.com">
+         <small id="emailHelp" class="form-text " style="color:#FF2E63">Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.</small>
+      </div>
+
+      <div class="form-group my-4">
+         <textarea class="form-control" name="text" placeholder="text" style="resize:none">
+         </textarea>
+      </div>
+
+      <button type="submit" name ="submit"class="btn btn-outline jati-colors-btn col" >Envoyer</button>
+
+      {% if  alertsEmail is empty %}  
+            
+      {% elseif alertsEmail == 'yes' %}
+         <div class="alert alert-success mt-4 d-flex" role="alert"><span class="mx-auto font-weight-bold">
+         Merci! Votre message s'est bien passé! </span></div> 
+
+      {% elseif alertsEmail == 'no' %}  
+         <div class="alert alert-danger mt-4 d-flex" role="alert"><span class="mx-auto font-weight-bold">
+         Votre message n'a pas été transmis, veuillez réessayer</span></div>  
+
+      {% endif %}
+         
+   </form>
+   </div>
+<div>  
+{% endblock %}

@@ -3,35 +3,85 @@
 {% block title %}Films{% endblock %}
 
 {% block body %}
-   <div class="d-flex justify-content-center" >
-      <h2 class="pb-5">Films</h2>
+   <div class="d-flex justify-content-center pt-5">
+      <h2>Films</h2>
    </div>
 
-   <form method="GET" action="{{baseUrl}}/Films/{{query}}" class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Rechercher..." aria-label="Search">
-      <button class="btn btn-dark my-2 my-sm-0" type="submit">Go</button>
-   </form>
-
-   <div class="search-result">
-      {% for search in search %}
-      <div class="serch-result">
-         <ul class="list-group">
-            <li class="col-3 list-group-item list-group-item-warning">
-               <a href="{{baseUrl}}/Films/Film_{{search.id_movie}}">{{search.title}}</a>
-            </li>
-         </ul>
+   <div class="mt-3">
+      <!-- Barre de recherche -->
+      <div class="mb-3">
+         <form method="POST" action="{{baseUrl}}/Films/Recherche" class="form-inline my-2 my-lg-0  form-control-sm">
+            <input class="form-control mr-sm-2" type="search" name="search" placeholder="Rechercher ..." aria-label="Search">
+            <button class="btn btn-dark my-2 my-sm-0" type="submit">Go</button>
+         </form>
       </div>
-      {% endfor %}
+
+      <!-- Recherche avec select -->
+      <div class="">
+         <form method="POST" action="{{baseUrl}}/Films/Genre" class="form-inline my-2 my-lg-0 form-control-sm">
+            <select class="custom-select" name="style">
+               <option selected disabled>--Genre--</option>
+               <option value ="Action">Action</option>
+               <option value ="Animation">Animation</option>
+               <option value ="Catasrophe">Catasrophe</option>
+               <option value ="Comédie">Comédie</option>
+               <option value ="Dramatique">Dramatique</option>
+               <option value ="Documentaire">Documentaire</option>
+               <option value ="Historique">Historique</option>
+               <option value ="Horreur">Horreur</option>
+               <option value ="Romantique">Romantique</option>
+               <option value ="Science-Fiction">Science-Fiction</option>
+            </select>
+            <button class="btn btn-dark my-2 my-sm-0" type="submit">Go</button>
+         </form>
+      </div>
    </div>
 
-   <div class="d-flex justify-content-center flex-wrap">
-      {% for movies in movies %}
-         <div class="d-flex flex-column m-5 container-image-showallmovie shadow-drop-2-center position-relative">
-            <a href="{{baseUrl}}/Films/Film_{{movies.id_movie}}" class="shadow-drop-2-center">
-            <img src="{{movies.picture}}" style="width:300px;height:400px;"></img>
-            </a>
-            <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{movies.title}}</p>
-         </div>
-      {% endfor %}
-   </div>
+   <!-- Affichage Classique -->
+   {% if slug is null %}
+      <div class="d-flex justify-content-center flex-wrap">
+         {% for movies in movies %}
+            <div class="d-flex flex-column m-5 container-image-showallmovie  position-relative">
+               <a href="{{baseUrl}}/Films/Film_{{movies.id_movie}}" class="shadow-drop-2-center">
+               <img src="{{movies.picture}}" style="width:300px;height:400px;"></img>
+               </a>
+               <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{movies.title}}</p>
+            </div>
+         {% endfor %}
+      </div>
+
+   <!-- Affichage avec la barre de recherche -->
+   {% elseif (slug == "Recherche") %}
+      <div class="d-flex justify-content-center flex-wrap">
+         {% for search in search %}
+            <div class="d-flex flex-column m-5 container-image-showallmovie position-relative">
+               <a href="{{baseUrl}}/Films/Film_{{search.id_movie}}" class="shadow-drop-2-center">
+                  <img src="{{search.picture}}" style="width:300px;height:400px;"></img>
+               </a>
+               <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{search.title}}</p>
+            </div>
+         {% endfor %}
+      </div>
+
+      <div class="d-flex justify-content-center pt-5">
+         <p>{{notFound}}</p>
+      </div>
+
+   <!-- Affichage avec le select -->
+   {% elseif (slug == "Genre") %}
+      <div class="d-flex justify-content-center flex-wrap">
+         {% for style in style %}
+            <div class="d-flex flex-column m-5 container-image-showallmovie position-relative">
+               <a href="{{baseUrl}}/Films/Film_{{style.id_movie}}" class="shadow-drop-2-center">
+               <img src="{{style.picture}}" style="width:300px;height:400px;"></img>
+               </a>
+               <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{style.title}}</p>
+            </div>
+         {% endfor %}
+      </div>
+
+      <div class="d-flex justify-content-center pt-5">
+         <p>{{notFound}}</p>
+      </div>
+   {% endif %}
 {% endblock %}

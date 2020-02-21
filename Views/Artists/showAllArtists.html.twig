@@ -3,19 +3,44 @@
 {% block title %}Artistes{% endblock %}
 
 {% block body %}
-
-   <div class="d-flex justify-content-center" >
+   <div class="d-flex justify-content-center pt-5">
       <h2 class="pb-5">Artistes</h2>
    </div>
 
-   <div class="d-flex justify-content-center flex-wrap">
-      {% for artists in artists %}
-         <div class="d-flex flex-column m-5 container-image-showallmovie shadow-drop-2-center position-relative ">          
-            <a href="{{baseUrl}}/Artiste_{{artists.id_artist}}" class="shadow-drop-2-center">
-            <img src="{{artists.picture}}" style="width:300px;height:400px;"></img>
-            </a>
-            <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{ artists.first_name}} {{ artists.last_name}}</p>
-         </div>
-      {% endfor %}
+   <div class="d-flex justify-content-center pt-5 pb-5">
+      <form method="POST" action="{{baseUrl}}/Artistes/Recherche" class="form-inline my-2 my-lg-0">
+         <input class="form-control mr-sm-2" type="search" name="search" placeholder="Rechercher ..." aria-label="Search">
+         <button class="btn btn-dark my-2 my-sm-0" type="submit">Go</button>
+      </form>
    </div>
+
+   <!-- Affichage Classique -->
+   {% if slug is null %}
+      <div class="d-flex justify-content-center flex-wrap">
+         {% for artists in artists %}
+            <div class="d-flex flex-column m-5 container-image-showallmovie shadow-drop-2-center position-relative ">
+               <a href="{{baseUrl}}/Artiste_{{artists.id_artist}}" class="shadow-drop-2-center">
+               <img src="{{artists.picture}}" style="width:300px;height:400px;"></img>
+               </a>
+               <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{artists.first_name}} {{artists.last_name}}</p>
+            </div>
+         {% endfor %}
+      </div>
+
+   <!-- Affichage avec Search -->
+   {% elseif (slug == "Recherche") %}
+      <div class="d-flex justify-content-center flex-wrap">
+         {% for search in search %}
+            <div class="d-flex flex-column m-5 container-image-showallmovie shadow-drop-2-center position-relative">
+               <a href="{{baseUrl}}/Artistes/Artiste_{{search.id_artist}}" class="shadow-drop-2-center">
+               <img src="{{search.picture}}" style="width:300px;height:400px;"></img>
+               </a>
+               <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{search.first_name}} {{search.last_name}}</p>
+            </div>
+         {% endfor %}
+      </div>
+      <div class="d-flex justify-content-center pt-5">
+         <p>{{notFound}}</p>
+      </div>
+   {% endif %}
 {% endblock %}
