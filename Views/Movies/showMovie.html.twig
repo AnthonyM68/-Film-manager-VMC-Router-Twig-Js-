@@ -3,54 +3,56 @@
 {% block title %}{{movie.title}}{% endblock %}
 
 {% block body %}
-   <div class="container">
-      <div class="flex-column align-items-start bd-highlight">
-         <div class="d-flex justify-content-center pt-5">
-            <h2>{{movie.title}}</h2>
+<div class="container">
+   <div class="flex-column align-items-start bd-highlight">
+      <div class="d-flex justify-content-center pt-5">
+         <h2>{{movie.title}}</h2>
+      </div>
+
+
+      <div class="d-flex pt-5">
+         <div class="d-flex flex-column">
+            <img class="rounded mb-5" src="{{movie.picture}}" style="width:300px;height:400px;">
+            <p><span class="font-weight-bold">Année : </span>{{movie.year}}</p>
+            <p><span class="font-weight-bold">Genre : </span>{{movie.style}}</p>
+            <p><span class="font-weight-bold">Durée : </span>{{movie.time | date('H:i:s')}}</p>
+
+            <!-- Défini le role de l'artiste -->
+            {% for infos in infos %}
+            {% if infos.role == 1 %}
+            {% set role = 'Acteur' %}
+            {% elseif infos.role == 2 %}
+            {% set role = 'Réalisateur' %}
+            {% endif %}
+
+            <span class="font-weight-bold">
+               {{role}} : <a class="font-weight-normal text-transform-capitalize"
+                  href="{{baseUrl}}/Artistes/Artiste_{{infos.id_artist}}">{{infos.first_name}} {{infos.last_name}}</a>
+            </span>
+            {% endfor %}
          </div>
 
-
-         <div class="d-flex pt-5">
-            <div class="d-flex flex-column">
-               <img class="rounded mb-5" src="{{movie.picture}}" style="width:300px;height:400px;">
-               <p><span class="font-weight-bold">Année : </span>{{movie.year}}</p>
-               <p><span class="font-weight-bold">Genre : </span>{{movie.style}}</p>
-               <p><span class="font-weight-bold">Durée : </span>{{movie.time | date('H:i:s')}}</p>
-
-               <!-- Défini le role de l'artiste -->
-               {% for infos in infos %}
-                  {% if infos.role == 1 %}
-                     {% set role = 'Acteur' %}
-                  {% elseif infos.role == 2 %}
-                     {% set role = 'Réalisateur' %}
-                  {% endif %}
-
-                  <span class="font-weight-bold">
-                     {{role}} : <a class="font-weight-normal text-transform-capitalize" href="{{baseUrl}}/Artistes/Artiste_{{infos.id_artist}}">{{infos.first_name}} {{infos.last_name}}</a>
-                  </span>
-               {% endfor %}
+         <div class="d-flex flex-column ml-5">
+            <div class=" text-break mb-5">
+               <p class="font-weight-bold">Resumé :</p>
+               {{movie.resume}}
             </div>
 
-            <div class="d-flex flex-column ml-5">
-               <div class=" text-break mb-5">
-                  <p class="font-weight-bold">Resumé :</p>
-                  {{movie.resume}}
-               </div>
-
-               <div class="mb-5">
-                  <iframe width="600" height="400" src="{{movie.trailer}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-               </div>
+            <div class="mb-5">
+               <iframe width="600" height="400" src="{{movie.trailer}}" frameborder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
             </div>
          </div>
       </div>
    </div>
-
-   <hr>
+</div>
+<hr>
 
 {#**********************************ANTHONY**********************************#}
 {% block comment %}
 {#*****************************Ajout d'un Comment****************************#}
-<div class="container2">
+<div class="container">
    <form method="POST" id="comment" action="{{baseUrl}}/Commentaires/Ajouter_{{movie.id_movie}}">
 
       {#*****************************Si nous sommes administrateur ou logger ****************************#}
@@ -127,7 +129,8 @@
                   </div>
                </div>
             </div>
-            <button type="submit" id="btnpost" class="btn btn-secondary btn-sm mb-2">Poster</button>
+            <div class="card-footer text-center"><button type="submit" id="btnpost"
+                  class="btn btn-secondary btn-sm mb-2">Poster</button></div>
    </form>
 </div>
 {% endblock %}
@@ -138,71 +141,137 @@
 
 {% if comments %}
 <div class="container">
-   {# *************************on affiche l'avatar du propriétaire du commentaire***************************#}
+
    {% for comment in comments %}
-   <h2>{{ comment.title }}</h2>
-   <div class="row border">
-      <div class="col-2">
-         <div class="col-12">
-            <img src="{{comment.avatar }}" class="img-thumbnail">
-            <p class="text-center">{{ comment.id_user }}</p>
-         </div>
+   <div class="card text-center m-3">
+      <div class="card-header">
+         <h5>{{ comment.title }}</h5>
       </div>
-      {# *************************on affiche son commentaire***************************#}
-
- 
-      <div class="col-10">
-         <div class="col-12">
-            <div id="controlComment{{ loop.index }}" data-idcomment="{{ comment.id_comment }}" data-base="{{baseUrl}}"
-               data-idmovie="{{movie.id_movie}}">
-               <p id="pComment{{ loop.index }}">{{ comment.content }}</p>
-
-
-               {# *******************si l'on est admin on peux modifier/supprimer le commentaire *****************#}
-               {% if status == 1 %}
-               <div id="contenaireBtn{{ loop.index }}" class="col-12 d-flex justify-content-between name">
-                  <button type="submit" id="btnmodify{{ loop.index }}"
-                     class="btn btn-secondary btn-sm mb-2">Editer</button>
-                  <button type="submit" id="btndelete{{ loop.index }}" class="btn btn-secondary btn-sm mb-2"
-                     onclick="location.href='{{baseUrl}}/Commentaires/Effacer/{{ comment.id_comment }}/{{movie.id_movie}}/{{comment.id_user}}'">Supprimer</button>
-                  {# *******************On peux envoyer un email a l'utilisateur *****************#}
-                  <button type="submit" id="btncontact{{ loop.index }}" class="btn btn-secondary btn-sm mb-2"
-                     data-user="{{ comment.id_user }}" data-mail="{{ comment.mail }}">Contacter</button>
+      <div class="card">
+         <div class="card-block">
+            <div class="row">
+               <div class="col-2">
+                  {# *************************on affiche l'avatar du propriétaire du commentaire***************************#}
+                  <img src="{{comment.avatar}}" class="img-thumbnail m-2">
+                  <p class="text-center">{{ comment.id_user }}</p>
                </div>
-               {% endif %}
-               {% if status == 2 and comment.id_user == userLogin %}
-               <button type="submit" id="btnmodify{{ loop.index }}"
-                  class="btn btn-secondary btn-sm mb-2">Modifier</button>
-               {# *******************On affiche la note du film, l'id du commentaire et sa date de publication*****************#}
-               {% endif %}
-               {% if status == 2 %}
-               {% if comment.id_user != userLogin %}
-               <button type="submit" id="contact{{ loop.index }}"
-                  class="btn btn-secondary btn-sm mb-2" onclick="location.href='{{baseUrl}}/Profile/Envoyer_{{comment.id_user}}'">Contacter</button>
-               {% endif %}
-               {% endif %}
+               <div class="col d-flex justify-content-start ">
+                  {# *************************on affiche son commentaire***************************#}
+                  <div id="controlComment{{ loop.index }}" data-idcomment="{{ comment.id_comment }}"
+                     data-base="{{baseUrl}}" data-idmovie="{{movie.id_movie}}">
+
+                     <p class="pr-sm-1 m-2" id="pComment{{ loop.index }}">{{ comment.content }}</p>
+
+                  </div>
+               </div>
+               <div class="container h-100">
+                  <div class="row align-items-center h-100">
+                     <div class="col-12 p-5">
+                        <div class="card h-100 justify-content-center" style="border:none">
+                           <div class="col-12">
+                              <div id="alerteDisplay">
+                                 {{ alert | striptags ('<div>') | raw }}
+                              </div>
+                              <div class="accordion" id="accordionExample">
+                                 <div class="card" style="border:none">
+                                    <div class="row">
+                                       <div class="col">
+                                          <div>
+                                             <h4 type="button" data-toggle="collapse"
+                                                data-target="#collapse{{ loop.index }}" aria-expanded="true"
+                                                aria-controls="collapse{{ loop.index }}">
+                                                {% if status == 1 %}
+                                                   <small class="pull-right" style="border:none">Administration:</small>
+                                                   </h4>
+                                                {% endif %}
+                                             {% if status == 2 %}
+                                                {% if comment.id_user == userLogin %}
+                                                   <small class="pull-right" style="border:none">Editer:</small></h4>
+                                                {% endif %}
+                                             {% endif %}
+                                                {% if status == 2 and comment.id_user != userLogin%}
+                                                   <small class="pull-right" style="border:none">Contacter:</small></h4>
+                                                {% endif %}
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div id="collapse{{ loop.index }}" class="collapse hide"
+                                       aria-labelledby="heading{{ loop.index }}" data-parent="#accordionExample">
+                                       <div class="card-body">
+                                          {{mess.message}}
+                                       </div>
+                                       <div class="row justify-content-center">
+                                          <div id="contenaireBtn{{ loop.index }}" class="col-12 d-flex justify-content-center name">
+                                             {% if status == 1 %}
+                                                <button type="submit" id="btnmodify{{ loop.index }}"
+                                                   class="btn btn-link-secondary font-weight-bold text-secondary border m-2">
+                                                   Editer
+                                                </button>
+                                                <button type="submit" id="btndelete{{ loop.index }}"
+                                                   class="btn btn-link-secondary font-weight-bold text-secondary border m-2"
+                                                   onclick="location.href='{{baseUrl}}/Commentaires/Effacer/{{ comment.id_comment }}/{{movie.id_movie}}/{{comment.id_user}}'">
+                                                   Supprimer
+                                                </button>
+                                                <button type="submit" id="contact{{ loop.index }}"
+                                                   class="btn btn-link-secondary font-weight-bold text-secondary border m-2"
+                                                   onclick="location.href='{{baseUrl}}/Profile/Envoyer_{{comment.id_user}}'">
+                                                   Contacter
+                                                </button>
+                                                {# *******************On peux envoyer un email a l'utilisateur *****************#}
+                                                <button type="submit" id="btncontact{{ loop.index }}"
+                                                   class="btn btn-link-secondary font-weight-bold text-secondary border m-2"
+                                                   data-user="{{ comment.id_user }}" data-mail="{{ comment.mail }}">
+                                                   Mail
+                                                </button>
+                                             {% endif %}
+                                             {% if status == 2 and comment.id_user == userLogin %}
+                                                <button type="submit" id="btnmodify{{ loop.index }}"
+                                                   class="btn btn-link-secondary font-weight-bold text-secondary border m-2">
+                                                   Editer
+                                                </button>
+                                                {# *******************On affiche la note du film, l'id du commentaire et sa date de publication*****************#}
+                                             {% elseif status == 2 and comment.id_user != userLogin %}
+                                                <button type="submit" id="contact{{ loop.index }}"
+                                                   class="btn btn-link-secondary font-weight-bold text-secondary border m-2"
+                                                   onclick="location.href='{{baseUrl}}/Profile/Envoyer_{{comment.id_user}}'">
+                                                   Contacter
+                                                </button>
+                                             {% endif %}
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
+
+      {# Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit mollitia tempora quidem consectetur harum blanditiis quo incidunt omnis laborum nisi porro, vel tempore dicta perferendis. Quos, sint cum! Quod, accusamus? #}
+
+
+      <div class="card-footer text-center">
+         <span class="btn btn-theme float-left">
+            <div class="star-note">
+
+               {% for i in 1..comment.note %}
+               <label></label>
+               {% endfor %}
+            </div>
+         </span>
+         <span class="btn btn-theme">Commentaire: N°{{ comment.id_comment }}
+         </span>
+         <span class="btn btn-theme float-right">{{ comment.date | date("m/d/Y/ H:i:s", "Europe/Paris") }}
+         </span>
+      </div>
    </div>
 
-   <div class="row">
-      <div class="col-2 d-flex justify-content-start">
-         <div class="star-note">
-            {% for i in 1..comment.note %}
-            <label></label>
-            {% endfor %}
-         </div>
-      </div>
-      <div class="col-4 d-flex justify-content-center">
-         <p>Commentaire: N°{{ comment.id_comment }}</p>
-      </div>
-      <div class="col-6 d-flex justify-content-around">
-         <p>Date de publication: {{ comment.date | date("m/d/Y/ H:i:s", "Europe/Paris") }}</p>
-      </div>
-   </div>
    {% endfor %}
-</div>
-{% endif %}
-{% endblock %}
-{% endblock %}
+   {% endif %}
+
+   {% endblock %}
+   {% endblock %}

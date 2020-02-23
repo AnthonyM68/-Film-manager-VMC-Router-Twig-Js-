@@ -15,7 +15,7 @@
                <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                   <li class="nav-item">
                      <span class="border-color text-white font-weight-bold m-0 p-1">Connection</span>
-                     <ul>
+                     <ul class="list-color">
                         <li><a class="nav-link pl-0" href="{{baseUrl}}/Profile/Modifier/Pseudo">Pseudo</a></li>
                         <li><a class="nav-link pl-0" href="{{baseUrl}}/Profile/Modifier/Avatar">Avatar</a>
                         </li>
@@ -26,7 +26,7 @@
                   </li>
                   <li class="nav-item">
                      <span class="border-color text-white font-weight-bold m-0 p-1">Messagerie</span>
-                     <ul>
+                     <ul class="list-color">
                         {% set send = 'Envoyer' %}
                         <li><a class="nav-link pl-0" href="{{baseUrl}}/Profile/Envoyer">Envoyer</a>
                         </li>
@@ -38,7 +38,7 @@
                   </li>
                   <li class="nav-item">
                      <span class="border-color text-white font-weight-bold m-0 p-1">Suppresion</span>
-                     <ul>
+                     <ul class="list-color">
                         {% set account = 'Compte' %}
                         <li class="nav-item">
                            <a class="nav-link pl-0" href="{{baseUrl}}/Profile/Supprimer/Compte">Compte</a>
@@ -58,14 +58,15 @@
                <div id="alerteDisplay">
                   {{ alert | striptags ('<div>') | raw }}
                </div>
-               <div class="card h-100 justify-content-center">
+               <div class="card h-100 justify-content-center bg-secondary text-white">
                   <div class="text-center">
-                     <img src="{{ avatar }}" class="img-thumbnail">
+                     <img src="{{ avatar }}" class="img-thumbnail m-4">
                      <div class="pt-lg-2 pl-lg-0">{{user}}</div>
                      <form method="POST" action="{{baseUrl}}/Profile/Change/Pseudo">
                         <div class="col-md-12 mb-3">
                            <label for="pseudo">Changez votre Pseudonyme</label>
-                           <input type="text" class="form-control text-center" name="pseudo" placeholder="{{user}}">
+                           <input type="text" class="form-control text-center bg-dark text-white" name="pseudo"
+                              placeholder="{{user}}">
                         </div>
                         <button class="btn btn-secondary" type="submit">Modifier</button>
                      </form>
@@ -85,17 +86,17 @@
                   {{ alert | striptags ('<div>') | raw }}
                </div>
                <div class="card h-100 justify-content-center">
-                  <div class="text-center">
-                     <img src="{{ avatar }}" class="img-thumbnail">
+                  <div class="text-center bg-secondary text-white">
+                     <img src="{{ avatar }}" class="img-thumbnail m-4">
                      <form method="POST" enctype="multipart/form-data" action="{{baseUrl}}/Profile/Modifier/Avatar">
                         <input type="file" name="avatarUpload" id="file" class="inputfile" onchange='uploadFile(this)'>
                         <div class="inputfile-box text-center">
                            <input type="file" id="avatarUpload" class="inputfile" onchange='uploadFile(this)'>
                            <label for="file" class="justify-content-center">
                               <span>
-                                 <i class="fa fa-upload btn btn-secondary" style="margin:25px;"> Avatar</i></span><br>
+                                 <i class="fa fa-upload btn btn-dark m-4"> Avatar</i></span><br>
                               <span><br>Formats acceptés:<br>bmp, jpg, jpeg, png, gif, tiff</span><b></span><br><br>
-                                 <button type="submit" class="btn btn-secondary">Modifier</button>
+                                 <button class="btn btn-dark m-5" type="submit">Modifier</button>
                                  <span id="file-name" class="file-box"></span>
                            </label>
                         </div>
@@ -115,14 +116,21 @@
                <div id="alerteDisplay">
                   {{ alert | striptags ('<div>') | raw }}
                </div>
-               <div class="card h-100 justify-content-center">
+
+               <div class="card h-100 justify-content-center bg-secondary text-white">
                   <div class="text-center">
+
                      <img src="{{ avatar }}" class="img-thumbnail">
-                     <form name="mdp" method="POST" action="{{baseUrl}}/Profile/Modifier/Mdp">
-                        <label for="mdp">Changez votre Mot de Passe</label>
-                        <input type="text" class="form-control text-center" name="mdp"
-                           placeholder="Nouveau mot de passe">
-                        <button class="btn btn-secondary" type="submit">Modifier</button>
+                     <div class="pt-lg-2 pl-lg-0">{{user}}</div>
+
+                     <form name="mdp" method="POST" action="{{baseUrl}}/Profile/Modifier/Mdp"
+                        class="bg-secondary text-white">
+                        <div class="col-md-12 mb-3">
+                           <label for="mdp" class="m-4">Changez votre Mot de Passe</label>
+                           <input type="text" class="form-control text-center bg-dark text-white" name="mdp"
+                              placeholder="Nouveau mot de passe">
+                           <button class="btn btn-dark m-5" type="submit">Modifier</button>
+                        </div>
                      </form>
                   </div>
                </div>
@@ -141,20 +149,24 @@
                </div>
                <div class="card h-100 justify-content-center bg-secondary text-white">
                   <div class="text-center">
-                     <img src="{{ avatar }}" class="img-thumbnail m-2">
+                     <img src="{{ avatar }}" class="img-thumbnail m-4">
                      <div class="m-4">{{user}}</div>
-                     <form id="envoyer" name="send" method="POST" action="{{baseUrl}}/Profile/Envoyer_{{pseudo}}" class="bg-secondary text-white">
-                        <input class="form-control text-center bg-dark text-white" name="pseudoMessage" id="pseudoMessage" rows="1"
-                           placeholder="Envoyer à : Pseudo ?">
-                        <input class="form-control text-center card bg-dark text-white" name="pseudoMessage" id="pseudoMessage" rows="1"
-                           placeholder="Expéditeur : {{user}}" disabled="disabled" value"{{user}}">
-                        <textarea class="form-control text-center bg-dark text-white" name="title" id="tilteMessage" rows="1"
-                           placeholder="Titre"></textarea>
-                        <textarea class="form-control text-center card bg-dark text-white" name="message" id="Message" rows="3"
-                           placeholder="Message"></textarea>
-                        <input type="hidden" name="datedujour" id="datedujour" value="{{ datedujour }}">
-                        <span>{{ datedujour }}</span><br>
-                        <button class="btn btn-dark m-5" type="submit">Envoyer</button>
+                     <form id="envoyer" name="send" method="POST" action="{{baseUrl}}/Profile/Envoyer_{{pseudo}}"
+                        class="bg-secondary text-white">
+                        <div class="col-md-12 mb-3">
+                           <input class="form-control text-center bg-dark text-white" name="pseudoMessage"
+                              id="pseudoMessage" rows="1" placeholder="Envoyer à : Pseudo ?">
+                           <input class="form-control text-center card bg-dark text-white" name="pseudoMessage"
+                              id="pseudoMessage" rows="1" placeholder="Expéditeur : {{user}}" disabled="disabled"
+                              value"{{user}}">
+                           <textarea class="form-control text-center bg-dark text-white" name="title" id="tilteMessage"
+                              rows="1" placeholder="Titre"></textarea>
+                           <textarea class="form-control text-center card bg-dark text-white" name="message"
+                              id="Message" rows="3" placeholder="Message"></textarea>
+                           <input type="hidden" name="datedujour" id="datedujour" value="{{ datedujour }}">
+                           <span>{{ datedujour }}</span><br>
+                           <button class="btn btn-dark m-5" type="submit">Envoyer</button>
+                        </div>
                      </form>
                   </div>
                </div>
@@ -168,8 +180,10 @@
       <div class="row align-items-center h-100">
          <div class="col-12 p-5">
             <div class="card h-100 justify-content-center">
-               <div class="text-center"><h2>MESSAGERIE</h2></div>
-               
+               <div class="text-center">
+                  <h2>MESSAGERIE</h2>
+               </div>
+
                {% for mess in message %}
                {#} {{ dump(mess) }}  #}
                <div class="col-12">
@@ -183,7 +197,8 @@
                               <div class="card bg-secondary text-white">
                                  <h4 type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}"
                                     aria-expanded="true" aria-controls="collapse{{ loop.index }}" class="card-header">
-                                    {{mess.title}} <small class="pull-right text-white">Expéditeur:{{mess.expeditor }}</small></h4>
+                                    {{mess.title}} <small
+                                       class="pull-right text-white">Expéditeur:{{mess.expeditor }}</small></h4>
                               </div>
                            </div>
                         </div>
@@ -225,11 +240,11 @@
                <div id="alerteDisplay">
                   {{ alert | striptags ('<div>') | raw }}
                </div>
-               <div class="card h-100 justify-content-center">
+               <div class="card h-100 justify-content-center bg-secondary text-white">
                   <div class="text-center">
-                     <img src="{{ avatar }}" class="img-thumbnail">
+                     <img src="{{ avatar }}" class="img-thumbnail m-4">
                      <form name="compte" method="POST" action="{{baseUrl}}/Profile/Supprimer/Compte_{{user}}">
-                        <button class="btn btn-secondary" type="submit">Suppression</button>
+                        <button class="btn btn-dark m-5" type="submit">Suppression</button>
                      </form>
                   </div>
                </div>

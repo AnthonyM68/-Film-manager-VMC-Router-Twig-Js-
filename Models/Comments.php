@@ -12,7 +12,7 @@ class Comments extends Model
    */
    public function getAllComments()
    {
-      $req = $this->pdo->prepare('SELECT * FROM comments');
+      $req = $this->pdo->prepare('SELECT * FROM comments ORDER BY `date` DESC');
       $req->execute();
 
       return $req->fetchAll();
@@ -23,7 +23,7 @@ class Comments extends Model
    */
    public function getOneComment($id_user)
    {
-      $req = $this->pdo->prepare('SELECT * FROM comments WHERE id_user= ?');
+      $req = $this->pdo->prepare('SELECT * FROM comments WHERE id_user= ? ORDER BY `date` DESC');
       $req->execute([$id_user]);
 
       return $req->fetchAll();
@@ -34,7 +34,7 @@ class Comments extends Model
    */
    public function searchAllCommById($id_user)
    {
-     $req = $this->pdo->prepare('SELECT * FROM comments WHERE id_user= ?');
+     $req = $this->pdo->prepare('SELECT * FROM comments WHERE id_user= ? ORDER BY `date` DESC');
      $req->execute([$id_user]);
      return $req->fetchAll();
    }
@@ -47,7 +47,7 @@ class Comments extends Model
       $instanceUsers = new Users();
       $user = $instanceUsers->getOneUser($pseudo);
       $id_user = $user['id_user'];
-      $req = $this->pdo->prepare('SELECT * FROM comments WHERE id_user = ?');
+      $req = $this->pdo->prepare('SELECT * FROM comments WHERE id_user = ? ORDER BY `date` DESC');
       $req->execute([$id_user]);
 
       return $req->fetchAll();
@@ -58,7 +58,7 @@ class Comments extends Model
   public function searchAllCommByTitleMovie($title)
   {
      
-     $req = $this->pdo->prepare('SELECT id_movie FROM movies WHERE title = ?');
+     $req = $this->pdo->prepare('SELECT id_movie FROM movies WHERE title = ? ORDER BY `date` DESC');
      $req->execute([$title]);
      return $req->fetchAll();
   }
@@ -123,12 +123,14 @@ class Comments extends Model
    */
    public function linkCommentByMovie($id)
    {
+
       $req = $this->pdo->prepare(
          'SELECT comments.*
          FROM movies, movie_comments, comments
          WHERE movies.id_movie = ?
          AND movies.id_movie = movie_comments.id_movie
-         AND comments.id_comment = movie_comments.id_comment');
+         AND comments.id_comment = movie_comments.id_comment
+         ORDER BY `date` DESC');
       $req->execute([$id]);
 
       return $req->fetchAll();

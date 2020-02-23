@@ -39,7 +39,6 @@ class ProfilsController extends Controller
          //$_POST['pseudo'] = $_SESSION['utilisateur'];
 
          $newPseudo = $_POST['pseudo'];
-
          $result = $instanceUsers->pseudoExist($newPseudo);
          if ($result === false) {
             $result = $instanceUsers->updatePseudo($newPseudo, $_SESSION['utilisateur']);
@@ -49,6 +48,9 @@ class ProfilsController extends Controller
                $alert = '<div class="alert alert-success text-center" id="alerte"><strong>Succès...</strong> Votre pseudo a bien été modifier!</div>';
             }
          } else if ($result['pseudo'] === $newPseudo) {
+            $alert = '<div class="alert alert-warning text-center" id="alerte"><strong>Erreur...</strong> Ce pseudo existe déjà!</div>';
+         } 
+         else  {
             $alert = '<div class="alert alert-warning text-center" id="alerte"><strong>Erreur...</strong> Ce pseudo existe déjà!</div>';
          }
       } else {
@@ -142,6 +144,7 @@ class ProfilsController extends Controller
    }
    public function sendMessage($slug = null)
    {
+      
       date_default_timezone_set('Europe/Paris');
       setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
       if ($slug == null) {$pseudo = "";} else {$pseudo = $slug;}
@@ -200,14 +203,10 @@ class ProfilsController extends Controller
          $id_user = $instanceUsers->getOneIdUser($_SESSION['utilisateur']);
 
          $result = $instanceComments->deleteAllCommMovieByUser($id_user['id_user']);
-         var_dump($result);
+         
          if($result === true){
             $result = $instanceProfils->delAllMessageByUser($_SESSION['utilisateur']);
-            var_dump($result);
-
          }
-
-
          //$result = $instanceUsers->deleteAccount($_SESSION['utilisateur']);
 
          if ($result === true) {
@@ -218,8 +217,6 @@ class ProfilsController extends Controller
       } else {
          $alert = null;
       }
-
-      
       $pageTwig = 'Profil/profil.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render(['slug' => 'compte', 'status' => $_SESSION['status'], 'user' => $_SESSION['utilisateur'], 'avatar' => $_SESSION['avatar'], 'alertMessage' => $_SESSION['receiveMessage'], 'alert' => $alert]);
