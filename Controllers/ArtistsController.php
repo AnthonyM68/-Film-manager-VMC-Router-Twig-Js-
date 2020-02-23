@@ -38,7 +38,6 @@ class ArtistsController extends Controller
       $template = $this->twig->load($pageTwig);
       echo $template->render([
          'artist' => $artist,
-         'movies' => $movies,
          'role' => $role,
          'status' => $_SESSION['status'],
          'alertMessage' => $_SESSION['receiveMessage']

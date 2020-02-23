@@ -4,46 +4,64 @@
 
 {% block body %}
 
-<div class="container">
-   <div class="row justify-content-md-center">
-   <form class="col-4 users-form" method="POST" action="{{baseUrl}}/Suggestion" enctype="multipart/form-data">
+   <div class="container">
+      <div class="row justify-content-md-center">
+         <form class="col-4 users-form" method="POST" action="{{baseUrl}}/Suggestion" enctype="multipart/form-data">
+            <div class="d-flex justify-content-center">
+               <h2>Suggestion</h1>
+            </div>      
+ 
 
-   <div class="d-flex justify-content-center">
-      <h2>Suggestion</h1>
-   </div>
-      <div class="form-group my-4">
-         <input type="text" class="form-control d-inline" name="pseudo" id="validationDefault01" placeholder="Pseudo or Nom">
-      </div>
+      
+         <div class="form-group my-4">
+            <input type="text" class="form-control d-inline" name="pseudo" id="validationDefault01" placeholder="Pseudo ou Nom *" value ="{{ name }}"
+            {% if erPseudo == "no" %} style="border-color: #FF2E63;" {% endif %}>
+         </div>
+      
+   
+         <div class="form-group my-4">
+            <input type="file" class="form-control-file input-file" name="zip_file[]" id="exampleFormControlFile1" multiple="multiple">
+            <small id="emailHelp" class="form-text" style="color: #FF2E63">{% if zip == "no" %} la taille du fichier sélectionné est trop grande ou vous n'avez pas rempli les espaces obligatoires {% endif %}</small>
+         </div>
 
-      <div class="form-group my-4">
-         <input type="file" class="form-control-file input-file" name="zip_file[]" id="exampleFormControlFile1" multiple="multiple">
-      </div>
+         <div class="form-group my-4">
+            <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="nom@example.com *" value ="{{ mail }}" {% if erEmail == "no" %} style="border-color: #FF2E63;" {% endif %}>
+            <small id="emailHelp" class="form-text " ></small>
+         </div>  
 
-      <div class="form-group my-4">
-         <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="nom@example.com">
-         <small id="emailHelp" class="form-text " style="color:#FF2E63">Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.</small>
-      </div>
 
-      <div class="form-group my-4">
-         <textarea class="form-control" name="text" placeholder="text" style="resize:none">
-         </textarea>
-      </div>
 
-      <button type="submit" name ="submit"class="btn btn-outline jati-colors-btn col" >Envoyer</button>
+         <div class="row">
+            <div class="col-md-12">
+               <div class="form-group my-4">
+                  <textarea class="form-control textarea" rows="5" name="text" id="Message" placeholder="Message *" {% if erText == "no" %} style="border-color: #FF2E63;" {% endif %}>{{ txtAre }}</textarea>
+               </div>
+            </div>
+         </div>         
+
+
+
+      {% if alertsEmail is empty %}
+         <button type="submit" name ="submit"class="btn btn-outline jati-colors-btn col">Envoyer</button>
+      {% elseif alertsEmail == 'yes' %}
+         <button type="submit" name ="submit"class="btn btn-outline bg-success col text-white">Merci ! <i class="fas fa-check"></i></button>        
+      {% endif %}
+         
 
       {% if  alertsEmail is empty %}  
-            
+         <small id="emailHelp" class="form-text text-muted mt-3">Champs obligatoires *</small>
       {% elseif alertsEmail == 'yes' %}
-         <div class="alert alert-success mt-4 d-flex" role="alert"><span class="mx-auto font-weight-bold">
-         Merci! Votre message s'est bien passé! </span></div> 
 
       {% elseif alertsEmail == 'no' %}  
          <div class="alert alert-danger mt-4 d-flex" role="alert"><span class="mx-auto font-weight-bold">
-         Votre message n'a pas été transmis, veuillez réessayer</span></div>  
+         Votre message n'a pas été transmis, veuillez réessayer</span></div>
+               
+      {% elseif alertsEmail == 'noText' %}
+         <h4 id="emailHelp" class="form-text text-danger font-weight-bold">Champs obligatoires *</h4>
+         <button type="submit" name ="submit"class="btn btn-outline jati-colors-btn col mt-3">Envoyer</i></button>
+      {% endif %}  
 
-      {% endif %}
-         
-   </form>
+      </form>
    </div>
 <div>  
 {% endblock %}

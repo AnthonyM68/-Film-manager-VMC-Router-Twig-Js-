@@ -120,7 +120,7 @@ class MoviesController extends ArtsController
       for($i = 0; $i < count($comments) ; $i++){
          //On récupère l'id_user de tous les commentaire
          $id_user = $comments[$i]['id_user'];
-         
+
          //On récupère le pseudo par l'id_user
          $user = $instanceUser->getOnePseudo($id_user);
          $mail = $instanceUser->getMailById($id_user);
@@ -131,7 +131,7 @@ class MoviesController extends ArtsController
          $avatar = $instanceUser->searchAvatar($id_user);
          //On ajoute au tableau une donnée, celle de l'avatar du dépositaire du commentaire
          $comments[$i]['avatar'] = $this->baseUrl . "/assets/avatar/" .$avatar['avatar'];
-         
+
       }
       //Défini la date local en europe pour un simple affichage de la date de dépôt du commentaire
       date_default_timezone_set('Europe/Paris');
@@ -154,8 +154,7 @@ class MoviesController extends ArtsController
       //Si l'utilisateur non identifié avait déjà déposer un commentaire...
       if(isset($_SESSION['tmpComment'])) {
          echo $template->render([
-            "movie"       => $movie,
-            /*"artists"      => $artists,*/
+            "movie"        => $movie,
             'infos'        => $infos,
             "comments"     => $comments,
             "user"         => $user,
@@ -166,20 +165,19 @@ class MoviesController extends ArtsController
             "tmpNote"      => $_SESSION['tmpNote'],
             "status"       => $_SESSION['status'],
             "userLogin"    => $_SESSION['utilisateur'],
-            'avatar'       => $_SESSION['avatar'],
+            //'avatar'       => $_SESSION['avatar'],
             'alertMessage' => $_SESSION['receiveMessage']]);
       //Si ce n'était pas le cas on rends a la vus d'autre paramètres...
       } else {
          echo $template->render([
             "movie"        => $movie,
-            /*"artists"      => $artists,*/
             'infos'        => $infos,
             "comments"     => $comments,
             "user"         => $user,
             "datedujour"   => strftime("%A %d %B %Y"),
             "status"       => $_SESSION['status'],
             "userLogin"    => $_SESSION['utilisateur'],
-            'avatar'       => $_SESSION['avatar'],
+            //'avatar'       => $_SESSION['avatar'],
             'alertMessage' => $_SESSION['receiveMessage']]);
       }
    }

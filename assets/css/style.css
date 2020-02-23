@@ -25,28 +25,6 @@
   color: orange;
   content: "\2605";
 }
-/*//////////////////////////////////////////ALERTE/////////////////////////////////////////////*/
-
-
-.myAlert-bottom{
-  position: fixed;
-  bottom: 5px;
-  left:2%;
-  width: 96%;
-}
-
-div.fullscreen {
-position: absolute;
-width:100%; 
-height:200px; 
-
-background-color: lightblue;
-}
-/*
-.alert{
-  display: none;
-}*/
-
 
 /*//////////////////////////////////////////ETOILES NOTES COMMENTAIRES/////////////////////////////////////////////*/
 
@@ -212,35 +190,42 @@ background-color: lightblue;
 }
 .alertMessage {
   position: absolute;
-  right:5px;
-  top:4px;
+  right:7px;
+  top:11px;
   color: #991c3b;
-  font-size:12px;
+  font-size:10px;
 }
 .message{
-  width:40px;
-  height: 40px;
+  width:55px;
+  height: 55px;
 }
 /*//////////////////////////////////////////STYLE SUR CHARGEMENT D'AVATAR/////////////////////////////////////////////*/
-.inputfile {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 1;
-  overflow: hidden;
-  position: absolute;
- z-index: -1;
-}
 
-.inputfile + label{
- padding: 0 7px;
- font-size: 0.9em;
- font-weight: 700;
- color: rgb(0, 0, 0);
- border: solid 1px;
- border-color: #949494;
- border-radius: 5px;
- /*background-color: white;*/
- /*display: inline-block;*/
+
+
+
+#c-avatar{
+  width:500px;
+}
+.inputfile-box {
+  position: relative;
+}
+.inputfile {
+  display: none;
+}
+.file-box {
+  display: block;
+  box-sizing: border-box;
+  padding:5px;
+}
+.file-button {
+  margin:5px;
+
+  padding:10px;
+}
+.upload_file_container input{
+  position:absolute;
+  cursor:pointer;
 }
 
 .inputfile:focus + label,
@@ -253,6 +238,7 @@ background-color: lightblue;
   font-size: 30px;
   color: #930031;
 }
+/*//////////////////////////////////////////ALERTES DYNAMIQUES/////////////////////////////////////////////*/
 
 
 .shadow-drop-2-center:hover {
@@ -417,4 +403,15 @@ main{
    color: #ff2e63;
    font-size: smaller;
    margin: 0;
+}
+
+.border-color{
+   border-bottom: 2px solid #ff2e63;
+}
+
+.list-color li:hover{
+   color: #ff2e63;
+}
+.textarea {
+   resize: none;
 }

@@ -3,6 +3,7 @@ const CheminComplet = document.location.href;
 const CheminRepertoire = CheminComplet.substring(0, CheminComplet.lastIndexOf("/"));
 
 
+
 let tabButton = [];
 let btn = []
 let tabcontent = document.getElementsByClassName("name");
@@ -17,26 +18,23 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
       let id = tabButton[i][j].id;
       document.getElementById(id).addEventListener("click", function () {
          let id_elem = id;
-         console.log(id_elem);
          let btn_name = id_elem.split(i + 1);
-         console.log(btn_name[0]);
-
          switch (btn_name[0]) {
             case "btnmodify":
                i++;
                //récupère le commentaire auquel appartient l'action sur le bouton modifier
-               let pComment = document.getElementById("pComment" +i);
+               let pComment = document.getElementById("pComment" + i);
                let tmp = pComment.innerText;
                //On récupère le container du commentaire lié
                let controlText = document.getElementById("controlComment" + i);
                //On récupère les datas liés au commentaire
                let dataBase = controlText.dataset.base;
                let dataIdMovie = controlText.dataset.idmovie;
-               
+
                let dataIdComment = controlText.dataset.idcomment;
-               
+
                //On ré-injecte le formulaire de soumission 
-               controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase +'/Commentaires/Modifier/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">'+ tmp + '</textarea><div id="contenaireBtn' + i + '" class="col-12 d-flex justify-content-between name"><button type="submit" id="btnmodify' + i  + '" class="btn btn-secondary btn-sm mb-2">Publier</button><button type="submit" id="btndelete' + i  + '" class="btn btn-secondary btn-sm mb-2">Supprimer</button><button type="submit" id="btncontact' + i + '" class="btn btn-secondary btn-sm mb-2">Contacter</button></form>';
+               controlText.innerHTML = '<form method="POST" id="comment" action="' + dataBase + '/Commentaires/Modifier/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control" name="controlText" id="ControlText" rows="3">' + tmp + '</textarea><div id="contenaireBtn' + i + '" class="col-12 d-flex justify-content-between name"><button type="submit" id="btnmodify' + i + '" class="btn btn-secondary btn-sm mb-2">Publier</button><button type="submit" id="btndelete' + i + '" class="btn btn-secondary btn-sm mb-2">Supprimer</button><button type="submit" id="btncontact' + i + '" class="btn btn-secondary btn-sm mb-2">Contacter</button></form>';
                break;
 
             case "btncontact":
@@ -44,8 +42,6 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
                let btncontact = document.getElementById("btncontact" + i);
                let user = btncontact.dataset.user;
                let mail = btncontact.dataset.mail;
-               console.log(user);
-               console.log(mail);
                redirectMail(user, mail);
                break;
          }
@@ -53,9 +49,8 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
    }
 }
 //Ouvre le gestionnaire de l'email
-function redirectMail(user, mail)
-{
-    window.location.href = "mailto:"+mail+"?subject=Notre site Allo_jati souhaite correspondre avec vous&body=Bonjour, " + user;
+function redirectMail(user, mail) {
+   window.location.href = "mailto:" + mail + "?subject=Notre site Allo_jati souhaite correspondre avec vous&body=Bonjour, " + user;
 }
 //Si nous somme bien sur la page Films
 if (CheminRepertoire === "http://localhost/allo_jati/Films") {
@@ -101,10 +96,21 @@ if (CheminRepertoire === "http://localhost/allo_jati/Films") {
       });
    }
 }
-function myAlertBottom(){
-   $(".myAlert-bottom").show();
-   setTimeout(function(){
-     $(".myAlert-bottom").hide(); 
-   }, 2000);
- }
 
+(function () {
+   alerte = document.getElementById('alerte');
+   test = document.getElementById('alertDisplay');
+   if (alerte != null) {
+      $("#alerte").fadeTo(3000, 500).slideUp(500, function () {
+         $("#alerte").slideUp(500);
+         test.innerHTML = "";
+
+      });
+   }
+})()
+
+function uploadFile(target) {
+   file = "<b>Votre image:</b><br>" + target.files[0].name;
+   document.getElementById("file-name").innerHTML = file;
+}
+$('.collapse').collapse();

@@ -4,32 +4,28 @@
 
 <div class="container-fluid d-flex justify-content-start">
    <div class="row">
-      <aside id="navlateral" class="col-12 col-md-12 p-0 bg-dark">
+      <aside id="navlateral" class="col-12 col-md-12 p-0 pt-lg-3 pl-lg-0 bg-dark">
          <div class="text-center text-white bg-dark font-weight-bold">GESTION PROFILE</div>
-         <div class="text-center text-white bg-dark font-weight-bold">
-
-
-            <img src="{{ avatar }}" class="img-thumbnail"><br>{{user}}</div>
-
+         <div class="text-center text-white bg-dark font-weight-bold pt-lg-3 pl-lg-0">
+            <img src="{{ avatar }}" class="img-thumbnail"><br>
+            <div class="pt-lg-2 pl-lg-0">{{user}}</div>
+         </div>
          <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
             <div class="collapse navbar-collapse">
                <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
-
-                  <li class="nav-item">Connexion
+                  <li class="nav-item">
+                     <span class="border-color text-white font-weight-bold m-0 p-1">Connection</span>
                      <ul>
                         <li><a class="nav-link pl-0" href="{{baseUrl}}/Profile/Modifier/Pseudo">Pseudo</a></li>
-
-
-                        {% set avatar = 'Avatar' %}
                         <li><a class="nav-link pl-0" href="{{baseUrl}}/Profile/Modifier/Avatar">Avatar</a>
                         </li>
-
                         {% set mdp = 'Mdp' %}
                         <li><a class="nav-link pl-0" href="{{baseUrl}}/Profile/Modifier/Mdp">Mot de passe </a>
                         </li>
                      </ul>
                   </li>
-                  <li class="nav-item">Messagerie
+                  <li class="nav-item">
+                     <span class="border-color text-white font-weight-bold m-0 p-1">Messagerie</span>
                      <ul>
                         {% set send = 'Envoyer' %}
                         <li><a class="nav-link pl-0" href="{{baseUrl}}/Profile/Envoyer">Envoyer</a>
@@ -40,10 +36,12 @@
                               href="{{baseUrl}}/Profile/Modifier/Recevoir_{{receive}}">Réception</a></li>
                      </ul>
                   </li>
-                  <li class="nav-item">Suppresion
+                  <li class="nav-item">
+                     <span class="border-color text-white font-weight-bold m-0 p-1">Suppresion</span>
                      <ul>
                         {% set account = 'Compte' %}
-                        <li><a class="nav-link pl-0" href="{{baseUrl}}/Profile/Supprimer/Compte">Compte</a>
+                        <li class="nav-item">
+                           <a class="nav-link pl-0" href="{{baseUrl}}/Profile/Supprimer/Compte">Compte</a>
                         </li>
                      </ul>
                   </li>
@@ -52,240 +50,206 @@
          </nav>
       </aside>
    </div>
-
-   <div class="col justify-content-end">
-      <div class="col d-flex justify-content-center pt-5 pb-5">
-
-         {% if (slug == 'pseudo') %}
-         <form method="POST" action="{{baseUrl}}/Profile/Change/Pseudo">
-            <div class="form-row">
-               <div class="col-md-12 mb-3">
-                  <label for="pseudo">Changer votre Pseudonyme</label>
-                  <input type="text" class="form-control" name="pseudo" placeholder="{{user}}">
+   {% if (slug == 'pseudo') %}
+   <div class="container">
+      <div class="container h-100">
+         <div class="row align-items-center h-100">
+            <div class="col-12">
+               <div id="alerteDisplay">
+                  {{ alert | striptags ('<div>') | raw }}
+               </div>
+               <div class="card h-100 justify-content-center">
+                  <div class="text-center">
+                     <img src="{{ avatar }}" class="img-thumbnail">
+                     <div class="pt-lg-2 pl-lg-0">{{user}}</div>
+                     <form method="POST" action="{{baseUrl}}/Profile/Change/Pseudo">
+                        <div class="col-md-12 mb-3">
+                           <label for="pseudo">Changez votre Pseudonyme</label>
+                           <input type="text" class="form-control text-center" name="pseudo" placeholder="{{user}}">
+                        </div>
+                        <button class="btn btn-secondary" type="submit">Modifier</button>
+                     </form>
+                  </div>
                </div>
             </div>
-            <div class="row justify-content-center">
-               <button class="btn btn-secondary" type="submit">Modifier</button>
-            </div>
+         </div>
       </div>
-      <div class="row justify-content-center p-2">
-         {% if (alert == 'warning') %}
-         <div class="alert alert-warning" role="alert">
-            <p class="mb-0">Veuillez saisir un nouveau pseudo!</p>
-         </div>
-         {% elseif (alert == 'good') %}
-         <div class="alert alert-success" role="alert">
-            <p class="mb-0">Pseudo bien modifié!</p>
-         </div>
-         {% elseif (alert == 'empty') %}
-         <div class="alert alert-danger" role="alert">
-            <p class="mb-0">Pseudo déjà utiliser, veuillez choisir un autre!</p>
-         </div>
-         {% endif %}
-
-         </form>
-         {% endif %}
-
-
-         {% if (slug == 'avatar') %}
-         <form method="POST" enctype="multipart/form-data" action="{{baseUrl}}/Profile/Modifier/Avatar">
-
-            <div>
-               <input type="file" name="avatarUpload" id="file" class="inputfile" />
-               <label for="file">Photo de profile</label>
+   </div>
+   {% endif %}
+   {% if (slug == 'avatar') %}
+   <div class="container">
+      <div class="container h-100">
+         <div class="row align-items-center h-100">
+            <div class="col-12">
+               <div id="alerteDisplay">
+                  {{ alert | striptags ('<div>') | raw }}
+               </div>
+               <div class="card h-100 justify-content-center">
+                  <div class="text-center">
+                     <img src="{{ avatar }}" class="img-thumbnail">
+                     <form method="POST" enctype="multipart/form-data" action="{{baseUrl}}/Profile/Modifier/Avatar">
+                        <input type="file" name="avatarUpload" id="file" class="inputfile" onchange='uploadFile(this)'>
+                        <div class="inputfile-box text-center">
+                           <input type="file" id="avatarUpload" class="inputfile" onchange='uploadFile(this)'>
+                           <label for="file" class="justify-content-center">
+                              <span>
+                                 <i class="fa fa-upload btn btn-secondary" style="margin:25px;"> Avatar</i></span><br>
+                              <span><br>Formats acceptés:<br>bmp, jpg, jpeg, png, gif, tiff</span><b></span><br><br>
+                                 <button type="submit" class="btn btn-secondary">Modifier</button>
+                                 <span id="file-name" class="file-box"></span>
+                           </label>
+                        </div>
+                     </form>
+                  </div>
+               </div>
             </div>
-
-            <div class="row justify-content-center">
-               <button class="btn btn-secondary" type="submit">Modifier</button>
-            </div>
+         </div>
       </div>
-
-      <div class="row justify-content-center p-2">
-
-         {% if (alert == 'size') %}
-         <div class="alert alert-warning" role="alert">
-            <p class="mb-0">La taille de votre avatar est trop importante!</p>
-         </div>
-         {% elseif (alert == 'format') %}
-         <div class="alert alert-warning" role="alert">
-            <p class="mb-0">Le format de votre avatar n'est pas accepté!</p>
-         </div>
-         {% elseif (alert == 'empty') %}
-         <div class="alert alert-danger" role="alert">
-            <p class="mb-0">Veuillez indiqué un fichier!</p>
-         </div>
-         {% elseif (alert == 'bdd') %}
-         <div class="alert alert-warning" role="alert">
-            <p class="mb-0">Une erreur de connexion est servenu!</p>
-         </div>
-         {% elseif (alert == 'good') %}
-         <div class="alert alert-success" role="alert">
-            <p class="mb-0">Avatar bien modifié!</p>
-         </div>
-         {% endif %}
-
-
-         </form>
-         {% endif %}
-
-
-         {% if (slug == 'mdp') %}
-         <form name="mdp" method="POST" action="{{baseUrl}}/Profile/Modifier/Mdp">
-            <div class="form-row">
-               <div class="col-md-12 mb-3">
-                  <label for="mdp">Changer votre Mot de Passe</label>
-                  <input type="text" class="form-control" name="mdp" placeholder="Nouveau mot de passe">
+   </div>
+   {% endif %}
+   {% if (slug == 'mdp') %}
+   <div class="container">
+      <div class="container h-100">
+         <div class="row align-items-center h-100">
+            <div class="col-12">
+               <div id="alerteDisplay">
+                  {{ alert | striptags ('<div>') | raw }}
                </div>
-            </div>
-            <div class="row justify-content-center">
-               <button class="btn btn-secondary" type="submit">Modifier</button>
-            </div>
-            <div class="row justify-content-center p-2">
-
-               {% if (alert == 'empty') %}
-               <div class="alert alert-danger" role="alert">
-                  <p class="mb-0">Veuillez indiqué un nouveau mot de passe!</p>
-               </div>
-               {% elseif (alert == 'warning') %}
-               <div class="alert alert-warning" role="alert">
-                  <p class="mb-0">Un problème de connection est survenu! Recommencez...</p>
-               </div>
-               {% elseif (alert == 'good') %}
-               <div class="alert alert-success" role="alert">
-                  <p class="mb-0">Votre mot de passe a bien été enregistré!</p>
-               </div>
-               {% endif %}
-            </div>
-         </form>
-
-         {% endif %}
-         {% if (slug == 'Envoyer') %}
-         <div class="container">
-            <form name="send" method="POST" action="{{baseUrl}}/Profile/Envoyer_{{pseudo}}">
-               <div class="form-row">
-                  <div class="p-2 container">
-                     <input class="form-control" name="pseudoMessage" id="pseudoMessage" rows="1"
-                        placeholder="Envoyer a: Pseudo?" value=""></div>
-                  <div class="p-2 container">
-                     <textarea class="form-control" name="title" id="tilteMessage" rows="1" placeholder="Titre"
-                        value=""></textarea>
-                  </div>
-                  <div class="p-2 container">
-                     <textarea class="form-control" name="message" id="Message" rows="3" placeholder="Message"
-                        value=""></textarea>
+               <div class="card h-100 justify-content-center">
+                  <div class="text-center">
+                     <img src="{{ avatar }}" class="img-thumbnail">
+                     <form name="mdp" method="POST" action="{{baseUrl}}/Profile/Modifier/Mdp">
+                        <label for="mdp">Changez votre Mot de Passe</label>
+                        <input type="text" class="form-control text-center" name="mdp"
+                           placeholder="Nouveau mot de passe">
+                        <button class="btn btn-secondary" type="submit">Modifier</button>
+                     </form>
                   </div>
                </div>
-               <div class="row justify-content-center">
-
-                  <button class="btn btn-secondary" type="submit">Envoyer</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   {% endif %}
+   {% if (slug == 'Envoyer') %}
+   <div class="container">
+      <div class="container h-100">
+         <div class="row align-items-center h-100">
+            <div class="col-12">
+               <div id="alerteDisplay">
+                  {{ alert | striptags ('<div>') | raw }}
                </div>
-               <div class="row justify-content-center p-2">
-
-
-
-                  {#} {% if (alert == 'error') %}
-                  <div class="alert alert-danger" role="alert">
-                     <p class="mb-0">Votre message n'a pas pu être transmis!</p>
+               <div class="card h-100 justify-content-center bg-secondary text-white">
+                  <div class="text-center">
+                     <img src="{{ avatar }}" class="img-thumbnail m-2">
+                     <div class="m-4">{{user}}</div>
+                     <form id="envoyer" name="send" method="POST" action="{{baseUrl}}/Profile/Envoyer_{{pseudo}}" class="bg-secondary text-white">
+                        <input class="form-control text-center bg-dark text-white" name="pseudoMessage" id="pseudoMessage" rows="1"
+                           placeholder="Envoyer à : Pseudo ?">
+                        <input class="form-control text-center card bg-dark text-white" name="pseudoMessage" id="pseudoMessage" rows="1"
+                           placeholder="Expéditeur : {{user}}" disabled="disabled" value"{{user}}">
+                        <textarea class="form-control text-center bg-dark text-white" name="title" id="tilteMessage" rows="1"
+                           placeholder="Titre"></textarea>
+                        <textarea class="form-control text-center card bg-dark text-white" name="message" id="Message" rows="3"
+                           placeholder="Message"></textarea>
+                        <input type="hidden" name="datedujour" id="datedujour" value="{{ datedujour }}">
+                        <span>{{ datedujour }}</span><br>
+                        <button class="btn btn-dark m-5" type="submit">Envoyer</button>
+                     </form>
                   </div>
-                  {% elseif (alert == 'good') %}
-                  <div class="alert alert-success" role="alert">
-                     <p class="mb-0">Votre message a bien été envoyer!</p>
-                  </div  {% endif %}>
-
-                  <div class="fullscreen">
-
-                     <div class="col-sm-6">
-                        <button class="form-control" onclick="myAlertBottom()">show alert bottom</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   {% endif %}
+   {% if (slug == 'recevoir') %}
+   <div class="container h-100">
+      <div class="row align-items-center h-100">
+         <div class="col-12 p-5">
+            <div class="card h-100 justify-content-center">
+               <div class="text-center"><h2>MESSAGERIE</h2></div>
+               
+               {% for mess in message %}
+               {#} {{ dump(mess) }}  #}
+               <div class="col-12">
+                  <div id="alerteDisplay">
+                     {{ alert | striptags ('<div>') | raw }}
+                  </div>
+                  <div class="accordion" id="accordionExample">
+                     <div class="card bg-dark text-white">
+                        <div class="row">
+                           <div class="col">
+                              <div class="card bg-secondary text-white">
+                                 <h4 type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}"
+                                    aria-expanded="true" aria-controls="collapse{{ loop.index }}" class="card-header">
+                                    {{mess.title}} <small class="pull-right text-white">Expéditeur:{{mess.expeditor }}</small></h4>
+                              </div>
+                           </div>
+                        </div>
+                        <div id="collapse{{ loop.index }}" class="collapse hide"
+                           aria-labelledby="heading{{ loop.index }}" data-parent="#accordionExample">
+                           <div class="card-body">
+                              {{mess.message}}
+                           </div>
+                           <div class="row justify-content-center">
+                              <button class="btn btn-link-secondary font-weight-bold text-secondary border m-2"
+                                 type="button" onclick="location.href='{{baseUrl}}/Profile/Envoyer_{{mess.expeditor}}'">
+                                 Répondre
+                              </button>
+                              <button class="btn btn-link-secondary font-weight-bold text-secondary border m-2"
+                                 type="button"
+                                 onclick="location.href='{{baseUrl}}/Profile/Message/Supprimer_{{mess.id_message}}'">
+                                 Supprimé
+                              </button>
+                           </div>
+                        </div>
+                        <div class="card-footer text-muted">
+                           Date de réception:
+                        </div>
                      </div>
                   </div>
-
-                  <div class="myAlert-bottom alert alert-danger">
-                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                     <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
-                  </div>
                </div>
-
-               <script>
-                  function myAlertBottom() {
-                     $(".myAlert-bottom").show();
-                     setTimeout(function () {
-                        $(".myAlert-bottom").hide();
-                     }, 2000);
-                  }
-               </script>#}
-
-
-
-         </div>
-         </form>
-      </div>
-
-
-      {% endif %}
-      {% if (slug == 'recevoir') %}
-      <h2>Messagerie</h2>
-   </div>
-   {% for mess in message %}
-   <div class="container">
-      <div class="accordion" id="accordionExample">
-         <div class="card">
-            <div class="card-header" id="heading{{ loop.index }}">
-               <h5 class="mb-0">
-                  <div class="row justify-content-center">
-                     <button class="btn btn-link-secondary font-weight-bold" type="button" data-toggle="collapse"
-                        data-target="#collapse{{ loop.index }}" aria-expanded="true"
-                        aria-controls="collapse{{ loop.index }}">
-                        <h5>{{mess.title}}</h5>
-                     </button>
-                  </div>
-               </h5>
-            </div>
-            <div id="collapse{{ loop.index }}" class="collapse hide" aria-labelledby="heading{{ loop.index }}"
-               data-parent="#accordionExample">
-               <div class="card-body">
-                  {{mess.message}}
-               </div>
-               <div class="row justify-content-center">
-                  <button class="btn btn-link-secondary font-weight-bold text-secondary border" type="button"
-                     onclick="location.href='{{baseUrl}}/Profile/Envoyer_{{mess.expeditor}}'">
-                     Répondre
-                  </button>
-                  <button class="btn btn-link-secondary font-weight-bold text-secondary border" type="button"
-                     onclick="location.href='{{baseUrl}}/Profile/Message/Supprimer_{{mess.id_message}}'">
-                     Supprimé
-                  </button>
-               </div>
+               {% endfor %}
             </div>
          </div>
       </div>
-      <script>
-         $('.collapse').collapse()
-      </script>
    </div>
-   {% endfor %}
+
    {% endif %}
    {% if (slug == 'compte') %}
-   <form name="compte" method="POST" action="{{baseUrl}}/Profile/Supprimer/Compte_{{user}}">
-
-      <div class="row justify-content-center">
-         <button class="btn btn-secondary" type="submit">Suppression</button>
-      </div>
-      <div class="row justify-content-center p-2">
-
-         {% if (alert == 'error') %}
-         <div class="alert alert-danger" role="alert">
-            <p class="mb-0">Un erreur est survenu!</p>
+   <div class="container">
+      <div class="container h-100">
+         <div class="row align-items-center h-100">
+            <div class="col-12">
+               <div id="alerteDisplay">
+                  {{ alert | striptags ('<div>') | raw }}
+               </div>
+               <div class="card h-100 justify-content-center">
+                  <div class="text-center">
+                     <img src="{{ avatar }}" class="img-thumbnail">
+                     <form name="compte" method="POST" action="{{baseUrl}}/Profile/Supprimer/Compte_{{user}}">
+                        <button class="btn btn-secondary" type="submit">Suppression</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
          </div>
-         {% elseif (alert == 'good') %}
-         <div class="alert alert-success" role="alert">
-            <p class="mb-0">Votre compte viens d'être supprimé!</p>
-         </div>
       </div>
-   </form>
-
-   {% endif %}
+   </div>
    {% endif %}
 </div>
-
-
 {% endblock %}
+{#
+    <div class="container h-100">
+         <div class="row align-items-center h-100" style="border:1px solid red">
+            <div class="col-12">
+               <div class="card h-100 justify-content-center" style="border:1px solid red">
+                  <div class="text-center">
+                     Le contenu est centré verticalement.
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      #}

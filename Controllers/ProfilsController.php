@@ -34,22 +34,25 @@ class ProfilsController extends Controller
    public function changePseudo()
    {
       $instanceUsers = new Users();
-      if (isset($_POST) && empty($_POST['pseudo'])) {
-         $_POST['pseudo'] = $_SESSION['utilisateur'];
-         $alert = 'warning';
-      } else {
+      if (isset($_POST) && !empty($_POST['pseudo'])) {
+
+         //$_POST['pseudo'] = $_SESSION['utilisateur'];
+
          $newPseudo = $_POST['pseudo'];
+
          $result = $instanceUsers->pseudoExist($newPseudo);
          if ($result === false) {
             $result = $instanceUsers->updatePseudo($newPseudo, $_SESSION['utilisateur']);
             if ($result === true) {
                $_SESSION['utilisateur'] = $newPseudo;
                $this->searchAvatar();
-               $alert = 'good';
+               $alert = '<div class="alert alert-success text-center" id="alerte"><strong>Succès...</strong> Votre pseudo a bien été modifier!</div>';
             }
          } else if ($result['pseudo'] === $newPseudo) {
-            $alert = 'empty';
+            $alert = '<div class="alert alert-warning text-center" id="alerte"><strong>Erreur...</strong> Ce pseudo existe déjà!</div>';
          }
+      } else {
+         $alert = '<div class="alert alert-danger text-center" id="alerte"><strong>Erreur...</strong> Le champ est vide!</div>';
       }
       $pageTwig = 'Profil/profil.html.twig';
       $template = $this->twig->load($pageTwig);
@@ -64,9 +67,8 @@ class ProfilsController extends Controller
    }
    public function changeAvatar()
    {
+
       $instanceUsers = new Users();
-
-
       if (isset($_FILES['avatarUpload']) && $_FILES['avatarUpload']['error'] == 0) {
          if ($_FILES['avatarUpload']['size'] <= 2000000) {
 
@@ -87,27 +89,27 @@ class ProfilsController extends Controller
                   $actualAvatar = $instanceUsers->searchAvatar($id_user['id_user']);
                   $actualAvatar = $actualAvatar['avatar'];
                   $ifExist = "assets/avatar/$actualAvatar";
-                  if ($ifExist && $actualAvatar != "jatilogo.png") {
+                  if (file_exists($ifExist) && $actualAvatar != "jatilogo.png") {
                      unlink($ifExist);
                   }
                   $result = $instanceUsers->modifyAvatar($fileNameNew, $_SESSION['utilisateur']);
                   if ($result === true) {
                      $_SESSION['avatar'] = "$this->baseUrl/assets/avatar/$fileNameNew";
-                     $alert = 'good';
+                     $alert = '<div class="alert alert-success text-center" id="alerte"><strong>Succès...</strong> Avatar bien modifié!</div>';
                   } else {
-                     $alert = "bdd";
+                     $alert = '<div class="alert alert-warning text-center" id="alerte"><strong>Erreur...</strong> Erreur de connection avec la base données</div>';
                   }
                } else {
-                  $alert = 'move';
+                  $alert = '<div class="alert alert-danger text-center" id="alerte"><strong>Erreur...</strong> Votre fichier n\'a pas été déplacer sur le serveur</div>';
                }
             } else {
-               $alert = 'format';
+               $alert = '<div class="alert alert-warning text-center" id="alerte"><strong>Erreur...</strong> Votre fichier n\'est pas au bon format</div>';
             }
          } else {
-            $alert = 'size';
+            $alert = '<div class="alert alert-warning text-center" id="alerte"><strong>Erreur...</strong> Votre fichier est de tailler trop importante</div>';
          }
       } else {
-         $alert = 'empty';
+         $alert = '<div class="alert alert-danger text-center" id="alerte"><strong>Erreur...</strong> Veuillez indiqué l\'emplacement de votre fichier</div>';
       }
       $pageTwig = 'Profil/profil.html.twig';
       $template = $this->twig->load($pageTwig);
@@ -127,12 +129,12 @@ class ProfilsController extends Controller
          $hashMdp = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
          $result = $instanceUsers->updateMdp($_SESSION['utilisateur'], $hashMdp);
          if ($result === true) {
-            $alert = 'good';
+            $alert = '<div class="alert alert-success text-center" id="alerte"><strong>Succès...</strong> Votre mot de passe a bien été modifié</div>';
          } else {
-            $alert = 'warning';
+            $alert = '<div class="alert alert-warning text-center" id="alerte"><strong>Erreur...</strong> Erreur de connection avec la base de données</div>';
          }
       } else {
-         $alert = 'empty';
+         $alert = '<div class="alert alert-danger text-center" id="alerte"><strong>Erreur...</strong> Veuillez indiqué votre nouveau mote de passe</div>';
       }
       $pageTwig = 'Profil/profil.html.twig';
       $template = $this->twig->load($pageTwig);
@@ -140,24 +142,22 @@ class ProfilsController extends Controller
    }
    public function sendMessage($slug = null)
    {
-
-      if ($slug == null) {
-         $pseudo = "";
-      } else {
-         $pseudo = $slug;
-      }
+      date_default_timezone_set('Europe/Paris');
+      setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
+      if ($slug == null) {$pseudo = "";} else {$pseudo = $slug;}
       $pageTwig = 'Profil/profil.html.twig';
       $template = $this->twig->load($pageTwig);
-      echo $template->render(['slug' => 'Envoyer', 'status' => $_SESSION['status'], 'user' => $_SESSION['utilisateur'], 'avatar' => $_SESSION['avatar'], 'pseudo' => $pseudo, 'alertMessage' => $_SESSION['receiveMessage']]);
+
+      echo $template->render(['slug' => 'Envoyer', 'status' => $_SESSION['status'], 'user' => $_SESSION['utilisateur'], 'avatar' => $_SESSION['avatar'], 'pseudo' => $pseudo, 'alertMessage' => $_SESSION['receiveMessage'], "datedujour" => strftime("%A %d %B %Y"),]);
    }
    public function sendMessageToUser($slug = null)
    {
       if (isset($_POST) && !empty($_POST['pseudoMessage']) && !empty($_POST['title']) && !empty($_POST['message'])) {
          $slug = $_POST['pseudoMessage'];
          $this->model->sendMessage($_SESSION['utilisateur'], $slug, $_POST['title'], $_POST['message']);
-         $alert = 'good';
+         $alert = '<div class="alert alert-success text-center" id="alerte"><strong>Succès</strong> Votre message a bien été envoyer!</div>';
       } else {
-         $alert = 'error';
+         $alert = '<div class="alert alert-warning text-center" id="alerte"><strong>Erreur!</strong> Veuillez vérifier le Destinataire</div>';
       }
       $pageTwig = 'Profil/profil.html.twig';
       $template = $this->twig->load($pageTwig);
