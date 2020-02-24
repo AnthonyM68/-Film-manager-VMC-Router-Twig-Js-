@@ -3,9 +3,9 @@
 {% block title %}Admin{% endblock %}
 
 {% block body %}
-<div class="container-fluid d-flex justify-content-start">
-   <div class="row">
-      <aside id="navlateral" class="col-11 col-md-11 pt-lg-5 pl-lg-0 bg-dark">
+<div class="container-fluid d-flex justify-content-start px-0">
+   <div class="bg-dark">
+      <aside id="navlateral" class="pt-lg-5 pl-lg-0 bg-dark">
          <div class="text-center text-white bg-dark font-weight-bold ">ADMINISTRATEUR</div>
          <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
             <div class="collapse navbar-collapse">
@@ -72,12 +72,17 @@
    </div>
 
 
-   <div class="col d-flex justify-content-center">
+   <div class="col d-flex justify-content-center px-0">
 
       <!-- Listing des Utilisateurs -->
       {% if (slug == 'Liste_Utilisateurs') %}
-      <div id="utilisateurs">
+      <div id="utilisateurs" class="table-utilisateurs">
          <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+               <tr>
+                  <th colspan="6" class="text-center"><h3 class="font-weight-bold text-uppercase text-dark">Listes des utilisateurs</h3></th>
+               </tr>
+            </thead>
             <thead class="thead-dark">
                <tr>
                   <th scope="col"># ID</th>
@@ -110,6 +115,11 @@
       {% if (slug == 'Liste_Films') %}
       <div id="films">
          <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+               <tr>
+                  <th colspan="7" class="text-center"><h3 class="font-weight-bold text-uppercase text-dark">Listes des films</h3></th>
+               </tr>
+            </thead>
             <thead class="thead-dark">
                <tr>
                   <th scope="col"># ID</th>
@@ -142,16 +152,22 @@
 
       <!-- Listing Artistes -->
       {% if (slug == 'Liste_Artistes') %}
-      <div id="artistes">
+      <div class="table-responsive">
          <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
+            <thead class="thead-light">
                <tr>
+                  <th colspan="7" class="text-center"><h3 class="font-weight-bold text-uppercase text-dark">Liste des artistes</h3></th>
+               </tr>
+            </thead>
+
+            <thead class="thead-dark">
+               </tr>               
                   <th scope="col"># ID</th>
                   <th scope="col">Nom</th>
                   <th scope="col">Prénom</th>
                   <th scope="col">Date de naissance</th>
                   <th scope="col">Biographie</th>
-                  <th scope="col">Photo</th>
+                  <th  width="30px" scope="col">Photo</th>
                   <th scope="col">Rôle</th>
                </tr>
             </thead>
@@ -164,7 +180,7 @@
                   <td>{{artists.last_name}}</td>
                   <td>{{artists.birth_day | date("d/m/Y") }}</td>
                   <td>{{artists.bio}}</td>
-                  <td>{{artists.picture}}</td>
+                  <td><img src="{{artists.picture }}" width="100px" height="120px"></td>
                   <td>{{artists.role}}</td>
                </tr>
                {% endfor %}
@@ -177,6 +193,11 @@
       <!-- Tous les commentaires -->
       {% if (slug == 'Tous') %}
       <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+               <tr>
+                  <th colspan="7" class="text-center"><h3 class="font-weight-bold text-uppercase text-dark">Listes des commentaires</h3></th>
+               </tr>
+            </thead>
          <thead class="thead-dark">
             <tr>
                <th scope="col"># ID Commentaire</th>
@@ -197,7 +218,7 @@
                <td>{{comment.content}}</td>
                <td>{{comment.note}}</td>
                <td>{{comment.date}}</td>
-               <td><a href="{{baseUrl}}/Admin/EffacerCommentaire_{{comment.id_comment}}">Supprimer</a></td>
+               <td class="text-center"><a href="{{baseUrl}}/Admin/EffacerCommentaire_{{comment.id_comment}}"><i class="far fa-trash-alt" style="font-size:250%;color:red" ></i></a>Supprimer</td>
             </tr>
             {% endfor %}
          </tbody>
@@ -282,9 +303,12 @@
 
       <!-- Edition Films -->
       {% if (slug == 'Ajout_Film') %}
-      <div class="d-flex justify-content pt-5 pb-5">
-         <form name="addMovie" method="POST" action="{{baseUrl}}/Admin/Ajout_Film/Add">
-            <div class="form-row">
+      <div class="d-flex justify-content pt-5 ">
+      
+         <form name="addMovie" method="POST" action="{{baseUrl}}/Admin/Ajout_Film/Add" class="admin-form">
+            <h2 class="titleFormAdmin">Ajouter un film</h2>
+            
+            <div class="form-row form-row-admin">
                <div class="col-md-4 mb-3">
                   <input type="text" class="form-control" value="{{title}}" name="title" placeholder="Titre">
                </div>
@@ -300,7 +324,7 @@
                </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row form-row-admin">
                <div class="col-md-6 mb-3">
                   <input type="text" class="form-control" value="{{picture}}" name="picture" placeholder="Affiche (URL)">
                </div>
@@ -311,7 +335,7 @@
                      <option value="" selected disabled>--Style--</option>
                      <option value="Action" {% if style == "Action" %}selected{% endif %}>Action</option>
                      <option value="Animation" {% if style == "Animation" %}selected{% endif %}>Animation</option>
-                     <option value="Catasrophe" {% if style == "Catasrophe" %}selected{% endif %}>Catasrophe</option>
+                     <option value="Catastrophe" {% if style == "Catastrophe" %}selected{% endif %}>Catastrophe</option>
                      <option value="Comédie" {% if style == "Comédie" %}selected{% endif %}>Comédie</option>
                      <option value="Dramatique" {% if style == "Dramatique" %}selected{% endif %}>Dramatique</option>
                      <option value="Documentaire" {% if style == "Documentaire" %}selected{% endif %}>Documentaire</option>
@@ -323,13 +347,13 @@
                </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row form-row-admin">
                <div class="col-md-12 mb-3">
                   <input type="text" class="form-control" value="{{trailer}}" name="trailer" placeholder="Bande-Annonce (YouTube : Cliquer sur Partager / Intégrer / https://www.youtube.com/embed)">
                </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row form-row-admin">
                <div class="col-md-12 mb-3">
                   <textarea class="form-control" name="resume" placeholder="Résumé" rows="3">{{resume}}</textarea>
                </div>
@@ -338,7 +362,7 @@
             <div class="">
                <p class="alert-warning text-center">{{info}}</p>
                <p class="text-success">{{success}}</p>
-               <p class="text-danger">{{error}}</p>
+               <p class="text-danger error-form">{{error}}</p>
             </div>
 
             <div class="row justify-content-center">
@@ -352,8 +376,9 @@
       <!-- Edition Artistes -->
       {% if (slug == 'Ajout_Artiste') %}
       <div class="d-flex justify-content pt-5 pb-5">
-         <form name="addArtist" method="POST" action="{{baseUrl}}/Admin/Ajout_Artiste/Add">
-            <div class="form-row">
+         <form name="addArtist" method="POST" action="{{baseUrl}}/Admin/Ajout_Artiste/Add" class="admin-form">
+         <h2 class="titleFormAdmin">Ajouter un artiste</h2>
+            <div class="form-row form-row-admin">
                <div class="col-md-6 mb-3">
                   <input type="text" name="first_name" value="{{first_name}}" class="form-control" placeholder="Prénom">
                </div>
@@ -363,9 +388,9 @@
                </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row form-row-admin">
                <div class="col-md-6 mb-3">
-                  <input type="text" name="birth_day" value="{{birth_day}}" class="form-control" placeholder="Anniversaire (JJ/MM/AAAA)">
+                  <input type="text" name="birth_day" value="{{birth_day}}" class="form-control" placeholder="Anniversaire (AAAA/MM/JJ)">
                </div>
 
                <div class="col-md-6 mb-3">
@@ -373,18 +398,18 @@
                </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row form-row-admin">
                <div class="col-md-12 mb-3">
                   <select class="custom-select text-center" name="role">
                      <option value="" selected disabled>-- Rôle --</option>
-                     <option value="Acteur" {% if role == "Acteur" %}selected{% endif %}>Acteur</option>
-                     <option value="Réalistateur" {% if role == "Réalistateur" %}selected{% endif %}>Réalistateur</option>
-                     <option value="Acteur & Réalistateur" {% if role == "Acteur & Réalistateur" %}selected{% endif %}>Acteur & Réalistateur</option>
+                     <option value="1" {% if role == "1" %}selected{% endif %}>Acteur</option>
+                     <option value="2" {% if role == "2" %}selected{% endif %}>Réalistateur</option>
+                     <option value="3" {% if role == "3" %}selected{% endif %}>Acteur & Réalistateur</option>
                   </select>
                </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row form-row-admin">
                <div class="col-md-12 mb-3">
                   <textarea class="form-control" name="bio" value="{{bio}}" placeholder="Biographie" rows="3">{{bio}}</textarea>
                </div>
@@ -392,12 +417,12 @@
 
             <div>
                <p class="alert-warning text-center">{{info}}</p>
-               <p class="text-danger">{{error}}</p>
+               <p class="text-danger error-form">{{error}}</p>
                <p class="text-success">{{success}}</p>
             </div>
 
             <div class="row justify-content-center">
-               <button class="btn btn-secondary" type="submit">Ajouter</button>
+               <button class="btn btn-secondary btn-outline" type="submit">Ajouter</button>
             </div>
          </form>
       </div>

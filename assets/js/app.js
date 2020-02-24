@@ -1,10 +1,12 @@
 /////////////////////////////////////////////ANTHONY/////////////////////////////////////////////
 //Déclaration des constantes
+
 const CheminComplet = document.location.href;
 const CheminRepertoire = CheminComplet.substring(0, CheminComplet.lastIndexOf("/"));
 let tabButton = [];
 let btn = []
 let tabcontent = document.getElementsByClassName("name");
+
 
 for (i = 0; i < tabcontent.length; i++) {
    tabButton[i] = tabcontent[i].getElementsByTagName("button");
@@ -17,6 +19,7 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
       document.getElementById(id).addEventListener("click", function () {
          let id_elem = id;
          let btn_name = id_elem.split(i + 1);
+
          switch (btn_name[0]) {
             case "btnmodify":
                i++;
@@ -32,7 +35,7 @@ for (let i = 0, iMax = tabButton.length; i < iMax; ++i) {
                let dataIdComment = controlText.dataset.idcomment;
 
                //On ré-injecte le formulaire de soumission 
-               controlText.innerHTML = '<form method="POST"  id="comment" action="' + dataBase + '/Commentaires/Modifier/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control m-2" rows="5" cols="100" name="controlText" id="ControlText" >' + tmp + '</textarea><div id="contenaireBtn' + i + '" ><button type="submit" id="btnmodify' + i + '"  class="btn btn-link-secondary font-weight-bold text-secondary border m-2">Publier</button></form>';
+               controlText.innerHTML = '<form method="POST"  id="comment" action="' + dataBase + '/Commentaires/Modifier/' + dataIdMovie + '/' + dataIdComment + '"><textarea class="form-control m-2" rows="5" cols="80" name="controlText" id="ControlText" >' + tmp + '</textarea><div id="contenaireBtn' + i + '" ><button type="submit" id="btnmodify' + i + '"  class="btn btn-link-secondary font-weight-bold text-secondary border m-2">Publier</button></form>';
                break;
 
             case "btncontact":
@@ -96,12 +99,15 @@ if (CheminRepertoire === "http://localhost/allo_jati/Films") {
 }
 /*ALERTE DYNAMIQUE*/
 (function () {
-   alerte = document.getElementById('alerte');
-   test = document.getElementById('alertDisplay');
+   let alerte = document.getElementById('alerte');
+
+   let display = document.getElementById('alerteDisplay');
+
    if (alerte != null) {
       $("#alerte").fadeTo(3000, 500).slideUp(500, function () {
          $("#alerte").slideUp(500);
-         test.innerHTML = "";
+         if(display!= null){}
+         alerte.innerHTML = "";
 
       });
    }
@@ -113,4 +119,6 @@ function uploadFile(target) {
 }
 /*MESSAGES ACCORDEON*/
 $('.collapse').collapse();
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////

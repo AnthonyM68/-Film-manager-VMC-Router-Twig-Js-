@@ -3,23 +3,26 @@
 class HomeController extends Controller
 {
 
-   private static $instanceSession;
+
 
    public function __construct()
    {
+      parent::__construct();
       $this->twig = parent::getTwig();
-     
+      $this->baseUrl = parent::getBaseUrl();
    }
    /**
     *
     */
    public function startSession()
    {
-      //var_dump($_SESSION['status']);
+
+
       if (!isset($_SESSION['status'])) {
          $_SESSION['status'] = null;
          $_SESSION['utilisateur'] = "Visiteur";
          $_SESSION['receiveMessage'] = null;
+
       }
    }
 
@@ -100,14 +103,11 @@ class HomeController extends Controller
     */
    public function destroy()
    {
-      session_start();
-
       session_destroy();
       unset($_SESSION);
-
-      session_start();
-      //$_SESSION['status'] = null;
-      //$_SESSION['utilisateur'] = "Visiteur";
+      $_SESSION['status'] = null;
+      $_SESSION['utilisateur'] = "Visiteur";
+      $_SESSION['avatar'] = "$this->baseUrl/assets/avatar/jatilogo.png";
    }
 
    /**

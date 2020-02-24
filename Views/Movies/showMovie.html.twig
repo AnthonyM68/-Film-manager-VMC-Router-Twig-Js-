@@ -54,6 +54,12 @@
 
 <div class="container">
    <div class="card text-center m-3">
+      {% if anchor %}
+      <div id="alerteDisplay">
+         {{ alert | striptags ('<div>') | raw }}
+           {#} <span id="adressPage" data-adress="{{baseUrl}}/Connection"></ span>#}
+      </div>
+      {% endif %}
       <div class="card-header">
          <form method="POST" id="comment" action="{{baseUrl}}/Commentaires/Ajouter_{{movie.id_movie}}">
 
@@ -96,15 +102,15 @@
                {#*****************************Si nous sommes administrateur ou logger ****************************#}
                {% if status == 1 or status == 2 %}
                {#*****Si une note a été placés en temporaire avant login*****#}
-               {% if tmpNote %}
-               <div id="containerstar" class="star-complet{{tmpNote}}">
+                  {% if tmpNote %}
+                     <div id="containerstar" class="star-complet{{tmpNote}}">
                   {% else %}
                   <div id="containerstar" class="star">
-                     {% endif %}
+                  {% endif %}
 
-                     {% else %}
-                     <div id="containerstar" class="star">
-                        {% endif %}
+               {% else %}
+                  <div id="containerstar" class="star">
+               {% endif %}
                         <!--System de notation par étoile-->
                         <label for="note-5" class="labelButon">☆</label>
                         <input class="radio" type="radio" name="note" id="note-5" value="5">
@@ -155,7 +161,7 @@
 
 
 {% if comments %}
-<div class="container">
+   <div class="container">
 
    {% for comment in comments %}
    <div class="card text-center m-3">
@@ -174,9 +180,7 @@
                   {# *************************on affiche son commentaire***************************#}
                   <div id="controlComment{{ loop.index }}" data-idcomment="{{ comment.id_comment }}"
                      data-base="{{baseUrl}}" data-idmovie="{{movie.id_movie}}">
-
                      <p class="pr-sm-1 m-2" id="pComment{{ loop.index }}">{{ comment.content }}</p>
-
                   </div>
                </div>
                <div class="container h-100">
@@ -184,9 +188,7 @@
                      <div class="col-12 p-5">
                         <div class="card h-100 justify-content-center" style="border:none">
                            <div class="col-12">
-                              <div id="alerteDisplay">
-                                 {{ alert | striptags ('<div>') | raw }}
-                              </div>
+
                               <div class="accordion" id="accordionExample">
                                  <div class="card" style="border:none">
                                     <div class="row">
@@ -272,14 +274,10 @@
             </div>
          </div>
       </div>
-
       {# Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit mollitia tempora quidem consectetur harum blanditiis quo incidunt omnis laborum nisi porro, vel tempore dicta perferendis. Quos, sint cum! Quod, accusamus? #}
-
-
       <div class="card-footer text-center">
          <span class="btn btn-theme float-left">
             <div class="star-note">
-
                {% for i in 1..comment.note %}
                <label></label>
                {% endfor %}
@@ -287,13 +285,30 @@
          </span>
          <span class="btn btn-theme">Commentaire: N°{{ comment.id_comment }}
          </span>
-         <span class="btn btn-theme float-right">{{ comment.date | date("m/d/Y/ H:i:s", "Europe/Paris") }}
+         <span class="btn btn-theme float-right">{{ comment.date | date("d/m/Y/ H:i:s", "Europe/Paris") }}
          </span>
       </div>
    </div>
-
    {% endfor %}
    {% endif %}
 
-   {% endblock %}
+   {% endblock %}   
+{% endblock %}
+   {% block javascripts %}
+   {{ parent() }}
+   <script>
+      document.addEventListener("DOMContentLoaded", function (event) {
+         if (document.getElementById("alerteDisplay")) {
+            location.href = "#alerteDisplay";
+            $("#alerte").fadeTo(3000, 500).slideUp(500, function () {
+               $("#alerte").slideUp(500);
+               let adressPage = document.getElementById('alerte');
+               let adressRedirect = adressPage.dataset.adress;
+               if(adressRedirect != null){
+                  location.href = adressRedirect;
+               }
+            });
+         }
+      });
+   </script>
    {% endblock %}

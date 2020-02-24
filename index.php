@@ -31,8 +31,12 @@ $router->post('/MotDePasseOublie/post', 'Users.forgetPassword');
 $router->get('/mailEnvoye', 'Users.mailEnvoye');
 
 // Route ChangePassword
-$router->get('/ChangerMotDePasse/:hash', 'Users.updatePassword');
-$router->post('/ChangerMotDePasse/:hash/post', 'Users.updatePassword');
+$router->get('/ChangerMotDePasse/:md5', 'Users.updatePassword');
+$router->post('/ChangerMotDePasse/:md5', 'Users.updatePassword');
+
+// route MailEnvoyé
+$router->get('/MotDePasseRéinitialisé', 'Users.MotDePasseRéinitialisé');
+
 
 // route forgetPassword
 $router->get('/MotDePasseOublie', 'Users.forgetPassword');
@@ -41,6 +45,9 @@ $router->post('/Connection/post', 'Users.forgetPassword');
 // Route Register
 $router->get('/Inscription', 'Users.register');
 $router->post('/Inscription/post', 'Users.register');
+
+// route bienvenue (apres inscription)
+$router->post('/Bienvenue', 'Users.bienvenue');
 
 // Route Commentaires
 $router->get('/Commentaires/Effacer/:id_comment/:id_movie/:pseudo', 'Comments.deleteComment');

@@ -16,21 +16,24 @@ class CommentsController extends Controller
    {
       $pageTwig = 'Comments/index.html.twig';
       $template = $this->twig->load($pageTwig);
-      echo $template->render(['alertMessage' => $_SESSION['receiveMessage']]);
+      echo $template->render([
+         'alertMessage' => $_SESSION['receiveMessage']
+      ]);
    }
    /**
     * Modification d'un commentairedeja publier
     */
-   
-   public function modifyComment($id_movie, $id_comment){
-      var_dump($id_movie);
-      var_dump($id_comment);
+
+   public function modifyComment($id_movie, $id_comment)
+   {
       $content = $_POST['controlText'];
       $result = $this->model->modifyComment($content, $id_comment);
-      if($result == true) {
-         echo "<script>alert(\"Votre commentaire a bien été modifier\")</script>";
+      if ($result == true) {
+         $displayAlert = '<div class="alert alert-success text-center" id="alerte"><strong>Succès...</strong> Votre commentaire a bien été modifié</div>';
       }
-      header("Location: $this->baseUrl/Films/Film_$id_movie");
+      $instanceMovies = new MoviesController();
+      $instanceMovies->showMovie($id_movie, $displayAlert);
+      /*header("Location: $this->baseUrl/Films/Film_$id_movie");*/
    }
    /**
     *  Affiche tous les commentaire d'un utilisateur
@@ -51,7 +54,13 @@ class CommentsController extends Controller
       $comments = $this->model->searchAllCommByUser($pseudo);
       $pageTwig = 'Admin/admin.html.twig';
       $template = $this->twig->load($pageTwig);
-      echo $template->render(["comments" => $comments, 'slug' => 'Utilisateur', 'status' => $_SESSION['status'], 'alertMessage' => $_SESSION['receiveMessage'], 'pseudo' => $pseudo]);
+      echo $template->render([
+         "comments"     => $comments,
+         'slug'         => 'Utilisateur',
+         'status'       => $_SESSION['status'],
+         'alertMessage' => $_SESSION['receiveMessage'],
+         'pseudo'       => $pseudo
+      ]);
    }
    /**
     *  Supprime un commentaire
@@ -63,7 +72,10 @@ class CommentsController extends Controller
          $this->refreshAfterDeteleCommByUser($id_user, $pseudo);
       } else {
          $this->model->delComment($id_comment);
-         header("Location: $this->baseUrl/Films/Film_$id_movie");
+
+         $displayAlert = '<div class="alert alert-success text-center" id="alerte"><strong>Succès...</strong> Votre commentaire a bien été supprimé! </div>';
+         $instanceMovies = new MoviesController();
+         $instanceMovies->showMovie($id_movie, $displayAlert);
       }
    }
 
@@ -76,7 +88,13 @@ class CommentsController extends Controller
       $comments = $this->model->searchAllCommById($id_user);
       $pageTwig = 'Admin/admin.html.twig';
       $template = $this->twig->load($pageTwig);
-      echo $template->render(["comments" => $comments, 'slug' => 'Utilisateur', 'status' => $_SESSION['status'], 'alertMessage' => $_SESSION['receiveMessage'], 'pseudo' => $pseudo]);
+      echo $template->render([
+         "comments" => $comments,
+         'slug'         => 'Utilisateur',
+         'status'       => $_SESSION['status'],
+         'alertMessage' => $_SESSION['receiveMessage'],
+         'pseudo'       => $pseudo
+      ]);
    }
    /**
     *  Affiche tous les commentaire par titre de film
@@ -90,14 +108,20 @@ class CommentsController extends Controller
    /**
     * Rafraichit la liste des comm par titre de films
     */
-    public function refreshUserForCommByTitle($title)
-    {
-       $movie = $this->model->searchAllCommByTitleMovie($title);
-       $comments = $this->model->linkCommentByMovie($movie[0]['id_movie']);
-       $pageTwig = 'Admin/admin.html.twig';
-       $template = $this->twig->load($pageTwig);
-       echo $template->render(["comments" => $comments, 'slug' => 'titleMovie', 'status' => $_SESSION['status'], 'alertMessage' => $_SESSION['receiveMessage'], 'title' => $title]);
-    }
+   public function refreshUserForCommByTitle($title)
+   {
+      $movie = $this->model->searchAllCommByTitleMovie($title);
+      $comments = $this->model->linkCommentByMovie($movie[0]['id_movie']);
+      $pageTwig = 'Admin/admin.html.twig';
+      $template = $this->twig->load($pageTwig);
+      echo $template->render([
+         "comments"     => $comments,
+         'slug'         => 'titleMovie',
+         'status'       => $_SESSION['status'],
+         'alertMessage' => $_SESSION['receiveMessage'],
+         'title'        => $title
+      ]);
+   }
    /**
     *  Supprime tous les commentaire liés à id_movie
     */
@@ -118,30 +142,39 @@ class CommentsController extends Controller
       $comments   = $this->model->getAllComments();
       $pageTwig = 'Admin/admin.html.twig';
       $template = $this->twig->load($pageTwig);
-      echo $template->render(["comments" => $comments, 'slug' => 'Tous', 'status' => $_SESSION['status'], 'alertMessage' => $_SESSION['receiveMessage']]);
+      echo $template->render([
+         "comments"     => $comments,
+         'slug'         => 'Tous',
+         'status'       => $_SESSION['status'],
+         'alertMessage' => $_SESSION['receiveMessage']
+      ]);
    }
 
    /**
     *  Mise en temporaire de la publication
     */
-   public function temporaryFiles($id_movie)
+   public function temporaryFiles($id_movie, $displayAlert)
    {
 
       $_SESSION['tabSession'] = [];
+
       $instanceHome = new HomeController();
       //On sauvegarde les éléments du commentaire avant redirection
+
       $instanceHome->__set('tmpTitle', $instanceHome->__getPOST('title'));
       $_SESSION['tabSession'][] = 'tmpTitle';
+
       $instanceHome->__set('tmpComment', $instanceHome->__getPOST('controlText'));
       $_SESSION['tabSession'][] = 'tmpComment';
+      
       $instanceHome->__set('tmpNote', $instanceHome->__getPOST('note'));
       $_SESSION['tabSession'][] = 'tmpNote';
+      
       $instanceHome->__set('location', "$this->baseUrl/Films/Film_$id_movie");
       $_SESSION['tabSession'][] = 'location';
 
-      $pageTwig = 'Users/login.html.twig';
-      $template = $this->twig->load($pageTwig);
-      echo $template->render(['alertMessage' => $_SESSION['receiveMessage']]);
+      $instanceMovies = new MoviesController();
+      $instanceMovies->showMovie($id_movie, $displayAlert);
    }
 
    /**
@@ -169,35 +202,42 @@ class CommentsController extends Controller
             //insert le commentaire dans la table et retourne l'ID du commentaire
             $idComment = $this->model->addComment($id_user, $title, $content, $note);
             //insert dans la table users_comment l'ID du commentaire appartenant a l'ID user
-            $this->model->addUsersComments($id_user, $idComment);
-            //insert le commentaire dans la table movie_comments
-            $this->model->addMovieComments($id_movie, $idComment);
-
-            header("Location: $this->baseUrl/Films/Film_$id_movie");
+            $result = $this->model->addUsersComments($id_user, $idComment);
+            if ($result === true) {
+               //insert le commentaire dans la table movie_comments
+               $result = $this->model->addMovieComments($id_movie, $idComment);
+               if ($result === true) {
+                  $displayAlert = '<div class="alert alert-success text-center" id="alerte"><strong>Succès...</strong> Votre commentaire a bien été publié, merci.</div>';
+               } else {
+                  $displayAlert = '<div class="alert alert-danger text-center" id="alerte"><strong>Erreur...</strong>Une erreur est survenu lors de la connexion a la base de données.Veuillez recommencer...</div>';
+               }
+            } else {
+               $displayAlert = '<div class="alert alert-danger text-center" id="alerte"><strong>Erreur...</strong>Une erreur est survenu lors de la connexion a la base de données.Veuillez recommencer...</div>';
+            }
+            $instanceMovies = new MoviesController();
+            $instanceMovies->showMovie($id_movie, $displayAlert);
          }
          // Si le post existe mais que l'une ou l'autre information manque on les mets en temporaire
          else {
             // On affiche une alerte
-            $instanceHome->__set('alert', "<script>alert(\"Votre commentaire n'a pas été publié car il est incomplet\")</script>");
-            $instanceHome->__alert('alert');
+            $displayAlert = '<div class="alert alert-danger text-center" id="alerte"><strong>Erreur...</strong> Votre commentaire n\'est pas complet! Veuillez vérifié!</div>';
             // On mets les éléments du commentaire en temporaire
-            $this->temporaryFiles($id_movie);
+            $this->temporaryFiles($id_movie, $displayAlert);
          }
       } else {
          // On affiche une alerte
-         $instanceHome->__set('alert', "<script>alert(\"Vous devez vous identifier vous publier.\")</script>");
-         $instanceHome->__alert('alert');
+         $adress = "$this->baseUrl/Connection";
+         $displayAlert = '<div class="alert alert-danger text-center" id="alerte" data-adress="' . $adress . '" ><strong>Erreur...</strong> Vous devez vous identifier pour publier! Vous allez être redirigé...</div>';
          // On mets les éléments du commentaire en temporaire
-         $this->temporaryFiles($id_movie);
+         $this->temporaryFiles($id_movie, $displayAlert);
       }
    }
 
    /**
-    *
+    * Post un commentaire après connection
     */
    public function postAfterLogin()
    {
-
       $instanceHome = new HomeController();
       //Si l'un ou l'autre champ est vide on affiche une alerte
 
@@ -205,6 +245,8 @@ class CommentsController extends Controller
          // On affiche une alerte
          $instanceHome->__set('alert', "<script>alert(\"Votre commentaire n'a pas été publié car il est incomplet.Veuillez-vérifié.\")</script>");
          $instanceHome->__alert('alert');
+
+
          // On redirige sur la page du commentaire
          $location = $instanceHome->__get('location');
          header("Location: $location");
@@ -220,25 +262,25 @@ class CommentsController extends Controller
          // On insert dans la table users_comment l'ID du commentaire appartenant a l'ID user
          $result = $this->model->addUsersComments($id_user, $idComment);
          if ($result === true) {
+
             // On insert le commentaire dans la table movie_comments
             $result = $this->model->addMovieComments($instanceHome->__get('id_movie'), $idComment);
             if ($result === true) {
                // On affiche une alerte
-               $instanceHome->__set('alert', "<script>alert(\"Votre commentaire a bien été publié. Merci.\")</script>");
-               $instanceHome->__alert('alert');
-               // On efface toutes les super-global
+               $adress = "$this->baseUrl/Films/Film_" . $_SESSION['id_movie'];
+               $displayAlert = '<div class="alert alert-success text-center" id="alerte" data-adress="' . $adress . '" ><strong>Succès...</strong> Votre commentaire a bien été publié, merci.</div>';
                $location = $instanceHome->__get('location');
                $instanceHome->__unsetTab();
             }
-         }
-         if ($result === false) {
+         } else {
             // Si une erreur surviens lors de l'ajout du commentaire a la BDD
-            $instanceHome->__set('alert', "<script>alert(\"Un erreur est survenu lors de la connexion a la base de données.Veuillez recommencer\")</script>");
-            $instanceHome->__alert('alert');
+            $adress = "$this->baseUrl/Films/Film_" . $_SESSION['id_movie'];
+            $displayAlert = '<div class="alert alert-danger text-center" id="alerte" data-adress="' . $adress . '" ><strong>Erreur...</strong>Une erreur est survenu lors de la connexion a la base de données.Veuillez recommencer...</div>';
             // On efface toutes les super-global
             $location = $instanceHome->__get('location');
          }
-         header("Location: $location");
+         $instanceMovies = new MoviesController();
+         $instanceMovies->showMovie($_SESSION['id_movie'], $displayAlert);
       }
    }
 }

@@ -7,7 +7,7 @@
       <aside id="navlateral" class="col-12 col-md-12 p-0 pt-lg-3 pl-lg-0 bg-dark">
          <div class="text-center text-white bg-dark font-weight-bold">GESTION PROFILE</div>
          <div class="text-center text-white bg-dark font-weight-bold pt-lg-3 pl-lg-0">
-            <img src="{{ avatar }}" class="img-thumbnail"><br>
+               <img src="{{ avatar }}" class="img-thumbnail m-4">
             <div class="pt-lg-2 pl-lg-0">{{user}}</div>
          </div>
          <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
@@ -255,6 +255,24 @@
    {% endif %}
 </div>
 {% endblock %}
+{% block javascripts %}
+   {{ parent() }}
+   <script>
+      document.addEventListener("DOMContentLoaded", function (event) {
+         if (document.getElementById("alerteDisplay")) {
+            location.href = "#alerteDisplay";
+            $("#alerte").fadeTo(3000, 500).slideUp(500, function () {
+               $("#alerte").slideUp(500);
+               let adressPage = document.getElementById('alerte');
+               let adressRedirect = adressPage.dataset.adress;
+               if(adressRedirect != null){
+                  location.href = adressRedirect;
+               }
+            });
+         }
+      });
+   </script>
+   {% endblock %}
 {#
     <div class="container h-100">
          <div class="row align-items-center h-100" style="border:1px solid red">

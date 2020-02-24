@@ -12,7 +12,7 @@
       <div class="mb-3">
          <form method="POST" action="{{baseUrl}}/Films/Recherche" class="form-inline my-2 my-lg-0  form-control-sm">
             <input class="form-control mr-sm-2" type="search" name="search" placeholder="Rechercher ..." aria-label="Search">
-            <button class="btn btn-dark my-2 my-sm-0" type="submit">Go</button>
+            <button class="btn btn-dark my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
          </form>
       </div>
 
@@ -22,17 +22,11 @@
             <select class="custom-select" name="style">
                <option selected disabled>--Genre--</option>
                <option value ="Action">Action</option>
-               <option value ="Animation">Animation</option>
-               <option value ="Catasrophe">Catasrophe</option>
                <option value ="Comédie">Comédie</option>
                <option value ="Dramatique">Dramatique</option>
-               <option value ="Documentaire">Documentaire</option>
-               <option value ="Historique">Historique</option>
-               <option value ="Horreur">Horreur</option>
-               <option value ="Romantique">Romantique</option>
                <option value ="Science-Fiction">Science-Fiction</option>
             </select>
-            <button class="btn btn-dark my-2 my-sm-0" type="submit">Go</button>
+            <button class="btn btn-dark my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
          </form>
       </div>
    </div>
@@ -61,10 +55,10 @@
                <p class="text-in-image m-0 pb-3 px-0 pt-3 text-center font-weight-bold" >{{search.title}}</p>
             </div>
          {% endfor %}
-      </div>
 
-      <div class="d-flex justify-content-center pt-5">
-         <p>{{notFound}}</p>
+         <div class="d-flex justify-content-center pt-5">
+            <p class="text-danger">{{notFound}}</p>
+         </div>
       </div>
 
    <!-- Affichage avec le select -->

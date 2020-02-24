@@ -32,9 +32,9 @@ class AdminController extends Controller
       $pageTwig = 'Admin/admin.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render([
-         'slug' => $slug,
-         'users' => $users,
-         'status' => $_SESSION['status'],
+         'slug'         => $slug,
+         'users'        => $users,
+         'status'       => $_SESSION['status'],
          'alertMessage' => $_SESSION['receiveMessage']
       ]);
    }
@@ -52,9 +52,9 @@ class AdminController extends Controller
       $pageTwig = 'Admin/admin.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render([
-         'slug'   => $slug,
-         'movies' => $movies,
-         'status' => $_SESSION['status'],
+         'slug'         => $slug,
+         'movies'       => $movies,
+         'status'       => $_SESSION['status'],
          'alertMessage' => $_SESSION['receiveMessage']
       ]);
    }
@@ -72,9 +72,9 @@ class AdminController extends Controller
       $pageTwig = 'Admin/admin.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render([
-         'slug' => $slug,
-         'artists' => $artists,
-         'status' => $_SESSION['status'],
+         'slug'         => $slug,
+         'artists'      => $artists,
+         'status'       => $_SESSION['status'],
          'alertMessage' => $_SESSION['receiveMessage']
       ]);
    }
@@ -147,18 +147,18 @@ class AdminController extends Controller
       $pageTwig = 'Admin/admin.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render([
-         'slug'    => $slug,
-         'title'   => $title,
-         'year'    => $year,
-         'time'    => $time,
-         'picture' => $picture,
-         'style'   => $style,
-         'resume'  => $resume,
-         'trailer' => $trailer,
-         'info'    => $info,
-         'error'   => $error,
-         'success' => $success,
-         'status' => $_SESSION['status'],
+         'slug'         => $slug,
+         'title'        => $title,
+         'year'         => $year,
+         'time'         => $time,
+         'picture'      => $picture,
+         'style'        => $style,
+         'resume'       => $resume,
+         'trailer'      => $trailer,
+         'info'         => $info,
+         'error'        => $error,
+         'success'      => $success,
+         'status'       => $_SESSION['status'],
          'alertMessage' => $_SESSION['receiveMessage']
       ]);
    }
@@ -224,18 +224,18 @@ class AdminController extends Controller
       $pageTwig = 'Admin/admin.html.twig';
       $template = $this->twig->load($pageTwig);
       echo $template->render([
-         'slug'       => $slug,
-         'status'     => $_SESSION['status'],
+         'slug'         => $slug,
+         'status'       => $_SESSION['status'],
          'alertMessage' => $_SESSION['receiveMessage'],
-         'info'       => $info,
-         'error'      => $error,
-         'success'    => $success,
-         'picture'    => $picture,
-         'first_name' => $first_name,
-         'last_name'  => $last_name,
-         'birth_day'  => $birth_day,
-         'bio'        => $bio,
-         'role'       => $role
+         'info'         => $info,
+         'error'        => $error,
+         'success'      => $success,
+         'picture'      => $picture,
+         'first_name'   => $first_name,
+         'last_name'    => $last_name,
+         'birth_day'    => $birth_day,
+         'bio'          => $bio,
+         'role'         => $role
       ]);
    }
 
