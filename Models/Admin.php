@@ -40,3 +40,4 @@ class Admin extends Model
       $req->execute([$id_artist, $id_movie, $role]);
    }
 }
+

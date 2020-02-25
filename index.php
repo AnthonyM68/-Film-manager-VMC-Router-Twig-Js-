@@ -20,8 +20,8 @@ $router->post('/Artistes/Recherche', 'Artists.search');
 $router->get('/Artistes', 'Artists.showAllArtists');
 
 // Route Login
-$router->get('/Connection', 'Users.connexion');
-$router->post('/', 'Users.login');
+$router->get('/Connexion', 'Users.connexion');
+$router->post('/Connexion/post', 'Users.connexion');
 
 // route forgetPassword
 $router->get('/MotDePasseOublie', 'Users.forgetPassword');
@@ -40,7 +40,7 @@ $router->get('/MotDePasseRéinitialisé', 'Users.MotDePasseRéinitialisé');
 
 // route forgetPassword
 $router->get('/MotDePasseOublie', 'Users.forgetPassword');
-$router->post('/Connection/post', 'Users.forgetPassword');
+$router->post('/Connexion/post', 'Users.forgetPassword');
 
 // Route Register
 $router->get('/Inscription', 'Users.register');
@@ -79,30 +79,30 @@ $router->post('/Profile/Supprimer/Compte_:slug', 'Profils.deleteAccount');
 $router->get('/Profile', 'Profils.profil');
 
 // Route Deconnexion
-$router->get('/Deconnection', 'Users.logout');
+$router->get('/Deconnexion', 'Users.logout');
 
 // Route Admin
-$router->get('/Admin/Effacer_:id_comment/:id_movie/:pseudo/:id_user', 'Comments.deleteComment');
-$router->get('/Admin/Effacer_:id_comment', 'Comments.deleteComment');
-$router->post('/Admin/Utilisateur', 'Comments.searchAllCommByUser');
-$router->post('/Admin/Titre', 'Comments.searchAllCommByTitleMovie');
-$router->get('/Admin/Tous', 'Comments.getAllCom');
+$router->get('/Administration/Effacer_:id_comment/:id_movie/:pseudo/:id_user', 'Comments.deleteComment');
+$router->get('/Administration/Effacer_:id_comment', 'Comments.deleteComment');
+$router->post('/Administration/Utilisateur', 'Comments.searchAllCommByUser');
+$router->post('/Administration/Titre', 'Comments.searchAllCommByTitleMovie');
+$router->get('/Administration/Tous', 'Comments.getAllCom');
 
-$router->get('/Admin', 'Admin.admin');
-$router->get('/Admin/Liste_Utilisateurs', 'Admin.editUsers');
-$router->get('/Admin/Liste_Films', 'Admin.editMovies');
-$router->get('/Admin/Liste_Artistes', 'Admin.editArtists');
-$router->get('/Admin/Ajout_Film', 'Admin.addMovie');
-$router->post('/Admin/Ajout_Film/Add', 'Admin.addMovie');
-$router->post('/Admin/Ajout_Artiste/Add', 'Admin.addArtist');
-$router->get('/Admin/Ajout_Artiste', 'Admin.addArtist');
-$router->get('/Admin/Associer', 'Admin.association');
-$router->post('/Admin/Associer/With', 'Admin.association');
+$router->get('/Administration', 'Admin.admin');
+$router->get('/Administration/Liste_Utilisateurs', 'Admin.editUsers');
+$router->get('/Administration/Liste_Films', 'Admin.editMovies');
+$router->get('/Administration/Liste_Artistes', 'Admin.editArtists');
+$router->get('/Administration/Ajout_Film', 'Admin.addMovie');
+$router->post('/Administration/Ajout_Film/Add', 'Admin.addMovie');
+$router->post('/Administration/Ajout_Artiste/Add', 'Admin.addArtist');
+$router->get('/Administration/Ajout_Artiste', 'Admin.addArtist');
+$router->get('/Administration/Associer', 'Admin.association');
+$router->post('/Administration/Associer/With', 'Admin.association');
 
 
 // Route Contact
-$router->post('/Suggestion', 'Suggestion.addSuggestion');
-$router->get('/Suggestion', 'Suggestion.suggestion');
+$router->post('/Suggestions', 'Suggestion.addSuggestion');
+$router->get('/Suggestions', 'Suggestion.suggestion');
 
 // Route Home
 $router->get('/', 'Home.index');

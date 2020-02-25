@@ -88,7 +88,7 @@ class ArtistsController extends Controller
          $search = $this->model->getBySearch($search);
 
       }else{
-         $notFound = "L'artiste recherché n'est pas répertorié, mais vous pouvez nous envoyer des suggestion via le formulaire !";
+         $notFound = "L'artiste recherché n'est pas répertorié, mais vous pouvez nous envoyer des suggestions via le formulaire !";
       }
 
       $pageTwig = 'Artists/showAllArtists.html.twig';

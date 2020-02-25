@@ -17,7 +17,7 @@
 		{% if slug is null %}
 
 			<div class="row justify-content-md-center">
-				<form name="login" class="col-4 users-form" method="POST" action="{{baseUrl}}/">
+				<form name="login" class="col-4 users-form" method="POST" action="{{baseUrl}}/connexion/post">
 					<h2 class="title-forms-users">Se connecter :</h2>
 					{# PSEUDO #}
 					<div class="form-group-users">
@@ -48,15 +48,15 @@
 			</div>
 
 
-			{# FORMULAIRE DE MOT DE PASSE OUBLIÉ #}
-		{% elseif (slug == 'MotDePasseOublie') %}
+		{# FORMULAIRE DE MOT DE PASSE OUBLIÉ #}
+      {% elseif (slug == 'MotDePasseOublie') %}
 
 			<div class="row justify-content-md-center">
 
 				<form
 					name="forgetPassword" class="col-4 users-form" method="POST" action="{{ baseUrl }}/MotDePasseOublie/post">
 
-					<a href="{{ baseUrl }}/Connection"><img src="{{ baseUrl }}/assets/avatar/back.png" alt="back" class="back-forgetPassword "/></a>
+					<a href="{{ baseUrl }}/Connexion"><img src="{{ baseUrl }}/assets/avatar/back.png" alt="back" class="back-forgetPassword "/></a>
 
 					<h2 class="title-forms-users">Mot de passe oublié</h2>
 					{# MAIL #}
@@ -67,7 +67,7 @@
 						<input type="email" class="form-control" maxlength="64" name="mail" value=" {{ mail }}" {% if errorMail %} style="border-color: #FF2E63;" {% endif %}>
 						<p class="text-danger d-inline grp-err-1">{{ errorMail }}
 							{% if lienInscription == " " %}
-								<a href="/allo_jati/Inscription">Inscrivez vous ici</a>
+								<a href="/allo_jati/Inscription">Inscrivez-vous ici</a>
 							{% endif %}
 						</p>
 
@@ -81,7 +81,7 @@
 				</form>
 			</div>
 
-			{# UN EMAIL VOUS A ETE ENVOYE  #}
+		{# UN EMAIL VOUS A ETE ENVOYE  #}
 		{% elseif (slug == 'mailEnvoye') %}
 
 
@@ -98,12 +98,12 @@
 					</div>
 					{# direction page conexion #}
 					<div class="form-group-users">
-						<a href="{{ baseUrl }}/Connection" class="btn btn-outline jati-colors-btn col">Se connecter</a>
+						<a href="{{ baseUrl }}/Connexion" class="btn btn-outline jati-colors-btn col">Se connecter</a>
 					</div>
 				</div>
 			</div>
 
-			{# FORMULAIRE POUR CHANGER MOT DE PASSE #}
+		{# FORMULAIRE POUR CHANGER MOT DE PASSE #}
 		{% elseif (slug == md5) %}
 
 			<div class="row justify-content-md-center">
@@ -113,7 +113,7 @@
 					{# MAIL #}
 					<div class="form-group-users">
 						<label for="regMail">
-							<h4>adresse mail</h4>
+							<h4>Adresse mail</h4>
 						</label>
 						<input type="email" class="form-control" name="mail" value="{{ inputMail }}" {% if error[0] %} style="border-color: #FF2E63;" {% endif %}>
 
@@ -138,7 +138,7 @@
 			</div>
 
 
-			{# VOTRE MOT DE PASSE A ÉTÉ RÉINITIALISÉ #}
+		{# VOTRE MOT DE PASSE A ÉTÉ RÉINITIALISÉ #}
 		{% elseif (slug == 'MotDePasseRéinitialisé') %}
 
 			<div class="row justify-content-md-center">
@@ -150,21 +150,20 @@
 					</div>
 					{# direction page conexion #}
 					<div class="form-group-users">
-						<a href="{{ baseUrl }}/Connection" class="btn btn-outline jati-colors-btn col">Se connecter</a>
+						<a href="{{ baseUrl }}/Connexion" class="btn btn-outline jati-colors-btn col">Se connecter</a>
 					</div>
 				</div>
 			</div>
 
 
-			{# FORMULAIRE D'INSCRIPTION #}
-		{% elseif (slug == 'Inscription' or slug == 'Inscription/post') %}
+		{# FORMULAIRE D'INSCRIPTION #}
+		{% elseif (slug == 'Inscription') %}
 
 			<div class="row justify-content-md-center">
-				<form
-					name="register" class="col-4 users-form" method="POST" action="{{ baseUrl }}/Inscription/post" }>
+				<form name="register" class="col-4 users-form" method="POST" action="{{ baseUrl }}/Inscription/post" }>
 
 					{# PROBLEME : lors de la soumission du formulaire l'image de la flèche ne s'affiche plus #}
-					<a href="{{ baseUrl }}/Connection" class="back"><img src="{{ baseUrl }}/assets/avatar/back.png" alt="back" class="back-register"/></a>
+					<a href="{{ baseUrl }}/Connexion" class="back"><img src="{{ baseUrl }}/assets/avatar/back.png" alt="back" class="back-register"/></a>
 
 					<h2 class="title-forms-users">Créer un compte</h2>
 
@@ -206,18 +205,17 @@
 			</div>
 
 
-			{# BIENVENUE #}
+		{# BIENVENUE CHEZ ALLO JATI #}
 		{% elseif (slug == 'Bienvenue') %}
 
 			<div class="row justify-content-md-center">
-				<div
-					class="col-4 users-form">
+				<div class="col-4 users-form">
 
 					{# Message de bienvenue #}
 					<div class="form-group-users">
 						<h2>
 							{{ user }}
-							,bienvenue chez ALLO JATI !</h2>
+							,bienvenu chez ALLO JATI !</h2>
 						<p>Nous sommes très heureux de vous compter parmis nous !</p>
 					</div>
 

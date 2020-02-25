@@ -1,0 +1,517 @@
+{% extends "template.html.twig" %}
+
+{% block title %}Administration
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid d-flex justify-content-start px-0">
+	<div class="bg-dark">
+		<aside id="navlateral" class="pt-lg-5 pl-lg-0 bg-dark">
+			<div class="text-center text-white bg-dark font-weight-bold ">ADMINISTRATION</div>
+			<nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
+				<div class="collapse navbar-collapse">
+					<ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+
+						<li class="nav-item">
+							<span class="border-color text-white font-weight-bold m-0 p-1">Listing</span>
+							<ul class="list-color">
+								<li>
+									<a class="nav-link pl-0" href="{{baseUrl}}/Administration/Liste_Utilisateurs">Utilisateurs</a>
+								</li>
+								<li>
+									<a class="nav-link pl-0" href="{{baseUrl}}/Administration/Tous">Commentaires</a>
+								</li>
+								<li>
+									<a class="nav-link pl-0" href="{{baseUrl}}/Administration/Liste_Films">Films</a>
+								</li>
+								<li>
+									<a class="nav-link pl-0" href="{{baseUrl}}/Administration/Liste_Artistes">Artistes</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="nav-item">
+							<span class="border-color text-white font-weight-bold m-0 p-1">Ajouter</span>
+							<ul class="list-color">
+								<li>
+									<a class="nav-link pl-0" href="{{baseUrl}}/Administration/Ajout_Film">Film</a>
+								</li>
+								<li>
+									<a class="nav-link pl-0" href="{{baseUrl}}/Administration/Ajout_Artiste">Artiste</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="nav-item">
+							<span class="border-color text-white font-weight-bold m-0 p-1">Associer</span>
+							<ul class="list-color">
+								<li>
+									<a class="nav-link pl-0" href="{{baseUrl}}/Administration/Associer">Artistes
+										<->
+											Films</a>
+									</li>
+								</li>
+							</ul>
+						</li>
+
+						<li class="nav-item">
+							<span class="border-color text-white font-weight-bold m-0 p-1">Commentaires</span>
+
+							<p class="text-white pl-0 mt-2">Par pseudo</p>
+
+							<form name="search" method="POST" action="{{baseUrl}}/Administration/Utilisateur">
+								<div class="form-row">
+									<div class="col-md-12 mb-3">
+										<input type="text" class="input-sm" name="pseudo" placeholder="Pseudo">
+									</div>
+								</div>
+								<div class="row justify-content-center">
+									<button class="btn btn-secondary btn-sm" type="submit">Rechercher</button>
+								</div>
+							</form>
+
+							<p class="text-white pl-0">Par film
+							</p>
+
+							<form name="idMovie" method="POST" action="{{baseUrl}}/Administration/Utilisateur">
+								<div class="form-row">
+									<div class="col-md-12 mb-3">
+										<input type="text" class="input-sm" name="title" placeholder="Titre">
+									</div>
+								</div>
+								<div class="row justify-content-center">
+									<button class="btn btn-secondary btn-sm" type="submit">Rechercher</button>
+								</div>
+							</form>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</aside>
+	</div>
+
+	{% if slug is null %}
+		<div class="mess-admin">
+			<div class="admin-form m-auto w-50 text-center">
+				<h2 class="mb-4">Panneau d'administration</h2>
+				<p>
+					Bienvenu sur votre espace back-office :
+					<br>
+
+					Vous pourrez gérer le contenu de votre site facilement,
+					<br>
+					modérer les commentaires ainsi que vos administrés.
+					<br>
+
+					Pour toutes questions relative à espace d'administration
+					<br>
+					<br>
+					(<a href="#">contact.support@jati.com</a>)
+				</p>
+			</div>
+		</div>
+
+
+	{% endif %}
+
+	<div
+		class="col d-flex justify-content-center px-0">
+
+		<!-- Listing des Utilisateurs -->
+		{% if (slug == 'Liste_Utilisateurs') %}
+			<div id="utilisateurs" class="table-utilisateurs">
+				<table class="table table-bordered table-hover">
+					<thead class="thead-light">
+						<tr>
+							<th colspan="6" class="text-center">
+								<h3 class="font-weight-bold text-uppercase text-dark">Listes des utilisateurs</h3>
+							</th>
+						</tr>
+					</thead>
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col"># ID</th>
+							<th scope="col">Status</th>
+							<th scope="col">Pseudo</th>
+							<th scope="col">Mot de passe</th>
+							<th scope="col">E-mail</th>
+							<th scope="col">Avatar</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for users in users %}
+							<tr>
+								<th scope="row">{{users.id_user}}</th>
+								<td>{{users.admin}}</td>
+								<td>{{users.pseudo}}</td>
+								<td>{{users.mdp}}</td>
+								<td>{{users.mail}}</td>
+								<td>{{users.avatar}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		{% endif %}
+
+
+		<!-- Listing des Films -->
+		{% if (slug == 'Liste_Films') %}
+			<div id="films">
+				<table class="table table-bordered table-hover">
+					<thead class="thead-light">
+						<tr>
+							<th colspan="7" class="text-center">
+								<h3 class="font-weight-bold text-uppercase text-dark">Listes des films</h3>
+							</th>
+						</tr>
+					</thead>
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col"># ID</th>
+							<th scope="col">Titre</th>
+							<th scope="col">Date de sortie</th>
+							<th scope="col">Genre</th>
+							<th scope="col">Résumé</th>
+							<th scope="col">Durée</th>
+							<th scope="col">Affiche</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for movies in movies %}
+							<tr>
+								<th scope="row">{{movies.id_movie}}</th>
+								<td>{{movies.title}}</td>
+								<td>{{movies.year}}</td>
+								<td>{{movies.style}}</td>
+								<td>{{movies.resume}}</td>
+								<td>{{movies.time}}</td>
+								<td>{{movies.picture}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		{% endif %}
+
+
+		<!-- Listing Artistes -->
+		{% if (slug == 'Liste_Artistes') %}
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover">
+					<thead class="thead-light">
+						<tr>
+							<th colspan="7" class="text-center">
+								<h3 class="font-weight-bold text-uppercase text-dark">Liste des artistes</h3>
+							</th>
+						</tr>
+					</thead>
+
+					<thead class="thead-dark"></thead>
+				</tr>
+				<th scope="col"># ID</th>
+				<th scope="col">Nom</th>
+				<th scope="col">Prénom</th>
+				<th scope="col">Date de naissance</th>
+				<th scope="col">Biographie</th>
+				<th width="30px" scope="col">Photo</th>
+				<th scope="col">Rôle</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for artists in artists %}
+				<tr>
+					<th scope="row">{{artists.id_artist}}</th>
+					<td>{{artists.first_name}}</td>
+					<td>{{artists.last_name}}</td>
+					<td>{{artists.birth_day | date("d/m/Y") }}</td>
+					<td>{{artists.bio}}</td>
+					<td><img src="{{artists.picture }}" width="100px" height="120px"></td>
+					<td>{{artists.role}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>{% endif %}<!-- Tous les commentaires -->{% if (slug == 'Tous') %}
+<table class="table table-bordered table-hover">
+	<thead class="thead-light">
+		<tr>
+			<th colspan="7" class="text-center">
+				<h3 class="font-weight-bold text-uppercase text-dark">Listes des commentaires</h3>
+			</th>
+		</tr>
+	</thead>
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col"># ID Commentaire</th>
+			<th scope="col"># ID Utilisateur</th>
+			<th scope="col">Titre Commentaire</th>
+			<th scope="col">Commentaire</th>
+			<th scope="col">Note</th>
+			<th scope="col">Date</th>
+			<th scope="col">Suppression</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for comment in comments %}
+			<tr>
+				<th scope="row">{{comment.id_comment}}</th>
+				<td>{{comment.id_user}}</td>
+				<td>{{comment.title}}</td>
+				<td>{{comment.content}}</td>
+				<td>{{comment.note}}</td>
+				<td>{{comment.date}}</td>
+				<td class="text-center">
+					<a href="{{baseUrl}}/Administration/EffacerCommentaire_{{comment.id_comment}}">
+						<i class="far fa-trash-alt" style="font-size:250%;color:red"></i>
+					</a>Supprimer</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>{% endif %}<!-- Commentaire par utilisateurs -->{% if (slug == 'Utilisateur') %}
+
+<table class="table table-bordered table-hover">
+	<thead class="thead-dark ">
+		<tr>
+			<th colspan="7" class="text-center">{{pseudo}}</th>
+		</tr>
+	</thead>
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col"># ID commentaire</th>
+			<th scope="col"># ID utilisateur</th>
+			<th scope="col">Titre commentaire</th>
+			<th scope="col">Commentaire</th>
+			<th scope="col">Note</th>
+			<th scope="col">Date</th>
+			<th scope="col">Suppression</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{% set id_movie = 0 %}
+		{% for comment in comments %}
+			<tr>
+				<th scope="row">{{comment.id_comment}}</th>
+				<td>{{comment.id_user}}</td>
+				<td>{{comment.title}}</td>
+				<td>{{comment.content}}</td>
+				<td>{{comment.note}}</td>
+				<td>{{comment.date}}</td>
+				<td>
+					<a href="{{baseUrl}}/Administration/Effacer_{{comment.id_comment}}/{{id_movie}}/{{pseudo}}/{{comment.id_user}}">Supprimer</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>{% endif %}<!-- Commentaire par titre de film -->{% if (slug == 'titleMovie') %}
+<table class="table table-bordered table-hover">
+	<thead class="thead-dark ">
+		<tr>
+			<th colspan="7" class="text-center">{{title}}</th>
+		</tr>
+	</thead>
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col"># ID commentaire</th>
+			<th scope="col"># ID utilisateur</th>
+			<th scope="col">Titre commentaire</th>
+			<th scope="col">Commentaire</th>
+			<th scope="col">Note</th>
+			<th scope="col">Date</th>
+			<th scope="col">Suppression</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{% set id_movie = 0 %}
+		{% for comment in comments %}
+			<tr>
+				<th scope="row">{{comment.id_comment}}</th>
+				<td>{{comment.id_user}}</td>
+				<td>{{comment.title}}</td>
+				<td>{{comment.content}}</td>
+				<td>{{comment.note}}</td>
+				<td>{{comment.date}}</td>
+				<td>
+					<a href="{{baseUrl}}/Administration/Effacer_{{comment.id_comment}}/{{id_movie}}/{{title}}/{{comment.id_user}}">Supprimer</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>{% endif %}<!-- Edition Films -->{% if (slug == 'Ajout_Film') %}
+<div class="d-flex justify-content pt-5 ">
+
+	<form name="addMovie" method="POST" action="{{baseUrl}}/Administration/Ajout_Film/Add" class="admin-form">
+		<h2 class="titleFormAdmin">Ajouter un film</h2>
+
+		<div class="form-row form-row-admin">
+			<div class="col-md-4 mb-3">
+				<input type="text" class="form-control" value="{{title}}" name="title" placeholder="Titre">
+			</div>
+
+			<div class="col-md-4 mb-3">
+				<input type="text" class="form-control" value="{{year}}" name="year" placeholder="Date de sortie (AAAA)">
+			</div>
+
+			<div class="col-md-4 mb-3">
+				<input type="text" class="form-control" value="{{time}}" name="time" placeholder="Durée (HH:MM:SS)">
+			</div>
+		</div>
+
+		<div class="form-row form-row-admin">
+			<div class="col-md-6 mb-3">
+				<input type="text" class="form-control" value="{{picture}}" name="picture" placeholder="Affiche (URL)">
+			</div>
+
+
+			<div class="col-md-6 mb-3">
+				<select class="custom-select" name="style">
+					<option value="" selected disabled>--Style--</option>
+					<option value="Action" {% if style == "Action" %} selected {% endif %}>Action</option>
+					<option value="Animation" {% if style == "Animation" %} selected {% endif %}>Animation</option>
+					<option value="Catastrophe" {% if style == "Catastrophe" %} selected {% endif %}>Catastrophe</option>
+					<option value="Comédie" {% if style == "Comédie" %} selected {% endif %}>Comédie</option>
+					<option value="Dramatique" {% if style == "Dramatique" %} selected {% endif %}>Dramatique</option>
+					<option value="Documentaire" {% if style == "Documentaire" %} selected {% endif %}>Documentaire</option>
+					<option value="Historique" {% if style == "Historique" %} selected {% endif %}>Historique</option>
+					<option value="Horreur" {% if style == "Horreur" %} selected {% endif %}>Horreur</option>
+					<option value="Romantique" {% if style == "Romantique" %} selected {% endif %}>Romantique</option>
+					<option value="Science-Fiction" {% if style == "Science-Fiction" %} selected {% endif %}>Science-Fiction</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-row form-row-admin">
+			<div class="col-md-12 mb-3">
+				<input type="text" class="form-control" value="{{trailer}}" name="trailer" placeholder="Bande-Annonce (YouTube : Cliquer sur Partager / Intégrer / https://www.youtube.com/embed)">
+			</div>
+		</div>
+
+		<div class="form-row form-row-admin">
+			<div class="col-md-12 mb-3">
+				<textarea class="form-control" name="resume" placeholder="Résumé" rows="3">{{resume}}</textarea>
+			</div>
+		</div>
+
+		<div class="">
+			<p class="alert-warning text-center">{{info}}</p>
+			<p class="text-success">{{success}}</p>
+			<p class="text-danger error-form">{{error}}</p>
+		</div>
+
+		<div class="row justify-content-center">
+			<button class="btn btn-secondary" type="submit">Ajouter</button>
+		</div>
+	</form>
+</div>{% endif %}<!-- Edition Artistes -->{% if (slug == 'Ajout_Artiste') %}
+<div class="d-flex justify-content pt-5 pb-5">
+	<form name="addArtist" method="POST" action="{{baseUrl}}/Administration/Ajout_Artiste/Add" class="admin-form">
+		<h2 class="titleFormAdmin">Ajouter un artiste</h2>
+		<div class="form-row form-row-admin">
+			<div class="col-md-6 mb-3">
+				<input type="text" name="first_name" value="{{first_name}}" class="form-control" placeholder="Prénom">
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<input type="text" name="last_name" value="{{last_name}}" class="form-control" placeholder="Nom">
+			</div>
+		</div>
+
+		<div class="form-row form-row-admin">
+			<div class="col-md-6 mb-3">
+				<input type="text" name="birth_day" value="{{birth_day}}" class="form-control" placeholder="Anniversaire (AAAA/MM/JJ)">
+			</div>
+
+			<div class="col-md-6 mb-3">
+				<input type="text" name="picture" value="{{picture}}" class="form-control" placeholder="Photo (URL)">
+			</div>
+		</div>
+
+		<div class="form-row form-row-admin">
+			<div class="col-md-12 mb-3">
+				<select class="custom-select text-center" name="role">
+					<option value="" selected disabled>-- Rôle --</option>
+					<option value="1" {% if role == "1" %} selected {% endif %}>Acteur</option>
+					<option value="2" {% if role == "2" %} selected {% endif %}>Réalistateur</option>
+					<option value="3" {% if role == "3" %} selected {% endif %}>Acteur & Réalistateur</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-row form-row-admin">
+			<div class="col-md-12 mb-3">
+				<textarea class="form-control" name="bio" value="{{bio}}" placeholder="Biographie" rows="3">{{bio}}</textarea>
+			</div>
+		</div>
+
+		<div>
+			<p class="alert-warning text-center">{{info}}</p>
+			<p class="text-danger error-form">{{error}}</p>
+			<p class="text-success">{{success}}</p>
+		</div>
+
+		<div class="row justify-content-center">
+			<button class="btn btn-secondary btn-outline" type="submit">Ajouter</button>
+		</div>
+	</form>
+</div>{% endif %}{% if (slug == 'Association')  %}
+<div class="d-flex justify-content pt-5 pb-5">
+	<form name="association" action="{{baseUrl}}/Administration/Associer/With" method="POST">
+		<div
+			class="row">
+
+			<!-- Liste des Artistes -->
+			<div class="col-md-4">
+				{% for artists in artists %}
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="id_artist" value="{{artists.id_artist}}" id="{{artists.first_name}}">
+						<label class="form-check-label" for="{{artists.first_name}}">{{artists.first_name}}
+							{{artists.last_name}}</label>
+					</div>
+				{% endfor %}
+			</div>
+
+			<!-- Liste des Rôles -->
+			<div class="col-md-3">
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="role" value="1" id="Acteur">
+					<label class="form-check-label" for="Acteur">Acteur</label>
+				</div>
+
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="role" value="2" id="Réalisateur">
+					<label class="form-check-label" for="Réalisateur">Réalisateur</label>
+				</div>
+
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="role" value="3" id="Acteur & Réalisateur">
+					<label class="form-check-label" for="Acteur & Réalisateur">Acteur & Réalisateur</label>
+				</div>
+			</div>
+
+			<!-- Liste des Films -->
+			<div class="col-md-5">
+				{% for movies in movies %}
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="id_movie" value="{{movies.id_movie}}" id="{{movies.title}}">
+						<label class="form-check-label" for="{{movies.title}}">{{movies.title}}</label>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div>
+			<p class="alert-warning text-center">{{info}}</p>
+			<p class="text-danger">{{error}}</p>
+			<p class="text-success">{{success}}</p>
+		</div>
+
+		<div class="row justify-content-center">
+			<button class="btn btn-secondary" type="submit">Associer</button>
+		</div>
+	</form>
+</div>{% endif %}</div></div>{% endblock %}
